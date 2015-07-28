@@ -1,0 +1,30 @@
+{
+	"properties": {
+		"name": "PB_CLI TEST NIC",
+		"ips": ["127.0.0.0"],
+		"dhcp": "true",
+		"lan": "1"
+	},
+ "entities": {
+       "firewallrules": {
+         "items": [
+           {
+               "properties": {
+                   "name": "Open SSH port",
+                   "protocol": "TCP",
+                   "portRangeStart": 22,
+                   "portRangeEnd": 22
+               }
+           },
+           {
+               "properties": {
+                   "name": "Allow PING",
+                   "protocol": "ICMP",
+                   "icmpType": 8,
+                   "icmpCode": 0
+               }
+           }
+       ]
+     }
+   }
+}

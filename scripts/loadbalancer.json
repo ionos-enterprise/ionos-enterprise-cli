@@ -1,0 +1,7 @@
+{
+  "properties": {
+    "name": "PB_CLI Test Loadbalancer",
+    "ip": "10.11.12.3",
+    "dhcp": "true"
+  }
+}

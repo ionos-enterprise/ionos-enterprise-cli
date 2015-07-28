@@ -1,0 +1,19 @@
+ {
+     "properties": {
+         "name": "PB_CLI Test Server",
+         "ram": 1024,
+         "cores": 1
+     },
+     "entities": {
+         "volumes": {
+             "items": [{
+                 "properties": {
+                     "size": 1,
+                     "name": "PB_CLI Test Volume",
+                     "licenceType": "UNKNOWN",
+                     "bus": "VIRTIO"
+                 }
+             }]
+         }
+     }
+ }

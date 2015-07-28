@@ -1,0 +1,7 @@
+{
+	"properties":{
+		"name":"PB_CLI Test Datacenter",
+		"location":"us/lasdev",
+		"description":"Test datacenter for PB_CLI"
+	}
+}
