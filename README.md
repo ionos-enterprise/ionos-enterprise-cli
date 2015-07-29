@@ -6,7 +6,7 @@
 * [Getting Started](#getting-started)
 * [Installation](#installation)
 * [Overview](#overview)
-* [How To:](#how-to)
+* [How To:](#how-tos)
     * [Create Data Center](#create-data-center)
     * [Create Server](#create-server)
     * [Update Server](#update-server)
@@ -29,27 +29,27 @@
     * [IP Block](#ip-block)
 * [Support](#support)
 
-# Concepts
+## Concepts
 
 The ProfitBricks CLI wraps the [ProfitBricks REST API](https://devops.profitbricks.com/api/rest/) allowing you to interact with it from a command-line interface.
 
-# Getting Started
+## Getting Started
 
 Before you begin you will need to have [signed-up](https://www.profitbricks.com/signup/) for a ProfitBricks account. The credentials you establish during sign-up will be used to authenticate against the [ProfitBricks API](https://devops.profitbricks.com/api/rest/).
 
-# Installation
+## Installation
 
 Please utilize one of the following URL's to retrieve an install script that is appropriate for your environment.
 
-Linux
+### Linux
 
 [GitHub - ProfitBricks Linux Install](https://github.com/profitbricks/profitbricks-cli/tree/master/install/linux/install.sh)
 
-Mac
+### Mac
 
 [GitHub - ProfitBricks Mac Install](https://github.com/profitbricks/profitbricks-cli/tree/master/install/mac/install.sh)
 
-Windows
+### Windows
 
 [GitHub - ProfitBricks Windows Install](https://github.com/profitbricks/profitbricks-cli/tree/master/install/windows/install.bat)
 
@@ -59,7 +59,7 @@ If you prefer, you may install `nodejs` and `npm` manually. Then run the followi
 npm install -g profitbricks-cli
 ```
 
-# Overview
+## Overview
 
 A list of available operations can be accessed directly from the command line.
 
@@ -120,12 +120,12 @@ lan [env]                     LAN operations
 -f, --force                   Forces execution
 ```
 
-# Configuration
+## Configuration
 
 Before using the ProfitBrick's CLI to perform any operations, we'll need to set our credentials:
 
 ```
-profitbricks setup
+$ profitbricks setup
 >prompt: username:username
 >prompt: password:
 ```
@@ -138,7 +138,7 @@ You will be notified with the following message if you have provided incorrect c
 
 After successful authentication you will no longer need to provide credentials unless you want to change them. They are stored as a BASE64 encoded string in a '.auth' file in your home directory.
 
-# How To:
+# How To's:
 
 These examples assume that you don't have any resources provisioned under your account. The first thing we will want to do is create a data center to hold all of our resources.
 
@@ -147,7 +147,7 @@ These examples assume that you don't have any resources provisioned under your a
 We need to supply some parameters to get our first data center created. In this case, we'll set the location to 'us/lasdev' so that this data center is created under the [DevOps Data Center](https://devops.profitbricks.com/tutorials/devops-data-center-information/). Other valid locations can be determined by reviewing the [REST API Documentation](https://devops.profitbricks.com/api/rest/#locations). That documentation is an excellent resource since that is what the ProfitBricks CLI is calling to complete these operations.
 
 ```
-profitbricks datacenter create --name "Demo" --description "CLI Demo Data Center" --location "us/lasdev"
+$ profitbricks datacenter create --name "Demo" --description "CLI Demo Data Center" --location "us/lasdev"
 
 Datacenter
 -----------------------------------------------------
@@ -163,7 +163,7 @@ Et voilà, we've successfully provisioned a data center. Notice the 'Id' that wa
 Next we'll create a server in the data center. This time we have to pass the 'Id' for the data center in, along with some other relevant properties (processor cores and memory) for the new server.
 
 ```
-profitbricks server create --datacenterid 3fc832b1-558f-48a4-bca2-af5043975393 --cores 2 --name "Demo Server" --ram 256
+$ profitbricks server create --datacenterid 3fc832b1-558f-48a4-bca2-af5043975393 --cores 2 --name "Demo Server" --ram 256
 
 Server
 ------------------------------------------------------------------------------------------
@@ -177,7 +177,7 @@ Id                                    Name         AvailabilityZone  State  Core
 Whoops, we didn't assign enough memory to our instance. Lets go ahead and update the server to increase the amount of memory it has assigned. We'll need the datacenterid, the id of the server we are updating, along with the parameters that we want to change.
 
 ```
-profitbricks server update --datacenterid 3fc832b1-558f-48a4-bca2-af5043975393 -i 11767ba1-6290-420f-a0bf-b77679a285b2 --cores 1 --name "Demo Server" --ram 1024
+$ profitbricks server update --datacenterid 3fc832b1-558f-48a4-bca2-af5043975393 -i 11767ba1-6290-420f-a0bf-b77679a285b2 --cores 1 --name "Demo Server" --ram 1024
 
 Server
 -------------------------------------------------------------------------------------------
@@ -191,7 +191,7 @@ Id                                    Name         AvailabilityZone  State  Core
 Lets take a look at the list of servers in our data center. There are a couple more listed in here for demonstration purposes.
 
 ```
-profitbricks server list --datacenterid 3fc832b1-558f-48a4-bca2-af5043975393
+$ profitbricks server list --datacenterid 3fc832b1-558f-48a4-bca2-af5043975393
 
 Servers
 -----------------------------------------------------------------------------------------------
@@ -207,7 +207,7 @@ Id                                    Name         AvailabilityZone  State      
 Now that we have a server provisioned, it needs some storage. We'll specify a size for this storage volume in GB as well as set the 'bus' and 'licencetype'. The 'bus' setting can have a serious performance impact and you'll want to use VIRTIO when possible. Using VIRTIO may require drivers to be installed depending on the OS you plan to install. The 'licencetype' impacts billing rate, as there is a surcharge for running certain OS types.
 
 ```
-profitbricks volume create --datacenterid 3fc832b1-558f-48a4-bca2-af5043975393 --size 12 --bus VIRTIO --licencetype LINUX --name "Demo Srvr 1 Boot"
+$ profitbricks volume create --datacenterid 3fc832b1-558f-48a4-bca2-af5043975393 --size 12 --bus VIRTIO --licencetype LINUX --name "Demo Srvr 1 Boot"
 
 Volume
 ------------------------------------------------------------------------
@@ -221,7 +221,7 @@ d7dc58a1-9505-48f5-9db4-22cff0659cf8  null  12    LINUX    VIRTIO  BUSY
 The volume we've created is not yet connected or attached to a server. To accomplish that we'll use the `dcid` and `serverid` values returned from the previous commands:
 
 ```
-profitbricks volume attach --datacenterid 3fc832b1-558f-48a4-bca2-af5043975393 --serverid 03334965-466b-470a-8fe5-6d6e461402a5 -i d7dc58a1-9505-48f5-9db4-22cff0659cf8
+$ profitbricks volume attach --datacenterid 3fc832b1-558f-48a4-bca2-af5043975393 --serverid 03334965-466b-470a-8fe5-6d6e461402a5 -i d7dc58a1-9505-48f5-9db4-22cff0659cf8
 
 Volume
 ----------------------------------------------------------------------------------
@@ -235,7 +235,7 @@ d7dc58a1-9505-48f5-9db4-22cff0659cf8  Demo Srvr 1 Boot  12    LINUX    null  BUS
 Let's take a look at all the volumes in the data center:
 
 ```
-profitbricks volume list --datacenterid 3fc832b1-558f-48a4-bca2-af5043975393
+$ profitbricks volume list --datacenterid 3fc832b1-558f-48a4-bca2-af5043975393
 
 Volumes
 ----------------------------------------------------------------------------------------
@@ -250,7 +250,7 @@ d231cd2e-89c1-4ed4-b4ad-d0a2c8b2b4a7  Demo Srvr 1 Boot  10    LINUX    VIRTIO  A
 If we have a volume we'd like to keep a copy of, perhaps as a backup, we can take a snapshot:
 
 ```
-profitbricks snapshot create --datacenterid 3fc832b1-558f-48a4-bca2-af5043975393 --volumeid d231cd2e-89c1-4ed4-b4ad-d0a2c8b2b4a7
+$ profitbricks snapshot create --datacenterid 3fc832b1-558f-48a4-bca2-af5043975393 --volumeid d231cd2e-89c1-4ed4-b4ad-d0a2c8b2b4a7
 
 Snapshot
 -------------------------------------------------------------------------------------------------------------
@@ -264,7 +264,7 @@ cf90b2e3-179b-4bff-a84c-d53ca58487dd  Demo Srvr 1 Boot-Snapshot-07/27/2015  null
 Here is a list of the snapshots in our account:
 
 ```
-profitbricks snapshot list
+$ profitbricks snapshot list
 
 Snapshots
 -----------------------------------------------------------------------------------------------------------------
@@ -278,7 +278,7 @@ cf90b2e3-179b-4bff-a84c-d53ca58487dd  Demo Srvr 1 Boot-Snapshot-07/27/2015  10  
 Now that we have a snapshot created, we can change the name to something more descriptive:
 
 ```
-profitbricks snapshot update -i cf90b2e3-179b-4bff-a84c-d53ca58487dd --name "Demo Srvr 1 OS just installed"
+$ profitbricks snapshot update -i cf90b2e3-179b-4bff-a84c-d53ca58487dd --name "Demo Srvr 1 OS just installed"
 
 Snapshot
 ------------------------------------------------------------------------------------------------------
@@ -292,7 +292,7 @@ cf90b2e3-179b-4bff-a84c-d53ca58487dd  Demo Srvr 1 OS just installed  10    2015-
 We can delete our snapshot when we are done with it:
 
 ```
-profitbricks snapshot delete -i cf90b2e3-179b-4bff-a84c-d53ca58487dd
+$ profitbricks snapshot delete -i cf90b2e3-179b-4bff-a84c-d53ca58487dd
 
 You are about to delete a snapshot. Do you want to proceed? (y/n
 prompt: yes:  y
@@ -309,34 +309,34 @@ Now we've had a taste of working with the ProfitBricks CLI. The reference sectio
 ### List Data Centers
 
 ```
-profitbricks datacenter list
+$ profitbricks datacenter list
 ```
 
 ### Get Specfic Data Center
 
 ```
-profitbricks datacenter get -i [dcid]
-profitbricks datacenter show -i [dcid]
+$ profitbricks datacenter get -i [dcid]
+$ profitbricks datacenter show -i [dcid]
 ```
 
 ### Create Data Center
 
 ```
-profitbricks datacenter create -p [path_to_json]
+$ profitbricks datacenter create -p [path_to_json]
 
-profitbricks datacenter create --name [name] --description [text] --location [location]
+$ profitbricks datacenter create --name [name] --description [text] --location [location]
 ```
 
 ### Update Data Center
 
 ```
-profitbricks datacenter update -i [dcid] --name [name] --description [text]
+$ profitbricks datacenter update -i [dcid] --name [name] --description [text]
 ```
 
 ### Delete Data Center
 
 ```
-profitbricks datacenter delete -i [dcid]
+$ profitbricks datacenter delete -i [dcid]
 ```
 
 ## Server
@@ -344,51 +344,51 @@ profitbricks datacenter delete -i [dcid]
 ### List Servers
 
 ```
-profitbricks server list --datacenterid [dcid]
+$ profitbricks server list --datacenterid [dcid]
 ```
 
 ### Get Specific Server
 
 ```
-profitbricks server show --datacenterid [dcid] -i [serverid]
+$ profitbricks server show --datacenterid [dcid] -i [serverid]
 ```
 
 ### Create Server
 
 ```
-profitbricks server create --datacenterid [dcid] --cores [cores] --name [name] --ram [ram] --volumeid [preexisting_volume_id]
+$ profitbricks server create --datacenterid [dcid] --cores [cores] --name [name] --ram [ram] --volumeid [preexisting_volume_id]
 
-profitbricks server create --datacenterid [dcid] -p [path_to_json]
+$ profitbricks server create --datacenterid [dcid] -p [path_to_json]
 ```
 
 ### Update Server
 
 ```
-profitbricks server update --datacenterid [dcid] -i [serverid] --cores [cores] --name [name] --ram [ram]
+$ profitbricks server update --datacenterid [dcid] -i [serverid] --cores [cores] --name [name] --ram [ram]
 ```
 
 ### Delete Server
 
 ```
-profitbricks server delete --datacenterid [dcid] -i [serverid]
+$ profitbricks server delete --datacenterid [dcid] -i [serverid]
 ```
 
 ### Start Server
 
 ```
-profitbricks server start --datacenterid [dcid] -i [serverid]
+$ profitbricks server start --datacenterid [dcid] -i [serverid]
 ```
 
 ### Stop Server
 
 ```
-profitbricks server stop --datacenterid [dcid] -i [serverid]
+$ profitbricks server stop --datacenterid [dcid] -i [serverid]
 ```
 
 ### Reboot Server
 
 ```
-profitbricks server reboot --datacenterid [dcid] -i [serverid]
+$ profitbricks server reboot --datacenterid [dcid] -i [serverid]
 ```
 
 ## Volume
@@ -396,45 +396,45 @@ profitbricks server reboot --datacenterid [dcid] -i [serverid]
 ### List Volumes
 
 ```
-profitbricks volume list --datacenterid [dcid]
+$ profitbricks volume list --datacenterid [dcid]
 ```
 
 ### Get Specific Volume
 
 ```
-profitbricks volume show --datacenterid [dcid] -i [volumeid]
+$ profitbricks volume show --datacenterid [dcid] -i [volumeid]
 ```
 
 ### Create Volume
 
 ```
-profitbricks volume create --datacenterid [dcid] -p [path_to_json]
+$ profitbricks volume create --datacenterid [dcid] -p [path_to_json]
 
-profitbricks volume create --datacenterid  [dcid] --name [name] --size [size] --bus [bus]
+$ profitbricks volume create --datacenterid  [dcid] --name [name] --size [size] --bus [bus]
 ```
 
 ### Attach Volume
 
 ```
-profitbricks volume attach --datacenterid [dcid] --serverid [serverid] -i [volumeid]
+$ profitbricks volume attach --datacenterid [dcid] --serverid [serverid] -i [volumeid]
 ```
 
 ### Detach Volume
 
 ```
-profitbricks volume detach --datacenterid [dcid] --serverid [serverid] -i [volumeid]
+$ profitbricks volume detach --datacenterid [dcid] --serverid [serverid] -i [volumeid]
 ```
 
 ### Update Volume
 
 ```
-profitbricks volume update -i [id] --datacenterid [dcid] --name [name]
+$ profitbricks volume update -i [id] --datacenterid [dcid] --name [name]
 ```
 
 ### Delete Volume
 
 ```
-profitbricks volume delete --datacenterid [dcid] -i [volumeid]
+$ profitbricks volume delete --datacenterid [dcid] -i [volumeid]
 ```
 
 ## Snapshot
@@ -442,25 +442,25 @@ profitbricks volume delete --datacenterid [dcid] -i [volumeid]
 ### List Snapshots
 
 ```
-profitbricks snapshot list
+$ profitbricks snapshot list
 ```
 
 ### Create Snapshot
 
 ```
-profitbricks snapshot create --datacenterid [dcid] --volumeid [volumeid]
+$ profitbricks snapshot create --datacenterid [dcid] --volumeid [volumeid]
 ```
 
 ### Update Snapshot
 
 ```
-profitbricks snapshot update -i [snapshotid] --name [name]
+$ profitbricks snapshot update -i [snapshotid] --name [name]
 ```
 
 ### Delete Snapshot
 
 ```
-profitbricks snapshot delete -i [snapshotid]
+$ profitbricks snapshot delete -i [snapshotid]
 ```
 
 ## Load Balancer
@@ -468,33 +468,33 @@ profitbricks snapshot delete -i [snapshotid]
 ### List Load Balancers
 
 ```
-profitbricks loadbalancer list --datacenterid [dcid]
+$ profitbricks loadbalancer list --datacenterid [dcid]
 ```
 
 ### Get Specific Load Balancer
 
 ```
-profitbricks loadbalancer show --datacenterid [dcid] -i [loadbalancerid]
+$ profitbricks loadbalancer show --datacenterid [dcid] -i [loadbalancerid]
 ```
 
 ### Create Load Balancer
 
 ```
-profitbricks loadbalancer create --datacenterid [dcid] --name  [name] --ip [ip] --dhcp
+$ profitbricks loadbalancer create --datacenterid [dcid] --name  [name] --ip [ip] --dhcp
 
-profitbricks loadbalancer create --datacenterid [dcid] -p [path_to_json]
+$ profitbricks loadbalancer create --datacenterid [dcid] -p [path_to_json]
 ```
 
 ### Update Load Balancer
 
 ```
-profitbricks loadbalancer update -i [loadbalancerid] --datacenterid [dcid] --name [name]
+$ profitbricks loadbalancer update -i [loadbalancerid] --datacenterid [dcid] --name [name]
 ```
 
 ### Delete Load Balancer
 
 ```
-profitbricks loadbalancer delete -i [loadbalancerid] --datacenterid [dcid]
+$ profitbricks loadbalancer delete -i [loadbalancerid] --datacenterid [dcid]
 ```
 
 ## Image
@@ -502,25 +502,25 @@ profitbricks loadbalancer delete -i [loadbalancerid] --datacenterid [dcid]
 ### List Images
 
 ```
-profitbricks image list
+$ profitbricks image list
 ```
 
 ### Get Specific Image
 
 ```
-profitbricks image show -i [imageid]
+$ profitbricks image show -i [imageid]
 ```
 
 ### Update Image
 
 ```
-profitbricks image update -i [imageid] --name [name] ---description [description] --licencetype [licencetype]
+$ profitbricks image update -i [imageid] --name [name] ---description [description] --licencetype [licencetype]
 ```
 
 ### Delete Image
 
 ```
-profitbricks image delete -i [imageid]
+$ profitbricks image delete -i [imageid]
 ```
 
 ## NIC
@@ -528,33 +528,33 @@ profitbricks image delete -i [imageid]
 ### List NICs
 
 ```
-profitbricks nic list --datacenterid [dcid] --serverid [serverid]
+$ profitbricks nic list --datacenterid [dcid] --serverid [serverid]
 ```
 
 ### Get Specific NIC
 
 ```
-profitbricks nic get --datacenterid [dcid] --serverid [serverid] -i [nicid]
+$ profitbricks nic get --datacenterid [dcid] --serverid [serverid] -i [nicid]
 ```
 
 ### Create NIC
 
 ```
-profitbricks nic create --datacenterid [dcid]--serverid [serverid] -p [path_to_json]
+$ profitbricks nic create --datacenterid [dcid]--serverid [serverid] -p [path_to_json]
 
-profitbricks nic create --datacenterid [dcid] --serverid [serverid] --name [name] --ip [ip] --dhcp --lan [lan]
+$ profitbricks nic create --datacenterid [dcid] --serverid [serverid] --name [name] --ip [ip] --dhcp --lan [lan]
 ```
 
 ### Update NIC
 
 ```
-profitbricks nic update -i [nicid] --datacenterid [dcid] --serverid [serverid] --name [name] --ip [ip] --dhcp --lan [lan]
+$ profitbricks nic update -i [nicid] --datacenterid [dcid] --serverid [serverid] --name [name] --ip [ip] --dhcp --lan [lan]
 ```
 
 ### Delete NIC
 
 ```
-profitbricks nic delete -i [nicid] --datacenterid [dcid] --serverid [serverid]
+$ profitbricks nic delete -i [nicid] --datacenterid [dcid] --serverid [serverid]
 ```
 
 ## IP Block
@@ -562,27 +562,27 @@ profitbricks nic delete -i [nicid] --datacenterid [dcid] --serverid [serverid]
 ### List IP Blocks
 
 ```
-profitbricks ipblock list
+$ profitbricks ipblock list
 ```
 
 ### Get Specific IP Block
 
 ```
-profitbricks ipblock show -i [ipblockid]
+$ profitbricks ipblock show -i [ipblockid]
 ```
 
 ### Reserve IP Block
 
 ```
-profitbricks ipblock create --location [location] --size [size]
+$ profitbricks ipblock create --location [location] --size [size]
 ```
 
 ## Release IP Block
 
 ```
-profitbricks ipblock delete -i [ipblockid]
+$ profitbricks ipblock delete -i [ipblockid]
 ```
 
-# Support
+## Support
 
 You are welcome to contact us with questions or comments at [ProfitBricks DevOps Central](https://devops.profitbricks.com/). Please report any issues via [GitHub's issue tracker](https://github.com/profitbricks/profitbricks-cli/issues).

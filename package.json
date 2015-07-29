@@ -1,6 +1,6 @@
 {
   "name": "profitbricks-cli",
-  "version": "1.0.1",
+  "version": "1.0.4",
   "scripts": {
     "start": "node profitbricks.js",
     "test": "node ./test/tests.js"
@@ -16,7 +16,18 @@
     "prompt": "^0.2.14",
     "request": "^2.53.0"
   },
-  "description": "Quick instructions on how to use profitbricks CLI:",
+  "description": "ProfitBricks Cross Platform Command Line tool",
+    "tags": [
+    "profitbricks",
+    "cli"
+  ],
+  "keywords": [
+    "node",
+    "profitbricks",
+    "cli",
+    "cloud hosting",
+    "deployment"
+  ],
   "main": "profitbricks.js",
   "devDependencies": {
     "mocha": "^2.2.1"
