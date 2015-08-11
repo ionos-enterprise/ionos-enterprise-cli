@@ -185,8 +185,10 @@ function printImage(info) {
     return {
         Id: info.id,
         Name: info.properties.name,
-        Created: info.metadata.createdDate.toString(),
-        State: info.metadata.state.toString()
+        State: info.metadata.state.toString(),
+        Type: info.properties.imageType,
+        Location: info.properties.location,
+        Public: info.properties.public
     }
 }
 
@@ -230,7 +232,9 @@ function printCollection(info) {
                 break
             case 'image':
                 type = info.items[i].type
-                dc.push(printImage(info.items[i]))
+                if(info.items[i].properties.imageType == "HDD"){
+                    dc.push(printImage(info.items[i]))
+                }
                 break
         }
     }
