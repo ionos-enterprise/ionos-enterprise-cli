@@ -118,7 +118,7 @@ function printServer(info) {
     return {
         Id: info.id,
         Name: info.properties.name,
-        AavailabilityZone: info.properties.availabilityZone,
+        AvailabilityZone: info.properties.availabilityZone,
         State: info.metadata.state,
         Cores: info.properties.cores,
         Memory: info.properties.ram + "RAM"
