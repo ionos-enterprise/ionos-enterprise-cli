@@ -7,7 +7,7 @@ exports.process = processServer
 
 function processServer(params) {
     if (!params.datacenterid || params.datacenterid == true) {
-        console.error('Please provide Data Center Id --datacetnerid [dcid]')
+        console.error('Please provide Data Center Id --datacenterid [dcid]')
         process.exit(code = 5)
         return
     }
