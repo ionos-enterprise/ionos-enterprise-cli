@@ -1,6 +1,6 @@
 {
   "name": "profitbricks-cli",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "scripts": {
     "start": "node profitbricks.js",
     "test": "node ./test/tests.js"
