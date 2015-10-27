@@ -84,12 +84,25 @@ function createServer(params) {
                 process.exit(code = 5)
                 return
             }
+            setBootParams(params, data.properties)
         }
     } finally {
         pbclient.createServer(params.datacenterid, data, helpers.printInfo)
     }
 }
 
+function setBootParams(params, data) {
+    if (params.bootCdrom && params.bootVolume) {
+        console.log('If not bootCdrom is ‘null’ then bootVolume has to be ‘null’, and the other way around')
+        console.log("Exiting...")
+        process.exit(code = 5)
+    }
+
+    if (params.bootCdrom)
+        data.bootCdrom = {id: params.bootCdrom}
+    if (params.bootVolume)
+        data.bootVolume = {id: params.bootVolume}
+}
 function updateServer(params) {
     var data = {}
 
@@ -106,19 +119,7 @@ function updateServer(params) {
         data.ram = params.ram
     if (params.availabilityzone)
         data.availabilityzone = params.availabilityzone
-    if (params.licencetype)
-        data.licencetype = params.licencetype
 
-    if (params.bootCdrom && params.bootVolume) {
-        console.log('If not bootCdrom is ‘null’ then bootVolume has to be ‘null’, and the other way around')
-        console.log("Exiting...")
-        process.exit(code = 5)
-    }
-
-    if (params.bootCdrom)
-        data.bootCdrom = params.bootCdrom
-    if (params.bootVolume)
-        data.bootVolume = params.bootVolume
-
+    setBootParams(params, data);
     pbclient.patchServer(params.datacenterid, params.id, data, helpers.printInfo)
 }

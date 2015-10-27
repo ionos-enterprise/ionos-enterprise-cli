@@ -93,8 +93,8 @@ lan [env]                     LAN operations
 -c, --cores [env]             Number of cores
 -a, --availabilityzone [env]  AvailabilityZone
 --licencetype [env]           Licence Type
---bootVolume                  Reference to a Volume used for booting
---bootCdrom                   Reference to a CD-ROM used for booting
+--bootVolume [env]            Reference to a Volume used for booting
+--bootCdrom [env]             Reference to a CD-ROM used for booting
 --volumeid [env]              Volume id
 --volumesize [env]            Volume size
 --volumename [env]            Volume name
@@ -160,7 +160,7 @@ Et voilà, we've successfully provisioned a data center. Notice the 'Id' that wa
 
 ## Create Server
 
-Next we'll create a server in the data center. This time we have to pass the 'Id' for the data center in, along with some other relevant properties (processor cores and memory) for the new server.
+Next we'll create a server in the data center. This time we have to pass the 'Id' for the data center in, along with some other relevant properties (processor cores, memory, boot volume or boot CD-ROM) for the new server.
 
 ```
 $ profitbricks server create --datacenterid 3fc832b1-558f-48a4-bca2-af5043975393 --cores 2 --name "Demo Server" --ram 256

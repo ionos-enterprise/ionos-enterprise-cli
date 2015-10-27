@@ -65,10 +65,19 @@ function createVolume(params) {
                 process.exit(code = 5)
                 return
             }
-            if (params.licencetype)
-                data.properties.licenceType = params.licencetype
             if (params.bus)
                 data.properties.bus = params.bus
+            if (params.licenceType && params.image) {
+                console.log('licenceType parameter should be used only if no image is used.')
+                console.log('licenceType will be inherited from image.')
+                console.log("Exiting...")
+                process.exit(code = 5)
+            }
+
+            if (params.licencetype)
+                data.properties.licenceType = params.licencetype
+            if (params.imageid)
+                data.properties.image = params.imageid
         }
     } finally {
         pbclient.createVolume(params.datacenterid, data, helpers.printInfo)
