@@ -10,14 +10,27 @@ function processNic(params) {
         console.error("DataCenter Id is a required field.")
         process.exit(code = 5)
     }
-    if (!params.serverid || params.serverid == true) {
+    if ((!params.serverid || params.serverid == true) && (!params.loadbalancerid || params.loadbalancerid == true)) {
         console.error("Server Id is a required field.")
         process.exit(code = 5)
     }
 
     switch (params.nic) {
         case 'list':
-            pbclient.listNics(params.datacenterid, params.serverid, helpers.printInfo)
+            if (params.serverid) {
+                pbclient.listNics(params.datacenterid, params.serverid, helpers.printInfo)
+            } else if (params.loadbalancerid) {
+
+                pbclient.listBalancedNics(params.datacenterid, params.loadbalancerid, helpers.printInfo)
+            }
+            break
+        case 'attach':
+            var jason = {}
+            jason.id = params.id
+            pbclient.associateNics(params.datacenterid, params.loadbalancerid, jason, helpers.printInfo)
+            break
+        case 'detach':
+            pbclient.deleteBalancedNic(params.datacenterid, params.loadbalancerid, params.id, helpers.printInfo)
             break
         case 'get':
         case 'show':
@@ -58,7 +71,7 @@ function createNic(params) {
         else {
             data.properties = {}
             data.properties.name = params.name
-            if(params.ip)
+            if (params.ip)
                 data.properties.ips = [params.ip]
             data.properties.dhcp = params.dhcp
             if (params.lan)

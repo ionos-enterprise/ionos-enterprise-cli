@@ -22,7 +22,7 @@ function toBase64(user, pass) {
 }
 
 function writeAuthData(authData) {
-    fs.writeFile(authFile, authData, function() {})
+    fs.writeFile(authFile, authData, function () { })
 }
 
 function getAuthData() {
@@ -31,9 +31,9 @@ function getAuthData() {
 }
 
 function printInfo(error, response, body) {
-    /* console.log(body)
-     console.log(error)
-     console.log(response)*/
+    /*console.log(body)
+    console.log(error)*/
+    location = response.headers.location
     if (error) {
         console.error(error)
         process.exit(code = 5)
@@ -55,7 +55,7 @@ function printInfo(error, response, body) {
     } catch (err) {
         return
     }
-    
+
     if (body) {
         switch (info.type) {
             case 'datacenter':
@@ -88,6 +88,19 @@ function printInfo(error, response, body) {
             case 'collection':
                 printCollection(info)
                 break
+            case 'request-status':
+                if (!isJson) {
+                    console.log("Status: " + info.metadata.targets[0].status)
+                    console.log("Message: " + info.metadata.message)
+                } else {
+                    console.log(JSON.stringify(info))
+                }
+                break
+
+        }
+        if (location) {
+            splice = location.split("/")
+            console.log("RequestID: " + splice[5])
         }
     }
 }
@@ -161,7 +174,10 @@ function printNic(info) {
         Id: info.id,
         Name: info.properties.name,
         Created: info.metadata.createdDate.toString(),
-        State: info.metadata.state.toString()
+        State: info.metadata.state.toString(),
+        Lan : info.properties.lan.toString(),
+        Mac : info.properties.mac,
+        Ips : info.properties.ips
     }
 }
 
@@ -232,7 +248,7 @@ function printCollection(info) {
                 break
             case 'image':
                 type = info.items[i].type
-                if(info.items[i].properties.imageType == "HDD"){
+                if (info.items[i].properties.imageType == "HDD") {
                     dc.push(printImage(info.items[i]))
                 }
                 break
@@ -248,6 +264,6 @@ function printResults(title, value) {
         console.table(title, value)
 }
 
-String.prototype.capitalize = function() {
+String.prototype.capitalize = function () {
     return this.charAt(0).toUpperCase() + this.slice(1)
 }

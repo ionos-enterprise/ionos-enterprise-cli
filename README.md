@@ -80,9 +80,10 @@ snapshot, [env]               Snapshot operations
 loadbalancer, [env]           Load Balancer operations
 nic, [env]                    NIC operations
 ipblock, [env]                IP Block operations
-drives, [env]                 CD ROM drives operations
+drives, [env]                 CD ROM drive operations
 image [env]                   Image operations
 lan [env]                     LAN operations
+request [env]                 Request operations
 -i, --id [env]                Id
 -n, --name [env]              Name
 -l, --location [env]          Location
@@ -91,7 +92,7 @@ lan [env]                     LAN operations
 --datacenterid [env]          DatacenterId
 -r, --ram [env]               Ram size in multiples of 256 MB
 -c, --cores [env]             Number of cores
--a, --availabilityzone [env]  AvailabilityZone
+-a, --availabilityzone [env]  Availability Zone
 --licencetype [env]           Licence Type
 --bootVolume [env]            Reference to a Volume used for booting
 --bootCdrom [env]             Reference to a CD-ROM used for booting
@@ -144,7 +145,7 @@ These examples assume that you don't have any resources provisioned under your a
 
 ## Create Data Center
 
-We need to supply some parameters to get our first data center created. In this case, we'll set the location to 'us/lasdev' so that this data center is created under the [DevOps Data Center](https://devops.profitbricks.com/tutorials/devops-data-center-information/). Other valid locations can be determined by reviewing the [REST API Documentation](https://devops.profitbricks.com/api/rest/#locations). That documentation is an excellent resource since that is what the ProfitBricks CLI is calling to complete these operations.
+We need to supply some parameters to get our first data center created. In this case, we will set the location to 'us/lasdev' so that this data center is created under the [DevOps Data Center](https://devops.profitbricks.com/tutorials/devops-data-center-information/). Other valid locations can be determined by reviewing the [REST API Documentation](https://devops.profitbricks.com/api/rest/#locations). That documentation is an excellent resource since that is what the ProfitBricks CLI is calling to complete these operations.
 
 ```
 $ profitbricks datacenter create --name "Demo" --description "CLI Demo Data Center" --location "us/lasdev"
@@ -154,9 +155,18 @@ Datacenter
 Id                                    Name  Location
 ------------------------------------  ----  ---------
 3fc832b1-558f-48a4-bca2-af5043975393  Demo  us/lasdev
+
+RequestID: 45dbf0ba-fc1b-4a2c-855f-a11705a996b8
 ```
 
-Et voilà, we've successfully provisioned a data center. Notice the 'Id' that was returned. That UUID was assigned to our new data center and will be needed for other operations.
+Et voilà, we've successfully provisioned a data center. Notice the "Id" that was returned. That UUID was assigned to our new data center and will be needed for other operations. The "RequestID" that was returned can be used to check on the status of any `create` or `update` operations.
+
+```
+$ profitbricks request get -i 45dbf0ba-fc1b-4a2c-855f-a11705a996b8
+
+Status: DONE
+Message: Request has been successfully executed
+```
 
 ## Create Server
 
@@ -181,7 +191,7 @@ $ profitbricks server update --datacenterid 3fc832b1-558f-48a4-bca2-af5043975393
 
 Server
 -------------------------------------------------------------------------------------------
-Id                                    Name         AvailabilityZone  State  Cores  Memory
+Id                                    Name         Availability Zone  State  Cores  Memory
 ------------------------------------  -----------  -----------------  -----  -----  -------
 03334965-466b-470a-8fe5-6d6e461402a5  Demo Server  AUTO               BUSY   1      1024RAM
 ```
@@ -195,7 +205,7 @@ $ profitbricks server list --datacenterid 3fc832b1-558f-48a4-bca2-af5043975393
 
 Servers
 -----------------------------------------------------------------------------------------------
-Id                                    Name         AvailabilityZone  State      Cores  Memory
+Id                                    Name         Availability Zone  State      Cores  Memory
 ------------------------------------  -----------  -----------------  ---------  -----  -------
 11767ba1-6290-420f-a0bf-b77679a285b2  Demo Srvr 3  AUTO               AVAILABLE  1      1024RAM
 9126cef1-d310-4b4c-953f-eb37a55beea4  Demo Srvr 2  AUTO               INACTIVE   1      1024RAM
@@ -555,6 +565,24 @@ $ profitbricks nic update -i [nicid] --datacenterid [dcid] --serverid [serverid]
 
 ```
 $ profitbricks nic delete -i [nicid] --datacenterid [dcid] --serverid [serverid]
+```
+
+### List Load Balanced NIC
+
+```
+$ profitbricks nic list --datacenterid [dcid] --loadbalancerid [lbid]
+```
+
+### Attach a NIC to a Load Balancer
+
+```
+$ profitbricks nic attach --datacenterid [dcid] --loadbalancerid [lbid] -i [nicid]
+```
+
+### Detach a NIC from a Load Balancer
+
+```
+$ profitbricks nic detach --datacenterid [dcid] --loadbalancerid [lbid] -i [nicid]
 ```
 
 ## IP Block
