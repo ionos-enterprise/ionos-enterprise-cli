@@ -113,10 +113,10 @@ request [env]                 Request operations
 --discScsiHotPlug             Volume is capable of SCSI drive hot plug (no reboot required)
 --discScsiHotUnplug           Volume is capable of SCSI drive hot unplug (no reboot required)
 --ip [env]                    IPv4 address of the load balancer.
---dhcp                        Indicates if the load balancer will reserve an IP using DHCP.
+--dhcp [evn]                  Indicates if the load balancer will reserve an IP using DHCP.
 --serverid [env]              Server id
 --lan [env]                   The LAN ID the NIC will sit on. If the LAN ID does not exist it will be created.
---public                      Boolean indicating if the LAN faces the public Internet or not.
+--public [evn]                Boolean indicating if the LAN faces the public Internet or not.
 --json                        Print results as JSON string
 -f, --force                   Forces execution
 ```
@@ -490,7 +490,7 @@ $ profitbricks loadbalancer show --datacenterid [dcid] -i [loadbalancerid]
 ### Create Load Balancer
 
 ```
-$ profitbricks loadbalancer create --datacenterid [dcid] --name  [name] --ip [ip] --dhcp
+$ profitbricks loadbalancer create --datacenterid [dcid] --name  [name] --ip [ip] --dhcp [true|false]
 
 $ profitbricks loadbalancer create --datacenterid [dcid] -p [path_to_json]
 ```
@@ -552,13 +552,13 @@ $ profitbricks nic get --datacenterid [dcid] --serverid [serverid] -i [nicid]
 ```
 $ profitbricks nic create --datacenterid [dcid]--serverid [serverid] -p [path_to_json]
 
-$ profitbricks nic create --datacenterid [dcid] --serverid [serverid] --name [name] --ip [ip] --dhcp --lan [lan]
+$ profitbricks nic create --datacenterid [dcid] --serverid [serverid] --name [name] --ip [ip] --dhcp [true|false] --lan [lan]
 ```
 
 ### Update NIC
 
 ```
-$ profitbricks nic update -i [nicid] --datacenterid [dcid] --serverid [serverid] --name [name] --ip [ip] --dhcp --lan [lan]
+$ profitbricks nic update -i [nicid] --datacenterid [dcid] --serverid [serverid] --name [name] --ip [ip] --dhcp [true|false] --lan [lan]
 ```
 
 ### Delete NIC

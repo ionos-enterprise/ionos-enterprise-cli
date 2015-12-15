@@ -134,7 +134,7 @@ function printServer(info) {
         AvailabilityZone: info.properties.availabilityZone,
         State: info.metadata.state,
         Cores: info.properties.cores,
-        Memory: info.properties.ram + "RAM"
+        Memory: info.properties.ram + "MB"
     }
 }
 

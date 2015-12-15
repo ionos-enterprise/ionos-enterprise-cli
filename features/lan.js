@@ -21,6 +21,9 @@ function processLan(params) {
         case 'create':
             createLan(params)
             break
+        case 'update':
+            updateLan(params)
+            break
         case 'delete':
             if (!global.force) {
                 console.log('You are about to delete a LAN. Do you want to proceed? (y/n')
@@ -37,6 +40,13 @@ function processLan(params) {
             params.outputHelp()
             break
     }
+}
+
+function updateLan(params) {
+    var data = {}
+    data.public = params.public
+
+    pbclient.patchLan(params.datacenterid,params.id,data,helpers.printInfo)
 }
 
 function createLan(params) {
