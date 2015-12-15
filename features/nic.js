@@ -88,6 +88,7 @@ function createNic(params) {
 }
 
 function updateNic(params) {
+    var data = {}
     try {
         if (params.path) {
             data = JSON.parse(fs.readFileSync(params.path, 'utf8'))
@@ -106,7 +107,8 @@ function updateNic(params) {
         }
     }
     finally {
-        pbclient.patchNic(params.datacenterid, params.serverid, data, helpers.printInfo)
+        console.log(data)
+        pbclient.patchNic(params.datacenterid, params.serverid, params.id, data, helpers.printInfo)
     }
 
 }

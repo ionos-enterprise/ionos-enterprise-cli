@@ -30,7 +30,7 @@ parseParameters()
 
 function initializeCli() {
     program
-        .version('1.1.1')
+        .version('1.1.7')
         .usage('[Options]')
         .option('setup', 'Configures credentials for ProfitBricks CLI')
         .option('datacenter, [env]', 'Data center operations')
@@ -74,10 +74,10 @@ function initializeCli() {
         .option('--discScsiHotPlug', 'Volume is capable of SCSI drive hot plug (no reboot required)')
         .option('--discScsiHotUnplug', 'Volume is capable of SCSI drive hot unplug (no reboot required)')
         .option('--ip [env]', 'IPv4 address of the loadbalancer.')
-        .option('--dhcp', 'Indicates if the loadbalancer will reserve an IP using DHCP.')
+        .option('--dhcp [env]', 'Indicates if the loadbalancer will reserve an IP using DHCP.')
         .option('--serverid [env]', 'Server id')
         .option('--lan [env]', 'The LAN ID the NIC will sit on. If the LAN ID does not exist it will be created.')
-        .option('--public', 'Boolean indicating if the LAN faces the public Internet or not.')
+        .option('--public [env]', 'Boolean indicating if the LAN faces the public Internet or not.')
         .option('--requestid [env]', 'Request UUID')
         .option('--json', 'Print results as JSON string')
         .option('-f, --force', 'Forces execution')
