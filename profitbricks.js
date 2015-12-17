@@ -30,7 +30,7 @@ parseParameters()
 
 function initializeCli() {
     program
-        .version('1.1.7')
+        .version('1.1.8')
         .usage('[Options]')
         .option('setup', 'Configures credentials for ProfitBricks CLI')
         .option('datacenter, [env]', 'Data center operations')
