@@ -94,20 +94,19 @@ function updateNic(params) {
             data = JSON.parse(fs.readFileSync(params.path, 'utf8'))
         }
         else {
-            data.properties = {}
+            data = {}
             if (params.name)
-                data.properties.name = params.name
+                data.name = params.name
             if (params.ip)
-                data.properties.ips = [params.ip]
+                data.ips = [params.ip]
             if (params.dhcp)
-                data.properties.dhcp = params.dhcp
+                data.dhcp = params.dhcp
             if (params.lan)
-                data.properties.lan = params.lan
+                data.lan = params.lan
 
         }
     }
     finally {
-        console.log(data)
         pbclient.patchNic(params.datacenterid, params.serverid, params.id, data, helpers.printInfo)
     }
 
