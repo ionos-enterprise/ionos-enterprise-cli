@@ -78,6 +78,10 @@ function createVolume(params) {
                 data.properties.licenceType = params.licencetype
             if (params.imageid)
                 data.properties.image = params.imageid
+            if (params.type)
+                data.properties.type = params.type
+            if (params.imagepassword)
+                data.properties.imagePassword = params.imagepassword
         }
     } finally {
         pbclient.createVolume(params.datacenterid, data, helpers.printInfo)

@@ -30,7 +30,7 @@ parseParameters()
 
 function initializeCli() {
     program
-        .version('1.1.8')
+        .version('1.1.9')
         .usage('[Options]')
         .option('setup', 'Configures credentials for ProfitBricks CLI')
         .option('datacenter, [env]', 'Data center operations')
@@ -62,6 +62,8 @@ function initializeCli() {
         .option('--volumename [env]', 'Volume name')
         .option('--imageid [env]', 'Image id')
         .option('-b --bus [env]', 'Bus type (VIRTIO or IDE)')
+        .option('-t --type [env]', 'The disk type. Currently only HDD.')
+        .option('--imagepassword [env]', 'One-time password is set on the Image for the appropriate account. Password has to contain 8-50 characters. Only these characters are allowed: [abcdefghjkmnpqrstuvxABCDEFGHJKLMNPQRSTUVX23456789]')
         .option('-s, --size [env]', 'Size in GB')
         .option('--cpuHotPlug', 'Volume is capable of CPU hot plug (no reboot required)')
         .option('--cpuHotUnplug', 'Volume is capable of CPU hot unplug (no reboot required)')
@@ -99,7 +101,7 @@ function authenticate() {
     }
 
     prompt.get(schema, function (err, result) {
-        pbclient.setauth(result.username, result.password)
+        pbclient.setauth(result.username, result.password   )
         pbclient.listDatacenters(function (error, response, body) {
             if (response && response.statusCode && response.statusCode == 200) {
                 helpers.toBase64(result.username, result.password)
