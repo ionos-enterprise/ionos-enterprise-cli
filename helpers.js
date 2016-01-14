@@ -22,7 +22,7 @@ function toBase64(user, pass) {
 }
 
 function writeAuthData(authData) {
-    fs.writeFile(authFile, authData, function () { })
+    fs.writeFile(authFile, authData, function () { fs.chmodSync(authFile, '0600') })
 }
 
 function getAuthData() {
@@ -175,9 +175,9 @@ function printNic(info) {
         Name: info.properties.name,
         Created: info.metadata.createdDate.toString(),
         State: info.metadata.state.toString(),
-        Lan : info.properties.lan.toString(),
-        Mac : info.properties.mac,
-        Ips : info.properties.ips
+        Lan: info.properties.lan.toString(),
+        Mac: info.properties.mac,
+        Ips: info.properties.ips
     }
 }
 
