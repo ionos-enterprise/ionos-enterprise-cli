@@ -248,9 +248,7 @@ function printCollection(info) {
                 break
             case 'image':
                 type = info.items[i].type
-                if (info.items[i].properties.imageType == "HDD") {
-                    dc.push(printImage(info.items[i]))
-                }
+                dc.push(printImage(info.items[i]))
                 break
         }
     }
