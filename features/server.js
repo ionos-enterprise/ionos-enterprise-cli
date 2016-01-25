@@ -118,7 +118,7 @@ function updateServer(params) {
     if (params.ram)
         data.ram = params.ram
     if (params.availabilityzone)
-        data.availabilityzone = params.availabilityzone
+        data.availabilityZone = params.availabilityzone
 
     setBootParams(params, data);
     pbclient.patchServer(params.datacenterid, params.id, data, helpers.printInfo)
