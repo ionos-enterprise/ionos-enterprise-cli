@@ -1,6 +1,6 @@
 {
   "name": "profitbricks-cli",
-  "version": "1.1.15",
+  "version": "1.1.16",
   "scripts": {
     "start": "node profitbricks.js",
     "test": "node ./test/tests.js"
@@ -12,7 +12,7 @@
   "dependencies": {
     "commander": "^2.7.1",
     "console.table": "^0.4.0",
-    "libprofitbricks": "^1.6.223-rel",
+    "libprofitbricks": "",
     "prompt": "^0.2.14",
     "request": "^2.53.0"
   },

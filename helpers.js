@@ -208,6 +208,13 @@ function printImage(info) {
     }
 }
 
+function printLocation(info) {
+    return {
+        Id: info.id,
+        Name: info.properties.name
+    }
+}
+
 function printCollection(info) {
     var dc = []
     var type = ''
@@ -249,6 +256,10 @@ function printCollection(info) {
             case 'image':
                 type = info.items[i].type
                 dc.push(printImage(info.items[i]))
+                break
+                  case 'location':
+                type = info.items[i].type
+                dc.push(printLocation(info.items[i]))
                 break
         }
     }
