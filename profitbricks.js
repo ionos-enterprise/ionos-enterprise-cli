@@ -19,6 +19,7 @@ var lan = require('./features/lan')
 var drives = require('./features/drive')
 var images = require('./features/image')
 var request = require('./features/request')
+var location = require('./features/location')
 
 global.force = false
 
@@ -30,7 +31,7 @@ parseParameters()
 
 function initializeCli() {
     program
-        .version('1.1.15')
+        .version('1.1.16')
         .usage('[Options]')
         .option('setup', 'Configures credentials for ProfitBricks CLI')
         .option('datacenter, [env]', 'Data center operations')
@@ -44,6 +45,7 @@ function initializeCli() {
         .option('image, [env]', 'Image operations')
         .option('lan, [env]', 'LAN operations')
         .option('request, [env]', 'Request operations')
+        .option('location, [env]', 'Location operations')
         .option('-i, --id [env]', 'Id')
         .option('-n, --name [env]', 'Name')
         .option('-l, --location [env]', 'Location')
@@ -82,6 +84,8 @@ function initializeCli() {
         .option('--public [env]', 'Boolean indicating if the LAN faces the public Internet or not.')
         .option('--requestid [env]', 'Request UUID')
         .option('--json', 'Print results as JSON string')
+        .option('--addip [env]','Add Ip')        
+        .option('--removeip [env]','Remove Ip')
         .option('-f, --force', 'Forces execution')
         .parse(process.argv)
 }
@@ -159,6 +163,9 @@ function parseParameters() {
         images.process(program)
     else if (program.request)
         request.process(program)
+    else if (program.location){
+        location.process(program)
+        }
     else
         program.outputHelp()
 }

@@ -89,11 +89,60 @@ function createNic(params) {
 
 function updateNic(params) {
     var data = {}
+    var isUpdated = false;
     try {
         if (params.path) {
             data = JSON.parse(fs.readFileSync(params.path, 'utf8'))
         }
-        else {
+        else if (params.addip) {
+
+            pbclient.getNic(params.datacenterid, params.serverid, params.id, function (err, response, body) {
+                var info = JSON.parse(body)
+                if (info) {
+
+
+                    if (info.properties && info.properties.ips) {
+                        info.properties.ips.push(params.addip)
+                        data.ips = info.properties.ips
+                        pbclient.patchNic(params.datacenterid, params.serverid, params.id, data, helpers.printInfo)
+                    } else {
+                        console.log(body)
+                    }
+                }
+
+                isUpdated = true
+            })
+
+            isUpdated = true
+            return
+        } else if (params.removeip) {
+
+            pbclient.getNic(params.datacenterid, params.serverid, params.id, function (err, response, body) {
+                var info = JSON.parse(body)
+                if (info) {
+                    if (info.properties && info.properties.ips) {
+                        info.properties.ips.indexOf(params.removeip)
+
+                        var index = info.properties.ips.indexOf(params.removeip)
+                        if (index != -1) {
+                            info.properties.ips.splice(index, 1)
+
+                            data.ips = info.properties.ips
+                        }
+                        pbclient.patchNic(params.datacenterid, params.serverid, params.id, data, helpers.printInfo)
+                        isUpdated = true
+                    } else {
+                        console.log(body)
+                    }
+                }
+
+                isUpdated = true
+            })
+
+            isUpdated = true
+
+        } else {
+            console.log("DA DA")
             data = {}
             if (params.name)
                 data.name = params.name
@@ -107,7 +156,9 @@ function updateNic(params) {
         }
     }
     finally {
-        pbclient.patchNic(params.datacenterid, params.serverid, params.id, data, helpers.printInfo)
+        if (isUpdated == false) {
+            //  pbclient.patchNic(params.datacenterid, params.serverid, params.id, data, helpers.printInfo)
+        }
     }
 
 }
