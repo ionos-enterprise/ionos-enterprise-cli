@@ -559,7 +559,10 @@ $ profitbricks nic create --datacenterid [dcid] --serverid [serverid] --name [na
 
 ```
 $ profitbricks nic update -i [nicid] --datacenterid [dcid] --serverid [serverid] --name [name] --ip [ip] --dhcp [true|false] --lan [lan]
+$ profitbricks nic update --datacenterid [dc] --serverid [server] -i [nicid] --addip 1.1.1.1
+$ profitbricks nic update --datacenterid [dc] --serverid [server] -i [nicid] --removeip 1.1.1.1
 ```
+ 
 
 ### Delete NIC
 
