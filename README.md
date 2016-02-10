@@ -614,6 +614,12 @@ $ profitbricks ipblock create --location [location] --size [size]
 $ profitbricks ipblock delete -i [ipblockid]
 ```
 
+## Location
+
+```
+profitbricks location list
+```
+
 ## Support
 
 You are welcome to contact us with questions or comments at [ProfitBricks DevOps Central](https://devops.profitbricks.com/). Please report any issues via [GitHub's issue tracker](https://github.com/profitbricks/profitbricks-cli/issues).
