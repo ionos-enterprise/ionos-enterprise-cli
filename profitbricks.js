@@ -57,6 +57,7 @@ function initializeCli() {
         .option('-c, --cores [env]', 'Number of cores')
         .option('-a, --availabilityzone [env]', 'Availability Zone')
         .option('--licencetype [env]', 'Licence Type')
+        .option('--sshkey [env]', 'SSH key')
         .option('--bootVolume [env]', 'Reference to a Volume used for booting')
         .option('--bootCdrom [env]', 'Reference to a CD-ROM used for booting.')
         .option('--volumeid [env]', 'Volume id')

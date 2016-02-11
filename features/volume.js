@@ -80,8 +80,15 @@ function createVolume(params) {
                 data.properties.image = params.imageid
             if (params.type)
                 data.properties.type = params.type
+            else {
+                console.error("Type is required field.")
+                process.exit(code = 5)
+                return
+            }
             if (params.imagepassword)
                 data.properties.imagePassword = params.imagepassword
+            if (params.sshkey)
+                data.properties.sshKeys = [params.sshkey]
         }
     } finally {
         pbclient.createVolume(params.datacenterid, data, helpers.printInfo)
