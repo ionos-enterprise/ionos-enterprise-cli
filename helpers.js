@@ -100,7 +100,7 @@ function printInfo(error, response, body) {
         }
         if (location) {
             splice = location.split("/")
-            console.log("RequestID: " + splice[5])
+            console.log("RequestID: " + splice[6])
         }
     }
 }
