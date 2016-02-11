@@ -1,45 +1,46 @@
 {
-  "name": "profitbricks-cli",
-  "version": "1.1.16",
-  "scripts": {
-    "start": "node profitbricks.js",
-    "test": "node ./test/tests.js"
-  },
-  "preferGlobal": "true",
-  "bin": {
-    "profitbricks": "./profitbricks"
-  },
-  "dependencies": {
-    "commander": "^2.7.1",
-    "console.table": "^0.4.0",
-    "libprofitbricks": "",
-    "prompt": "^0.2.14",
-    "request": "^2.53.0"
-  },
-  "description": "ProfitBricks Cross Platform Command Line tool",
+    "license": "BSD",
+    "name": "profitbricks-cli",
+    "version": "1.2.0",
+    "scripts": {
+        "start": "node profitbricks.js",
+        "test": "node ./test/tests.js"
+    },
+    "preferGlobal": "true",
+    "bin": {
+        "profitbricks": "./profitbricks"
+    },
+    "dependencies": {
+        "commander": "^2.7.1",
+        "console.table": "^0.4.0",
+        "libprofitbricks": "",
+        "prompt": "^0.2.14",
+        "request": "^2.53.0"
+    },
+    "description": "ProfitBricks Cross Platform Command Line tool",
     "tags": [
-    "profitbricks",
-    "cli"
-  ],
-  "keywords": [
-    "node",
-    "profitbricks",
-    "cli",
-    "cloud hosting",
-    "deployment"
-  ],
-  "main": "profitbricks.js",
-  "devDependencies": {
-    "mocha": "^2.2.1"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/profitbricks/profitbricks-cli.git"
-  },
-  "author": "jasminSPC",
-  "license": "BSD",
-  "bugs": {
-    "url": "https://github.com/profitbricks/profitbricks-cli/issues"
-  },
-  "homepage": "https://github.com/profitbricks/profitbricks-cli"
+        "profitbricks",
+        "cli"
+    ],
+    "keywords": [
+        "node",
+        "profitbricks",
+        "cli",
+        "cloud hosting",
+        "deployment"
+    ],
+    "main": "profitbricks.js",
+    "devDependencies": {
+        "mocha": "^2.2.1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/profitbricks/profitbricks-cli.git"
+    },
+    "author": "jasminSPC",
+    "license": "BSD",
+    "bugs": {
+        "url": "https://github.com/profitbricks/profitbricks-cli/issues"
+    },
+    "homepage": "https://github.com/profitbricks/profitbricks-cli"
 }
