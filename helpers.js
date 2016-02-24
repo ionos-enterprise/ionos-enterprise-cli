@@ -192,6 +192,7 @@ function printIpblock(info) {
 function printLan(info) {
     return {
         Id: info.id,
+        Name : info.properties.name,
         Created: info.metadata.createdDate.toString(),
         Public: info.properties.public.toString()
     }
