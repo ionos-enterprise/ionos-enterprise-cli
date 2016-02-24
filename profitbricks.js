@@ -31,7 +31,7 @@ parseParameters()
 
 function initializeCli() {
     program
-        .version('1.2.3')
+        .version('1.2.4')
         .usage('[Options]')
         .option('setup', 'Configures credentials for ProfitBricks CLI')
         .option('datacenter, [env]', 'Data center operations')
@@ -85,8 +85,8 @@ function initializeCli() {
         .option('--public [env]', 'Boolean indicating if the LAN faces the public Internet or not.')
         .option('--requestid [env]', 'Request UUID')
         .option('--json', 'Print results as JSON string')
-        .option('--addip [env]','Add Ip')        
-        .option('--removeip [env]','Remove Ip')
+        .option('--addip [env]','Add IP')        
+        .option('--removeip [env]','Remove IP')
         .option('-f, --force', 'Forces execution')
         .parse(process.argv)
 }

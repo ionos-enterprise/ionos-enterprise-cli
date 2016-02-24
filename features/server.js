@@ -36,6 +36,11 @@ function processServer(params) {
             pbclient.rebootServer(params.datacenterid, params.id, helpers.printInfo)
             break
         case 'delete':
+            if (!params.id || params.id == true) {
+                console.error('Please provide Server Id --id, -i [server_id]')
+                process.exit(code = 5)
+                return
+                }
             if (!global.force) {
                 console.log('You are about to delete a server. Do you want to proceed? (y/n')
                 prompt.get(['yes'], function(err, result) {

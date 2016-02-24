@@ -25,6 +25,11 @@ function processSnapshot(params) {
             updateSnapshot(params)
             break
         case 'delete':
+            if (!params.id || params.id == true) {
+                console.error('Please provide Snapshot Id --id, -i [snapshot_id]')
+                process.exit(code = 5)
+                return
+                }
             if (!global.force) {
                 console.log('You are about to delete a snapshot. Do you want to proceed? (y/n')
                 prompt.get(['yes'], function(err, result) {
