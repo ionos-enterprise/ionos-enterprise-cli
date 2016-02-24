@@ -28,6 +28,10 @@ function processDataCenter(params) {
             updateDataCenter(params)
             break
         case 'delete':
+            if (!params.id || params.id == true) {
+                console.error('Please provide Data Center Id -i [dcid]')
+                process.exit(code = 5)
+            }
             if (!global.force) {
                 console.log('You are about to delete a data center. Do you want to proceed? (y/n')
                 prompt.get(['yes'], function (err, result) {

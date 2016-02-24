@@ -32,6 +32,11 @@ function processVolume(params) {
             updateVolume(params)
             break
         case 'delete':
+            if (!params.id || params.id == true) {
+                console.error('Please provide Volume Id --id, -i [volume_id]')
+                process.exit(code = 5)
+                return
+                }
             if (!global.force) {
                 console.log('You are about to delete a volume. Do you want to proceed? (y/n')
                 prompt.get(['yes'], function (err, result) {
