@@ -147,7 +147,6 @@ function updateNic(params) {
             isUpdated = true
 
         } else {
-            console.log("DA DA")
             data = {}
             if (params.name)
                 data.name = params.name
@@ -162,7 +161,7 @@ function updateNic(params) {
     }
     finally {
         if (isUpdated == false) {
-            //  pbclient.patchNic(params.datacenterid, params.serverid, params.id, data, helpers.printInfo)
+             pbclient.patchNic(params.datacenterid, params.serverid, params.id, data, helpers.printInfo)
         }
     }
 
