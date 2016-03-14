@@ -87,6 +87,7 @@ if [ "$?" -ne 0 ]; then
     echo $cli_complete >> $HOME/.profile
 fi
 
-echo
-echo "Run the following to enable CLI auto-complete:"
-echo "source $HOME/.profile"
+source $HOME/.profile
+
+echo "Enabled CLI auto-completion."
+echo "Run following command for help: profitbricks"
