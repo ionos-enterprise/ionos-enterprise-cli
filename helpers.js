@@ -184,6 +184,7 @@ function printNic(info) {
 function printIpblock(info) {
     return {
         Id: info.id,
+        Name: info.properties.name,
         IPs: info.properties.ips,
         Location: info.properties.location.toString()
     }
