@@ -64,6 +64,8 @@ function createIpblock(params) {
                 console.error("Size is a required field.")
                 process.exit(code = 5)
             }
+
+            data.properties.name = params.name
         }
     }
     finally {
