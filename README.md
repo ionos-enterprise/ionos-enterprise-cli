@@ -605,7 +605,7 @@ $ profitbricks ipblock show -i [ipblockid]
 ### Reserve IP Block
 
 ```
-$ profitbricks ipblock create --location [location] --size [size]
+$ profitbricks ipblock create --location [location] --size [size] --name [name]
 ```
 
 ## Release IP Block
