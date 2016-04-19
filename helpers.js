@@ -33,7 +33,11 @@ function getAuthData() {
 function printInfo(error, response, body) {
     /*console.log(body)
     console.log(error)*/
-    location = response.headers.location
+    
+    if(response.headers){
+        location = response.headers.location
+    }
+
     if (error) {
         console.error(error)
         process.exit(code = 5)
