@@ -94,6 +94,7 @@ request [env]                 Request operations
 -c, --cores [env]             Number of cores
 -a, --availabilityzone [env]  Availability Zone
 --licencetype [env]           Licence Type
+--sshkey [env]                SSH key
 --bootVolume [env]            Reference to a Volume used for booting
 --bootCdrom [env]             Reference to a CD-ROM used for booting
 --volumeid [env]              Volume id
@@ -217,7 +218,7 @@ Id                                    Name         Availability Zone  State     
 Now that we have a server provisioned, it needs some storage. We'll specify a size for this storage volume in GB as well as set the 'bus' and 'licencetype'. The 'bus' setting can have a serious performance impact and you'll want to use VIRTIO when possible. Using VIRTIO may require drivers to be installed depending on the OS you plan to install. The 'licencetype' impacts billing rate, as there is a surcharge for running certain OS types.
 
 ```
-$ profitbricks volume create --datacenterid 3fc832b1-558f-48a4-bca2-af5043975393 --size 12 --bus VIRTIO --licencetype LINUX --type HDD --name "Demo Srvr 1 Boot"
+$ profitbricks volume create --datacenterid 3fc832b1-558f-48a4-bca2-af5043975393 --size 12 --bus VIRTIO --licencetype LINUX --type HDD --name "Demo Srvr 1 Boot" --sshkey [ssh_key_string]
 
 Volume
 ------------------------------------------------------------------------
