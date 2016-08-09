@@ -29,14 +29,23 @@ function processLan(params) {
                 console.error('Please provide LAN Id --id, -i [lan_id]')
                 process.exit(code = 5)
                 return
-                }
+            }
             if (!global.force) {
-                console.log('You are about to delete a LAN. Do you want to proceed? (y/n')
-                prompt.get(['yes'], function (err, result) {
-                    if (result.yes == 'yes' || result.yes == 'y')
-                        pbclient.deleteLan(params.datacenterid, params.id, helpers.printInfo)
-                    else
-                        process.exit(code = 0)
+                pbclient.getLan(params.datacenterid, params.id, function(error, response, body) {
+                    if (response.statusCode > 299) {
+                        console.log("Object you are trying to delete does not exist")
+
+                    } else {
+                        var info = JSON.parse(body)
+
+                        console.log('You are about to delete "' + info.properties.name + '" LAN. Do you want to proceed? (y/n)')
+                        prompt.get(['yes'], function(err, result) {
+                            if (result.yes == 'yes' || result.yes == 'y' || result.yes == '')
+                                pbclient.deleteLan(params.datacenterid, params.id, helpers.printInfo)
+                            else
+                                process.exit(code = 0)
+                        })
+                    }
                 })
             } else
                 pbclient.deleteLan(params.datacenterid, params.id, helpers.printInfo)
@@ -51,7 +60,7 @@ function updateLan(params) {
     var data = {}
     data.public = params.public
 
-    pbclient.patchLan(params.datacenterid,params.id,data,helpers.printInfo)
+    pbclient.patchLan(params.datacenterid, params.id, data, helpers.printInfo)
 }
 
 function createLan(params) {
@@ -59,8 +68,7 @@ function createLan(params) {
     try {
         if (params.path) {
             data = JSON.parse(fs.readFileSync(params.path, 'utf8'))
-        }
-        else {
+        } else {
             data.properties = {}
             if (params.public)
                 data.properties.public = params.public
@@ -68,8 +76,7 @@ function createLan(params) {
             if (params.name)
                 data.properties.name = params.name
         }
-    }
-    finally {
+    } finally {
         pbclient.createLan(params.datacenterid, data, helpers.printInfo)
     }
 }

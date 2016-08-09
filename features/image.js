@@ -6,7 +6,7 @@ require('console.table')
 
 exports.process = processImage
 
-function processImage(params){
+function processImage(params) {
     switch (params.image) {
         case 'list':
             pbclient.listImages(helpers.printInfo)
@@ -21,25 +21,6 @@ function processImage(params){
             break
         case 'update':
             updateImage(params)
-            break
-        case 'delete':
-            if (!params.id || params.id == true) {
-                console.error('Please provide Image Id --id, -i [image_id]')
-                process.exit(code = 5)
-                return
-                }
-            if (!global.force) {
-                console.log('You are about to delete an image. Do you want to proceed? (y/n')
-                prompt.get(['yes'], function (err, result) {
-                    console.log(result.yes)
-                    if (result.yes == 'yes' || result.yes == 'y')
-                        pbclient.deleteImage(params.id, helpers.printInfo)
-                    else
-                        process.exit(code = 0)
-                })
-            } else
-                pbclient.deleteImage(params.id, helpers.printInfo)
-
             break
         default:
             params.outputHelp()

@@ -29,14 +29,23 @@ function processSnapshot(params) {
                 console.error('Please provide Snapshot Id --id, -i [snapshot_id]')
                 process.exit(code = 5)
                 return
-                }
+            }
             if (!global.force) {
-                console.log('You are about to delete a snapshot. Do you want to proceed? (y/n')
-                prompt.get(['yes'], function(err, result) {
-                    if (result.yes == 'yes' || result.yes == 'y')
-                        pbclient.deleteSnapshot(params.id, helpers.printInfo)
-                    else
-                        process.exit(code = 0)
+                pbclient.getSnapshot(params.id, function(error, response, body) {
+                    if (response.statusCode > 299) {
+                        console.log("Object you are trying to delete does not exist")
+
+                    } else {
+                        var info = JSON.parse(body)
+
+                        console.log('You are about to delete "' + info.properties.name + '" server. Do you want to proceed? (y/n)')
+                        prompt.get(['yes'], function(err, result) {
+                            if (result.yes == 'yes' || result.yes == 'y' || result.yes == '')
+                                pbclient.deleteSnapshot(params.id, helpers.printInfo)
+                            else
+                                process.exit(code = 0)
+                        })
+                    }
                 })
             } else
                 pbclient.deleteSnapshot(params.id, helpers.printInfo)
@@ -53,7 +62,7 @@ function createSnapshot(params) {
 
     if (params.name)
         data.properties.name = params.name
-    if(params.description)
+    if (params.description)
         data.properties.description = params.description
     if (!params.datacenterid || params.datacenterid == true) {
         console.error("Data Center Id is a required field.")

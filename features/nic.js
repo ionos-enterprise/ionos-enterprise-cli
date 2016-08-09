@@ -47,17 +47,25 @@ function processNic(params) {
                 console.error('Please provide NIC Id --id, -i [nic_id]')
                 process.exit(code = 5)
                 return
-                }
-            if (!global.force) {
-                console.log('You are about to delete a snapshot. Do you want to proceed? (y/n')
-                prompt.get(['yes'], function (err, result) {
-                    if (result.yes == 'yes' || result.yes == 'y')
-                        pbclient.deleteNic(params.datacenterid, params.serverid, params.id, helpers.printInfo)
-                    else
-                        process.exit(code = 0)
-                })
             }
-            else
+            if (!global.force) {
+                pbclient.getNic(params.datacenterid, params.serverid, params.id, function(error, response, body) {
+                    if (response.statusCode > 299) {
+                        console.log("Object you are trying to delete does not exist")
+
+                    } else {
+                        var info = JSON.parse(body)
+
+                        console.log('You are about to delete "' + info.properties.name + '" NIC. Do you want to proceed? (y/n)')
+                        prompt.get(['yes'], function(err, result) {
+                            if (result.yes == 'yes' || result.yes == 'y' || result.yes == '')
+                                pbclient.deleteNic(params.datacenterid, params.serverid, params.id, helpers.printInfo)
+                            else
+                                process.exit(code = 0)
+                        })
+                    }
+                })
+            } else
                 pbclient.deleteNic(params.datacenterid, params.serverid, params.id, helpers.printInfo)
             break
         default:
@@ -72,8 +80,7 @@ function createNic(params) {
     try {
         if (params.path) {
             data = JSON.parse(fs.readFileSync(params.path, 'utf8'))
-        }
-        else {
+        } else {
             data.properties = {}
             data.properties.name = params.name
             if (params.ip)
@@ -86,8 +93,7 @@ function createNic(params) {
                 process.exit(code = 5)
             }
         }
-    }
-    finally {
+    } finally {
         pbclient.createNic(params.datacenterid, params.serverid, data, helpers.printInfo)
     }
 }
@@ -98,10 +104,9 @@ function updateNic(params) {
     try {
         if (params.path) {
             data = JSON.parse(fs.readFileSync(params.path, 'utf8'))
-        }
-        else if (params.addip) {
+        } else if (params.addip) {
 
-            pbclient.getNic(params.datacenterid, params.serverid, params.id, function (err, response, body) {
+            pbclient.getNic(params.datacenterid, params.serverid, params.id, function(err, response, body) {
                 var info = JSON.parse(body)
                 if (info) {
 
@@ -122,7 +127,7 @@ function updateNic(params) {
             return
         } else if (params.removeip) {
 
-            pbclient.getNic(params.datacenterid, params.serverid, params.id, function (err, response, body) {
+            pbclient.getNic(params.datacenterid, params.serverid, params.id, function(err, response, body) {
                 var info = JSON.parse(body)
                 if (info) {
                     if (info.properties && info.properties.ips) {
@@ -158,10 +163,9 @@ function updateNic(params) {
                 data.lan = params.lan
 
         }
-    }
-    finally {
+    } finally {
         if (isUpdated == false) {
-             pbclient.patchNic(params.datacenterid, params.serverid, params.id, data, helpers.printInfo)
+            pbclient.patchNic(params.datacenterid, params.serverid, params.id, data, helpers.printInfo)
         }
     }
 

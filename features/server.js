@@ -40,15 +40,23 @@ function processServer(params) {
                 console.error('Please provide Server Id --id, -i [server_id]')
                 process.exit(code = 5)
                 return
-                }
+            }
             if (!global.force) {
-                console.log('You are about to delete a server. Do you want to proceed? (y/n')
-                prompt.get(['yes'], function(err, result) {
-                    console.log(result.yes)
-                    if (result.yes == 'yes' || result.yes == 'y')
-                        pbclient.deleteServer(params.datacenterid, params.id, helpers.printInfo)
-                    else
-                        process.exit(code = 0)
+                pbclient.getServer(params.datacenterid, params.id, function(error, response, body) {
+                    if (response.statusCode > 299) {
+                        console.log("Object you are trying to delete does not exist")
+
+                    } else {
+                        var info = JSON.parse(body)
+
+                        console.log('You are about to delete "' + info.properties.name + '" server. Do you want to proceed? (y/n)')
+                        prompt.get(['yes'], function(err, result) {
+                            if (result.yes == 'yes' || result.yes == 'y' || result.yes == '')
+                                pbclient.deleteServer(params.datacenterid, params.id, helpers.printInfo)
+                            else
+                                process.exit(code = 0)
+                        })
+                    }
                 })
             } else
                 pbclient.deleteServer(params.datacenterid, params.id, helpers.printInfo)
@@ -104,10 +112,11 @@ function setBootParams(params, data) {
     }
 
     if (params.bootCdrom)
-        data.bootCdrom = {id: params.bootCdrom}
+        data.bootCdrom = { id: params.bootCdrom }
     if (params.bootVolume)
-        data.bootVolume = {id: params.bootVolume}
+        data.bootVolume = { id: params.bootVolume }
 }
+
 function updateServer(params) {
     var data = {}
 

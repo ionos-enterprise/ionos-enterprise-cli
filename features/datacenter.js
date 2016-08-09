@@ -33,14 +33,23 @@ function processDataCenter(params) {
                 process.exit(code = 5)
             }
             if (!global.force) {
-                console.log('You are about to delete a data center. Do you want to proceed? (y/n')
-                prompt.get(['yes'], function (err, result) {
-                    console.log(result.yes)
-                    if (result.yes == 'yes' || result.yes == 'y')
-                        pbclient.deleteDatacenter(params.id, helpers.printInfo)
-                    else
-                        process.exit(code = 0)
+                pbclient.getDatacenter(params.id, function(error, response, body) {
+                    if (response.statusCode > 299) {
+                        console.log("Object you are trying to delete does not exist")
+
+                    } else {
+                        var info = JSON.parse(body)
+
+                        console.log('You are about to delete "' + info.properties.name + '" Data Center. Do you want to proceed? (y/n)')
+                        prompt.get(['yes'], function(err, result) {
+                            if (result.yes == 'yes' || result.yes == 'y' || result.yes == '')
+                                pbclient.deleteDatacenter(params.id, helpers.printInfo)
+                            else
+                                process.exit(code = 0)
+                        })
+                    }
                 })
+
             } else
                 pbclient.deleteDatacenter(params.id, helpers.printInfo)
 
@@ -75,12 +84,10 @@ function createDataCenter(params) {
 
             data.properties.description = params.description
         }
-    }
-    catch (err) {
+    } catch (err) {
         console.error(err)
         process.exit(5)
-    }
-    finally {
+    } finally {
         pbclient.createDatacenter(data, helpers.printInfo)
     }
 }

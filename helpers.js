@@ -22,7 +22,7 @@ function toBase64(user, pass) {
 }
 
 function writeAuthData(authData) {
-    fs.writeFile(authFile, authData, function () { fs.chmodSync(authFile, '0600') })
+    fs.writeFile(authFile, authData, function() { fs.chmodSync(authFile, '0600') })
 }
 
 function getAuthData() {
@@ -32,9 +32,9 @@ function getAuthData() {
 
 function printInfo(error, response, body) {
     /*console.log(body)
-    console.log(error)*/
-    
-    if(response.headers){
+      console.log(error)*/
+
+    if (response.headers) {
         location = response.headers.location
     }
 
@@ -54,10 +54,13 @@ function printInfo(error, response, body) {
         }
     }
 
-    try {
-        var info = JSON.parse(body)
-    } catch (err) {
-        return
+    if (body != "") {
+        try {
+            var info = JSON.parse(body)
+        } catch (err) {
+            console.log("Whatever")
+            return
+        }
     }
 
     if (body) {
@@ -102,10 +105,10 @@ function printInfo(error, response, body) {
                 break
 
         }
-        if (location) {
-            splice = location.split("/")
-            console.log("RequestID: " + splice[6])
-        }
+    }
+    if (location) {
+        splice = location.split("/")
+        console.log("RequestID: " + splice[6])
     }
 }
 
@@ -197,7 +200,7 @@ function printIpblock(info) {
 function printLan(info) {
     return {
         Id: info.id,
-        Name : info.properties.name,
+        Name: info.properties.name,
         Created: info.metadata.createdDate.toString(),
         Public: info.properties.public.toString()
     }
@@ -263,7 +266,7 @@ function printCollection(info) {
                 type = info.items[i].type
                 dc.push(printImage(info.items[i]))
                 break
-                  case 'location':
+            case 'location':
                 type = info.items[i].type
                 dc.push(printLocation(info.items[i]))
                 break
@@ -279,6 +282,6 @@ function printResults(title, value) {
         console.table(title, value)
 }
 
-String.prototype.capitalize = function () {
+String.prototype.capitalize = function() {
     return this.charAt(0).toUpperCase() + this.slice(1)
 }

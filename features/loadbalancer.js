@@ -29,14 +29,23 @@ function processLoadBalancer(params) {
                 console.error('Please provide Loadbalancer Id --id, -i [loadbalancer_id]')
                 process.exit(code = 5)
                 return
-                }
+            }
             if (!global.force) {
-                console.log('You are about to delete a snapshot. Do you want to proceed? (y/n')
-                prompt.get(['yes'], function (err, result) {
-                    if (result.yes == 'yes' || result.yes == 'y')
-                        pbclient.deleteLoadbalancer(params.datacenterid, params.id, helpers.printInfo)
-                    else
-                        process.exit(code = 0)
+                pbclient.getLoadbalancer(params.datacenterid, params.id, function(error, response, body) {
+                    if (response.statusCode > 299) {
+                        console.log("Object you are trying to delete does not exist")
+
+                    } else {
+                        var info = JSON.parse(body)
+
+                        console.log('You are about to delete "' + info.properties.name + '" Loadbalancer. Do you want to proceed? (y/n)')
+                        prompt.get(['yes'], function(err, result) {
+                            if (result.yes == 'yes' || result.yes == 'y' || result.yes == '')
+                                pbclient.deleteLoadbalancer(params.datacenterid, params.id, helpers.printInfo)
+                            else
+                                process.exit(code = 0)
+                        })
+                    }
                 })
             } else
                 pbclient.deleteLoadbalancer(params.datacenterid, params.id, helpers.printInfo)
@@ -57,8 +66,7 @@ function createLoadbalancer(params) {
     try {
         if (params.path) {
             data = JSON.parse(fs.readFileSync(params.path, 'utf8'))
-        }
-        else {
+        } else {
             data.properties = {}
             if (params.name)
                 data.properties.name = params.name
@@ -69,8 +77,7 @@ function createLoadbalancer(params) {
             data.properties.ip = params.ip
             data.properties.dhcp = params.dhcp
         }
-    }
-    finally {
+    } finally {
         pbclient.createLoadbalancer(params.datacenterid, data, helpers.printInfo)
     }
 }
@@ -90,8 +97,7 @@ function updateLoadbalancer(params) {
     try {
         if (params.path) {
             data = JSON.parse(fs.readFileSync(params.path, 'utf8'))
-        }
-        else {
+        } else {
             if (params.name)
                 data.name = params.name
             if (params.ip)
@@ -99,8 +105,7 @@ function updateLoadbalancer(params) {
             if (params.dhcp)
                 data.dhcp = params.dhcp
         }
-    }
-    finally {
+    } finally {
         pbclient.patchLoadbalancer(params.datacenterid, params.id, data, helpers.printInfo)
     }
 }
