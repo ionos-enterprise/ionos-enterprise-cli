@@ -25,7 +25,7 @@ function processLan(params) {
             updateLan(params)
             break
         case 'delete':
-            if (!params.id || params.id == true) {
+            if (!params.id) {
                 console.error('Please provide LAN Id --id, -i [lan_id]')
                 process.exit(code = 5)
                 return
