@@ -57,7 +57,7 @@ function dataCenterShow(done) {
         assert.equal(data.length > 0, true)
         assert.equal(data[0].Id, dcid)
         assert.equal(data[0].Name, "PB_CLI Test Datacenter")
-        assert.equal(data[0].Location, "us/lasdev")
+        assert.equal(data[0].Location, "us/las")
         done()
     })
 }
@@ -68,7 +68,7 @@ function dataCenterCreateScript(done) {
         checkErrors(error, stderr, done)
         var data = JSON.parse(stdout)
         assert.equal(data[0].Name, "PB_CLI Test Datacenter")
-        assert.equal(data[0].Location, "us/lasdev")
+        assert.equal(data[0].Location, "us/las")
         dcid = data[0].Id
         done()
     })

@@ -22,7 +22,9 @@ function toBase64(user, pass) {
 }
 
 function writeAuthData(authData) {
-    fs.writeFile(authFile, authData, function() { fs.chmodSync(authFile, '0600') })
+    fs.writeFile(authFile, authData, function() {
+        fs.chmodSync(authFile, '0600')
+    })
 }
 
 function getAuthData() {
@@ -92,6 +94,9 @@ function printInfo(error, response, body) {
             case 'lan':
                 printResults('LAN', [printLan(info)])
                 break
+            case 'firewall-rule':
+                printResults('Firewall Rule', [printFW(info)])
+                break
             case 'collection':
                 printCollection(info)
                 break
@@ -108,7 +113,8 @@ function printInfo(error, response, body) {
     }
     if (location) {
         splice = location.split("/")
-        console.log("RequestID: " + splice[6])
+        if (!isJson)
+            console.log("RequestID: " + splice[6])
     }
 }
 
@@ -149,7 +155,7 @@ function printVolume(info) {
     return {
         Id: info.id,
         Name: info.properties.name,
-        Size: info.properties.size,
+        Size: info.properties.size + "GB",
         Licence: info.properties.licenceType,
         Bus: info.properties.bus,
         State: info.metadata.state
@@ -187,6 +193,19 @@ function printNic(info) {
         Ips: info.properties.ips
     }
 }
+
+function printFW(info) {
+    return {
+        Id: info.id,
+        Name: info.properties.name,
+        Created: info.metadata.createdDate.toString(),
+        State: info.metadata.state.toString(),
+        Lan: info.properties.protocol.toString(),
+        SourceMac: info.properties.sourceMac,
+        SourceIp: info.properties.sourceIp
+    }
+}
+
 
 function printIpblock(info) {
     return {
@@ -269,6 +288,10 @@ function printCollection(info) {
             case 'location':
                 type = info.items[i].type
                 dc.push(printLocation(info.items[i]))
+                break
+            case 'firewall-rule':
+                type = info.items[i].type
+                dc.push(printFW(info.items[i]))
                 break
         }
     }

@@ -20,6 +20,7 @@ var drives = require('./features/drive')
 var images = require('./features/image')
 var request = require('./features/request')
 var location = require('./features/location')
+var firewall = require('./features/firewall')
 
 global.force = false
 
@@ -31,7 +32,7 @@ parseParameters()
 
 function initializeCli() {
     program
-        .version('1.2.10')
+        .version('1.2.11')
         .usage('[Options]')
         .option('setup', 'Configures credentials for ProfitBricks CLI')
         .option('datacenter, [env]', 'Data center operations')
@@ -40,6 +41,7 @@ function initializeCli() {
         .option('snapshot, [env]', 'Snapshot operations')
         .option('loadbalancer, [env]', 'Load Balancer operations')
         .option('nic, [env]', 'NIC operations')
+        .option('firewall, [env]', 'Firewall Rule operations')
         .option('ipblock, [env]', 'IP Block operations')
         .option('drives, [env]', 'CD ROM drive operations')
         .option('image, [env]', 'Image operations')
@@ -84,6 +86,18 @@ function initializeCli() {
         .option('--lan [env]', 'The LAN ID the NIC will sit on. If the LAN ID does not exist it will be created.')
         .option('--public [env]', 'Boolean indicating if the LAN faces the public Internet or not.')
         .option('--requestid [env]', 'Request UUID')
+        .option('--nicid [env]', 'Network Interface UUID')
+        .option('--protocol [env]', 'The protocol for the rule: TCP, UDP, ICMP, ANY.')
+        .option('--sourceMac [env]', 'Only traffic originating from the respective MAC address is allowed. Valid format: aa:bb:cc:dd:ee:ff. Value null allows all source MAC address.')
+        .option('--sourceIp [env]', 'Only traffic originating from the respective IPv4 address is allowed. Value null allows all source IPs.')
+        .option('--sourceIp [env]', 'Only traffic originating from the respective IPv4 address is allowed. Value null allows all source IPs.')
+        .option('--targetIp [env]', 'In case the target NIC has multiple IP addresses, only traffic directed to the respective IP address of the NIC is allowed. Value null allows all target IPs.')
+        .option('--targetIp [env]', 'In case the target NIC has multiple IP addresses, only traffic directed to the respective IP address of the NIC is allowed. Value null allows all target IPs.')
+        .option('--portRangeStart [env]', 'Defines the start range of the allowed port (from 1 to 65534) if protocol TCP or UDP is chosen. Leave portRangeStart and portRangeEnd value null to allow all ports.')
+        .option('--portRangeEnd [env]', 'Defines the end range of the allowed port (from 1 to 65534) if protocol TCP or UDP is chosen. Leave portRangeStart and portRangeEnd value null to allow all ports.')
+        .option('--portRangeEnd [env]', 'Defines the end range of the allowed port (from 1 to 65534) if protocol TCP or UDP is chosen. Leave portRangeStart and portRangeEnd value null to allow all ports.')
+        .option('--icmpType [env]', 'Defines the allowed type (from 0 to 254) if the protocol ICMP is chosen. Value null allows all types.')
+        .option('--icmpCode [env]', 'Defines the allowed code (from 0 to 254) if protocol ICMP is chosen. Value null allows all codes.')
         .option('--json', 'Print results as JSON string')
         .option('--addip [env]','Add IP')        
         .option('--removeip [env]','Remove IP')
@@ -141,7 +155,6 @@ function parseParameters() {
 
     if (program.setup)
         authenticate()
-
     else if (program.datacenter)
         datacenter.process(program)
     else if (program.server)
@@ -162,6 +175,8 @@ function parseParameters() {
         drives.process(program)
     else if (program.image)
         images.process(program)
+    else if (program.firewall)
+        firewall.process(program)
     else if (program.request)
         request.process(program)
     else if (program.location){

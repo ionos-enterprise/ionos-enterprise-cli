@@ -40,7 +40,7 @@ function ipblockGet(done) {
 }
 
 function ipblockCreateParams(done) {
-    var location = "us/lasdev"
+    var location = "us/las"
     var size = 4
 
     exec('node profitbricks.js ipblock create' +

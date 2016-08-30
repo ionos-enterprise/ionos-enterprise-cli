@@ -26,6 +26,7 @@
     * [Load Balancer](#load-balancer)
     * [Image](#image)
     * [NIC](#nic)
+    * [Firewall Rules](#firewall)
     * [IP Block](#ip-block)
 * [Support](#support)
 
@@ -66,60 +67,80 @@ A list of available operations can be accessed directly from the command line.
 Run `profitbricks` or `profitbricks -h` or `profitbricks --help`:
 
 ```
-Usage: profitbricks [Options]
+  Usage: profitbricks [Options]
 
-Options:
+  Options:
 
--h, --help                    Output usage information
--V, --version                 Output the version number
-setup                         Configures credentials for ProfitBricks CLI
-datacenter, [env]             Data center operations
-server, [env]                 Server operations
-volume, [env]                 Volume operations
-snapshot, [env]               Snapshot operations
-loadbalancer, [env]           Load Balancer operations
-nic, [env]                    NIC operations
-ipblock, [env]                IP Block operations
-drives, [env]                 CD ROM drive operations
-image [env]                   Image operations
-lan [env]                     LAN operations
-request [env]                 Request operations
--i, --id [env]                Id
--n, --name [env]              Name
--l, --location [env]          Location
--d, --description [env]       Description
--p, --path [env]              Path to JSON script
---datacenterid [env]          DatacenterId
--r, --ram [env]               Ram size in multiples of 256 MB
--c, --cores [env]             Number of cores
--a, --availabilityzone [env]  Availability Zone
---licencetype [env]           Licence Type
---sshkey [env]                SSH key
---bootVolume [env]            Reference to a Volume used for booting
---bootCdrom [env]             Reference to a CD-ROM used for booting
---volumeid [env]              Volume id
---volumesize [env]            Volume size
---volumename [env]            Volume name
---imageid [env]               Image id
--b, --bus [env]               Bus type (VIRTIO or IDE)
--s, --size [env]              Size in GB
---cpuHotPlug                  Volume is capable of CPU hot plug (no reboot required)
---cpuHotUnplug                Volume is capable of CPU hot unplug (no reboot required)
---ramHotPlug                  Volume is capable of memory hot plug (no reboot required)
---ramHotUnplug                Volume is capable of memory hot unplug (no reboot required)
---nicHotPlug                  Volume is capable of NIC hot plug (no reboot required)
---nicHotUnplug                Volume is capable of NIC hot unplug (no reboot required)
---discVirtioHotPlug           Volume is capable of Virt-IO drive hot plug (no reboot required)
---discVirtioHotUnplug         Volume is capable of Virt-IO drive hot unplug (no reboot required)
---discScsiHotPlug             Volume is capable of SCSI drive hot plug (no reboot required)
---discScsiHotUnplug           Volume is capable of SCSI drive hot unplug (no reboot required)
---ip [env]                    IPv4 address of the load balancer.
---dhcp [evn]                  Indicates if the load balancer will reserve an IP using DHCP.
---serverid [env]              Server id
---lan [env]                   The LAN ID the NIC will sit on. If the LAN ID does not exist it will be created.
---public [evn]                Boolean indicating if the LAN faces the public Internet or not.
---json                        Print results as JSON string
--f, --force                   Forces execution
+    -h, --help                    output usage information
+    -V, --version                 output the version number
+    setup                         Configures credentials for ProfitBricks CLI
+    datacenter, [env]             Data center operations
+    server, [env]                 Server operations
+    volume, [env]                 Volume operations
+    snapshot, [env]               Snapshot operations
+    loadbalancer, [env]           Load Balancer operations
+    nic, [env]                    NIC operations
+    firewall, [env]               Firewall Rule operations
+    ipblock, [env]                IP Block operations
+    drives, [env]                 CD ROM drive operations
+    image, [env]                  Image operations
+    lan, [env]                    LAN operations
+    request, [env]                Request operations
+    location, [env]               Location operations
+    -i, --id [env]                Id
+    -n, --name [env]              Name
+    -l, --location [env]          Location
+    -d, --description [env]       Description
+    -p, --path [env]              Path to JSON script
+    --datacenterid [env]          DatacenterId
+    --loadbalancerid [env]        LoadbalancerId
+    -r, --ram [env]               Ram size in multiples of 256 MB
+    -c, --cores [env]             Number of cores
+    -a, --availabilityzone [env]  Availability Zone
+    --licencetype [env]           Licence Type
+    --sshkey [env]                SSH key
+    --bootVolume [env]            Reference to a Volume used for booting
+    --bootCdrom [env]             Reference to a CD-ROM used for booting.
+    --volumeid [env]              Volume id
+    --volumesize [env]            Volume size
+    --volumename [env]            Volume name
+    --imageid [env]               Image id
+    -b --bus [env]                Bus type (VIRTIO or IDE)
+    -t --type [env]               The disk type. Currently only HDD.
+    --imagepassword [env]         One-time password is set on the Image for the appropriate account. Password has to contain 8-50 characters. Only these characters are allowed: [abcdefghjkmnpqrstuvxABCDEFGHJKLMNPQRSTUVX23456789]
+    -s, --size [env]              Size in GB
+    --cpuHotPlug                  Volume is capable of CPU hot plug (no reboot required)
+    --cpuHotUnplug                Volume is capable of CPU hot unplug (no reboot required)
+    --ramHotPlug                  Volume is capable of memory hot plug (no reboot required)
+    --ramHotUnplug                Volume is capable of memory hot unplug (no reboot required)
+    --nicHotPlug                  Volume is capable of NIC hot plug (no reboot required)
+    --nicHotUnplug                Volume is capable of NIC hot unplug (no reboot required)
+    --discVirtioHotPlug           Volume is capable of Virt-IO drive hot plug (no reboot required)
+    --discVirtioHotUnplug         Volume is capable of Virt-IO drive hot unplug (no reboot required)
+    --discScsiHotPlug             Volume is capable of SCSI drive hot plug (no reboot required)
+    --discScsiHotUnplug           Volume is capable of SCSI drive hot unplug (no reboot required)
+    --ip [env]                    IPv4 address of the loadbalancer.
+    --dhcp [env]                  Indicates if the loadbalancer will reserve an IP using DHCP.
+    --serverid [env]              Server id
+    --lan [env]                   The LAN ID the NIC will sit on. If the LAN ID does not exist it will be created.
+    --public [env]                Boolean indicating if the LAN faces the public Internet or not.
+    --requestid [env]             Request UUID
+    --nicid [env]                 Network Interface UUID
+    --protocol [env]              The protocol for the rule: TCP, UDP, ICMP, ANY.
+    --sourceMac [env]             Only traffic originating from the respective MAC address is allowed. Valid format: aa:bb:cc:dd:ee:ff. Value null allows all source MAC address.
+    --sourceIp [env]              Only traffic originating from the respective IPv4 address is allowed. Value null allows all source IPs.
+    --sourceIp [env]              Only traffic originating from the respective IPv4 address is allowed. Value null allows all source IPs.
+    --targetIp [env]              In case the target NIC has multiple IP addresses, only traffic directed to the respective IP address of the NIC is allowed. Value null allows all target IPs.
+    --targetIp [env]              In case the target NIC has multiple IP addresses, only traffic directed to the respective IP address of the NIC is allowed. Value null allows all target IPs.
+    --portRangeStart [env]        Defines the start range of the allowed port (from 1 to 65534) if protocol TCP or UDP is chosen. Leave portRangeStart and portRangeEnd value null to allow all ports.
+    --portRangeEnd [env]          Defines the end range of the allowed port (from 1 to 65534) if protocol TCP or UDP is chosen. Leave portRangeStart and portRangeEnd value null to allow all ports.
+    --portRangeEnd [env]          Defines the end range of the allowed port (from 1 to 65534) if protocol TCP or UDP is chosen. Leave portRangeStart and portRangeEnd value null to allow all ports.
+    --icmpType [env]              Defines the allowed type (from 0 to 254) if the protocol ICMP is chosen. Value null allows all types.
+    --icmpCode [env]              Defines the allowed code (from 0 to 254) if protocol ICMP is chosen. Value null allows all codes.
+    --json                        Print results as JSON string
+    --addip [env]                 Add IP
+    --removeip [env]              Remove IP
+    -f, --force                   Forces execution
 ```
 
 ## Configuration
@@ -146,16 +167,16 @@ These examples assume that you don't have any resources provisioned under your a
 
 ## Create Data Center
 
-We need to supply some parameters to get our first data center created. In this case, we will set the location to 'us/lasdev' so that this data center is created under the [DevOps Data Center](https://devops.profitbricks.com/tutorials/devops-data-center-information/). Other valid locations can be determined by reviewing the [REST API Documentation](https://devops.profitbricks.com/api/rest/#locations). That documentation is an excellent resource since that is what the ProfitBricks CLI is calling to complete these operations.
+We need to supply some parameters to get our first data center created. In this case, we will set the location to 'us/las' so that this data center is created under the [DevOps Data Center](https://devops.profitbricks.com/tutorials/devops-data-center-information/). Other valid locations can be determined by reviewing the [REST API Documentation](https://devops.profitbricks.com/api/rest/#locations). That documentation is an excellent resource since that is what the ProfitBricks CLI is calling to complete these operations.
 
 ```
-$ profitbricks datacenter create --name "Demo" --description "CLI Demo Data Center" --location "us/lasdev"
+$ profitbricks datacenter create --name "Demo" --description "CLI Demo Data Center" --location "us/las"
 
 Datacenter
 -----------------------------------------------------
 Id                                    Name  Location
 ------------------------------------  ----  ---------
-3fc832b1-558f-48a4-bca2-af5043975393  Demo  us/lasdev
+3fc832b1-558f-48a4-bca2-af5043975393  Demo  us/las
 
 RequestID: 45dbf0ba-fc1b-4a2c-855f-a11705a996b8
 ```
@@ -587,6 +608,32 @@ $ profitbricks nic attach --datacenterid [dcid] --loadbalancerid [lbid] -i [nici
 
 ```
 $ profitbricks nic detach --datacenterid [dcid] --loadbalancerid [lbid] -i [nicid]
+```
+
+## Firewall Rules
+
+### List Firewall Rules
+
+```
+$profitbricks firewall list --datacenterid [dcid] --serverid [serverid] --nicid [nicid]
+```
+
+### Get Specific Firewall Rule 
+
+```
+$profitbricks firewall get --datacenterid [dcid] --serverid [serverid] --nicid [nicid] --id [firewallid]
+```
+
+### Create Firewall Rules
+
+```
+$profitbricks firewall create --datacenterid [dcid] --serverid [serverid] --nicid [nicid] --protocol [protocol]
+```
+
+### Update Firewall Rules
+
+```
+$profitbricks firewall update  --datacenterid [dcid] --serverid [serverid] --nicid [nicid] --id [firewallid] --sourceMac [mac_address]
 ```
 
 ## IP Block

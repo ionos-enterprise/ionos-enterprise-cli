@@ -15,7 +15,7 @@ describe('Lan tests', function () {
         var data = {
             properties: {
                 name: "PB_CLI Test Datacenter - LAN",
-                location: "us/lasdev",
+                location: "us/las",
                 description: "Test datacenter for PB_CLI"
             }
         }

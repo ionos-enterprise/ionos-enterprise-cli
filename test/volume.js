@@ -16,7 +16,7 @@ describe('Volume tests', function () {
         var data = {
             properties: {
                 name: "PB_CLI Test Datacenter - Volumes",
-                location: "us/lasdev",
+                location: "us/las",
                 description: "Test datacenter for PB_CLI"
             }
         }

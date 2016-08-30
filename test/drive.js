@@ -17,7 +17,7 @@ describe('Drive tests', function() {
         var data = {
             properties: {
                 name: "PB_CLI Test Datacenter - Drive",
-                location: "us/lasdev",
+                location: "us/las",
                 description: "Test drive for PB_CLI"
             }
         }
@@ -42,7 +42,7 @@ describe('Drive tests', function() {
                             if (body) {
                                 var images = JSON.parse(body)
                                 for (var i = 0; i < images.items.length; i++) {
-                                    if (images.items[i].properties.imageType == 'CDROM' && images.items[i].properties.location == 'us/lasdev') {
+                                    if (images.items[i].properties.imageType == 'CDROM' && images.items[i].properties.location == 'us/las') {
                                         driveid = images.items[i].id
                                         done()
                                         break
