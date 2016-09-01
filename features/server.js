@@ -97,6 +97,9 @@ function createServer(params) {
                 process.exit(code = 5)
                 return
             }
+            if(params.cpufamily){
+                data.properties.cpuFamily = params.cpufamily
+            }
             setBootParams(params, data.properties)
         }
     } finally {

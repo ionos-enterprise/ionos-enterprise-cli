@@ -195,7 +195,7 @@ Message: Request has been successfully executed
 Next we'll create a server in the data center. This time we have to pass the 'Id' for the data center in, along with some other relevant properties (processor cores, memory, boot volume or boot CD-ROM) for the new server.
 
 ```
-$ profitbricks server create --datacenterid 3fc832b1-558f-48a4-bca2-af5043975393 --cores 2 --name "Demo Server" --ram 256
+$ profitbricks server create --datacenterid 3fc832b1-558f-48a4-bca2-af5043975393 --cores 2 --name "Demo Server" --ram 256 --cpufamily AMD_OPTERON
 
 Server
 ------------------------------------------------------------------------------------------
@@ -388,7 +388,7 @@ $ profitbricks server show --datacenterid [dcid] -i [serverid]
 ### Create Server
 
 ```
-$ profitbricks server create --datacenterid [dcid] --cores [cores] --name [name] --ram [ram] --volumeid [preexisting_volume_id]
+$ profitbricks server create --datacenterid [dcid] --cores [cores] --name [name] --ram [ram] --cpufamily [cpu_type] --volumeid [preexisting_volume_id]
 
 $ profitbricks server create --datacenterid [dcid] -p [path_to_json]
 ```

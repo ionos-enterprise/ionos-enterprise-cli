@@ -32,7 +32,7 @@ parseParameters()
 
 function initializeCli() {
     program
-        .version('1.2.11')
+        .version('1.2.12')
         .usage('[Options]')
         .option('setup', 'Configures credentials for ProfitBricks CLI')
         .option('datacenter, [env]', 'Data center operations')
@@ -83,6 +83,7 @@ function initializeCli() {
         .option('--ip [env]', 'IPv4 address of the loadbalancer.')
         .option('--dhcp [env]', 'Indicates if the loadbalancer will reserve an IP using DHCP.')
         .option('--serverid [env]', 'Server id')
+        .option('--cpufamily [env]', 'Sets the CPU type. "AMD_OPTERON" or "INTEL_XEON". Defaults to "AMD_OPTERON".')
         .option('--lan [env]', 'The LAN ID the NIC will sit on. If the LAN ID does not exist it will be created.')
         .option('--public [env]', 'Boolean indicating if the LAN faces the public Internet or not.')
         .option('--requestid [env]', 'Request UUID')
