@@ -99,6 +99,8 @@ function createVolume(params) {
                 process.exit(code = 5)
                 return
             }
+            if (params.availabilityzone)
+                data.properties.availabilityZone = params.availabilityzone
             if (params.imagepassword)
                 data.properties.imagePassword = params.imagepassword
             if (params.sshkey)

@@ -122,10 +122,12 @@ Run `profitbricks` or `profitbricks -h` or `profitbricks --help`:
     --ip [env]                    IPv4 address of the loadbalancer.
     --dhcp [env]                  Indicates if the loadbalancer will reserve an IP using DHCP.
     --serverid [env]              Server id
+    --cpufamily [env]             Sets the CPU type. "AMD_OPTERON" or "INTEL_XEON". Defaults to "AMD_OPTERON".
     --lan [env]                   The LAN ID the NIC will sit on. If the LAN ID does not exist it will be created.
     --public [env]                Boolean indicating if the LAN faces the public Internet or not.
     --requestid [env]             Request UUID
     --nicid [env]                 Network Interface UUID
+    --nat                         NIC Network Address Translation
     --protocol [env]              The protocol for the rule: TCP, UDP, ICMP, ANY.
     --sourceMac [env]             Only traffic originating from the respective MAC address is allowed. Valid format: aa:bb:cc:dd:ee:ff. Value null allows all source MAC address.
     --sourceIp [env]              Only traffic originating from the respective IPv4 address is allowed. Value null allows all source IPs.

@@ -88,6 +88,7 @@ function initializeCli() {
         .option('--public [env]', 'Boolean indicating if the LAN faces the public Internet or not.')
         .option('--requestid [env]', 'Request UUID')
         .option('--nicid [env]', 'Network Interface UUID')
+        .option('--nat', 'NIC Network Address Translation')
         .option('--protocol [env]', 'The protocol for the rule: TCP, UDP, ICMP, ANY.')
         .option('--sourceMac [env]', 'Only traffic originating from the respective MAC address is allowed. Valid format: aa:bb:cc:dd:ee:ff. Value null allows all source MAC address.')
         .option('--sourceIp [env]', 'Only traffic originating from the respective IPv4 address is allowed. Value null allows all source IPs.')

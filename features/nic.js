@@ -83,6 +83,7 @@ function createNic(params) {
         } else {
             data.properties = {}
             data.properties.name = params.name
+            data.properties.nat = params.nat
             if (params.ip)
                 data.properties.ips = [params.ip]
             data.properties.dhcp = params.dhcp
@@ -161,6 +162,8 @@ function updateNic(params) {
                 data.dhcp = params.dhcp
             if (params.lan)
                 data.lan = params.lan
+            if(params.nat)
+                data.nat = params.nat
 
         }
     } finally {
