@@ -106,7 +106,7 @@ Run `profitbricks` or `profitbricks -h` or `profitbricks --help`:
     --volumename [env]            Volume name
     --imageid [env]               Image id
     -b --bus [env]                Bus type (VIRTIO or IDE)
-    -t --type [env]               The disk type. Currently only HDD.
+    -t --type [env]               The disk type.
     --imagepassword [env]         One-time password is set on the Image for the appropriate account. Password has to contain 8-50 characters. Only these characters are allowed: [abcdefghjkmnpqrstuvxABCDEFGHJKLMNPQRSTUVX23456789]
     -s, --size [env]              Size in GB
     --cpuHotPlug                  Volume is capable of CPU hot plug (no reboot required)
@@ -127,7 +127,7 @@ Run `profitbricks` or `profitbricks -h` or `profitbricks --help`:
     --public [env]                Boolean indicating if the LAN faces the public Internet or not.
     --requestid [env]             Request UUID
     --nicid [env]                 Network Interface UUID
-    --nat                         NIC Network Address Translation
+    --nat                         NIC Network Address Translation.
     --protocol [env]              The protocol for the rule: TCP, UDP, ICMP, ANY.
     --sourceMac [env]             Only traffic originating from the respective MAC address is allowed. Valid format: aa:bb:cc:dd:ee:ff. Value null allows all source MAC address.
     --sourceIp [env]              Only traffic originating from the respective IPv4 address is allowed. Value null allows all source IPs.
@@ -241,7 +241,7 @@ Id                                    Name         Availability Zone  State     
 Now that we have a server provisioned, it needs some storage. We'll specify a size for this storage volume in GB as well as set the 'bus' and 'licencetype'. The 'bus' setting can have a serious performance impact and you'll want to use VIRTIO when possible. Using VIRTIO may require drivers to be installed depending on the OS you plan to install. The 'licencetype' impacts billing rate, as there is a surcharge for running certain OS types.
 
 ```
-$ profitbricks volume create --datacenterid 3fc832b1-558f-48a4-bca2-af5043975393 --size 12 --bus VIRTIO --licencetype LINUX --type HDD --name "Demo Srvr 1 Boot" --sshkey [ssh_key_string]
+$ profitbricks volume create --datacenterid 3fc832b1-558f-48a4-bca2-af5043975393 --size 12 --bus VIRTIO --licencetype LINUX --type HDD --name "Demo Srvr 1 Boot" --sshkey [ssh_key_string] --availabilityzone [availability_zone]
 
 Volume
 ------------------------------------------------------------------------
@@ -444,7 +444,7 @@ $ profitbricks volume show --datacenterid [dcid] -i [volumeid]
 ```
 $ profitbricks volume create --datacenterid [dcid] -p [path_to_json]
 
-$ profitbricks volume create --datacenterid  [dcid] --name [name] --size [size] --bus [bus] --type [HDD/SSD]
+$ profitbricks volume create --datacenterid  [dcid] --name [name] --size [size] --bus [bus] --type [HDD/SSD] -availabilityzone [AUTO,ZONE_1,ZONE_2,ZONE_3]
 ```
 
 ### Attach Volume
@@ -576,7 +576,7 @@ $ profitbricks nic get --datacenterid [dcid] --serverid [serverid] -i [nicid]
 ```
 $ profitbricks nic create --datacenterid [dcid]--serverid [serverid] -p [path_to_json]
 
-$ profitbricks nic create --datacenterid [dcid] --serverid [serverid] --name [name] --ip [ip] --dhcp [true|false] --lan [lan]
+$ profitbricks nic create --datacenterid [dcid] --serverid [serverid] --name [name] --ip [ip] --dhcp [true|false] --lan [lan] --nat [true/false]
 ```
 
 ### Update NIC
