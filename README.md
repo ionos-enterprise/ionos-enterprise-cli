@@ -28,6 +28,7 @@
     * [NIC](#nic)
     * [Firewall Rules](#firewall)
     * [IP Block](#ip-block)
+    * [LAN](#lan)
 * [Support](#support)
 
 ## Concepts
