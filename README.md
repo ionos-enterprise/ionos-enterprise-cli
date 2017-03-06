@@ -670,6 +670,35 @@ $ profitbricks ipblock delete -i [ipblockid]
 profitbricks location list
 ```
 
+## LAN
+
+### List LANs
+
+```
+profitbricks lan list --datacenterid [dcid]
+```
+
+### Create LAN
+
+```
+profitbricks lan create --datacenterid [dcid] --name [name] --public [boolean]
+```
+
+### Update LAN
+
+```
+profitbricks lan update --datacenterid [dcid] --name [name] --public [boolean] -i [lanid]
+```
+
+### Get LAN
+
+```
+profitbricks lan show --datacenterid [dcid] --id [lanid]
+```
+
+
+
+
 ## Support
 
 You are welcome to contact us with questions or comments at [ProfitBricks DevOps Central](https://devops.profitbricks.com/). Please report any issues via [GitHub's issue tracker](https://github.com/profitbricks/profitbricks-cli/issues).

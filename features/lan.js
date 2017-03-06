@@ -58,7 +58,14 @@ function processLan(params) {
 
 function updateLan(params) {
     var data = {}
-    data.public = params.public
+    data.name = params.name
+    if (params.public) {
+        if (params.public == 'false') {
+            data.public = false
+        } else if (params.public == 'true') {
+            data.public = true
+        }
+    }
 
     pbclient.patchLan(params.datacenterid, params.id, data, helpers.printInfo)
 }
