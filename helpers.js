@@ -10,7 +10,7 @@ exports.setJson = setJson
 exports.setForce = setForce
 exports.force = force
 
-var authFile = (process.env.HOME || process.env.USERPROFILE) + '/.auth'
+var authFile = (process.env.HOME || process.env.USERPROFILE) + '/.profitbricks-auth'
 
 var isJson = false
 var force = false
