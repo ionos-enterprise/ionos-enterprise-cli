@@ -99,6 +99,7 @@ function snapshotShow(done) {
             checkErrors(error, stderr, done)
             var info = JSON.parse(stdout)
             assert.equal(info[0].Id, snapshotid)
+            assert.equal(info[0].Name, 'NodeJS SDK Test')
             assert.equal(info[0].State, 'AVAILABLE')
             done()
         })
@@ -107,7 +108,8 @@ function snapshotShow(done) {
 function snapshotCreateParams(done) {
     exec('node profitbricks.js snapshot create --json' +
         ' --datacenterid ' + dcid +
-        ' --volumeid ' + volumeid,
+        ' --volumeid ' + volumeid +
+        ' --name ' + '"NodeJS SDK Test"',
         function(error, stdout, stderr) {
             checkErrors(error, stderr, done)
             var info = JSON.parse(stdout);
