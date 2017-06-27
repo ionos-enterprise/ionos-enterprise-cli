@@ -49,19 +49,15 @@ describe('Snapshot tests', function() {
     it('Create a Snapshot from parameters', function(done) {
         setTimeout(function() {
             snapshotCreateParams(done)
-        }, 20000)
+        }, 30000)
     })
 
     it('List Snapshots', function(done) {
-        setTimeout(function() {
-            snapshotList(done)
-        }, 10000)
+        snapshotList(done)
     })
 
     it('Show Snapshot', function(done) {
-        setTimeout(function() {
-            snapshotShow(done)
-        }, 10000)
+        snapshotShow(done)
     })
 
     it('Updates a Snapshot', function(done) {
