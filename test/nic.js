@@ -147,13 +147,18 @@ function nicShow(done) {
 }
 
 function nicUpdate(done) {
-    var script = './scripts/nic.json'
-    exec('node profitbricks.js nic update ' +
+    exec('node profitbricks.js nic update --json ' +
         '--datacenterid ' + dcid +
         ' --serverid ' + sid +
-        ' -p ' + script,
+        ' --name ' + 'newName' +
+        ' --lan ' + 2 +
+        ' -i ' + nicid,
         function(error, stdout, stderr) {
             checkErrors(error, stderr, done)
+            var data = JSON.parse(stdout)
+            assert.equal(data[0].Id, nicid)
+            assert.equal(data[0].Name, 'newName')
+            assert.equal(data[0].Lan, '2')
             done()
         })
 }

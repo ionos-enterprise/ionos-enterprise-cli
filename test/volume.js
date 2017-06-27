@@ -122,16 +122,18 @@ function volumeCreateParams(done) {
     var size = "1"
     var bus = "VIRTIO"
     var licence = "LINUX"
+    var type = "HDD"
     exec('node profitbricks.js volume create --json ' +
     ' --datacenterid  ' + dcid +
     ' --size ' + size +
     ' --licencetype ' + licence +
+    ' --type ' + type +
     ' --bus ' + bus, function (error, stdout, stderr) {
         checkErrors(error, stderr, done)
         var data = JSON.parse(stdout)
         if (data.length) {
             vid = data[0].Id
-            assert.equal(data[0].Size, size)
+            assert.equal(data[0].Size, size + 'GB')
             assert.equal(data[0].Bus, bus)
             done()
         }

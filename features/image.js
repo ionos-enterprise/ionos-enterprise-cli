@@ -22,6 +22,34 @@ function processImage(params) {
         case 'update':
             updateImage(params)
             break
+        case 'delete':
+            if (!params.id || params.id == true) {
+                console.error('Please provide Image Id --id, -i [snapshot_id]')
+                process.exit(code = 5)
+                return
+            }
+            if (!global.force) {
+                pbclient.getImage(params.id, function(error, response, body) {
+                    if (response.statusCode > 299) {
+                        console.log("Object you are trying to delete does not exist")
+
+                    } else {
+                        var info = JSON.parse(body)
+                        console.log('You are about to delete "' +
+                                    info.properties.name +
+                                    '" image. Do you want to proceed? (y/n)')
+                        prompt.get(['yes'], function(err, result) {
+                            if (result.yes == 'yes' || result.yes == 'y' || result.yes == '')
+                                pbclient.deleteImage(params.id, helpers.printInfo)
+                            else
+                                process.exit(code = 0)
+                        })
+                    }
+                })
+            } else {
+                pbclient.deleteImage(params.id, helpers.printInfo)
+            }
+            break
         default:
             params.outputHelp()
             break

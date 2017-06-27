@@ -1,7 +1,7 @@
 {
-    "license": "BSD",
     "name": "profitbricks-cli",
     "version": "3.0.4",
+    "license": "Apache-2.0",
     "scripts": {
         "start": "node profitbricks.js",
         "test": "node ./test/tests.js"
@@ -38,7 +38,6 @@
         "url": "https://github.com/profitbricks/profitbricks-cli.git"
     },
     "author": "jasminSPC",
-    "license": "BSD",
     "bugs": {
         "url": "https://github.com/profitbricks/profitbricks-cli/issues"
     },
