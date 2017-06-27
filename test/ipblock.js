@@ -34,14 +34,14 @@ function ipblockGet(done) {
         checkErrors(error, stderr, done)
         var data = JSON.parse(stdout)
         assert.equal(data.length > 0, true)
-        assert.equal(data[0].IPs.length, 4)
+        assert.equal(data[0].IPs.length, 1)
         done()
     })
 }
 
 function ipblockCreateParams(done) {
     var location = "us/las"
-    var size = 4
+    var size = 1
 
     exec('node profitbricks.js ipblock create' +
     ' --location ' + location +
@@ -70,7 +70,7 @@ function ipblockDelete(done) {
     exec('node profitbricks.js ipblock delete --force ' +
     ' -i ' + ipblockid, function (error, stdout, stderr) {
         checkErrors(error, stderr, done)
-        assert.equal(stdout, "")
+        assert.ok(stdout)
         exec('node profitbricks.js ipblock show --json ' +
         ' -i ' + ipblockid, function (error, stdout, stderr) {
             assert.equal(stdout, "")

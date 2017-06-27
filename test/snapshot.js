@@ -32,7 +32,8 @@ describe('Snapshot tests', function() {
                         name: "PB_CLI Test Volume",
                         size: "1",
                         bus: "VIRTIO",
-                        licenceType: "LINUX"
+                        licenceType: "LINUX",
+                        type: "HDD"
                     }
                 }
                 pbclient.createVolume(dcid, volumeData, function(error, response, body) {
@@ -53,7 +54,13 @@ describe('Snapshot tests', function() {
 
     it('List Snapshots', function(done) {
         setTimeout(function() {
-            snapshotGet(done)
+            snapshotList(done)
+        }, 10000)
+    })
+
+    it('Show Snapshot', function(done) {
+        setTimeout(function() {
+            snapshotShow(done)
         }, 10000)
     })
 
@@ -75,7 +82,7 @@ describe('Snapshot tests', function() {
     })
 })
 
-function snapshotGet(done) {
+function snapshotList(done) {
     exec('node profitbricks.js snapshot list --json ', function(error, stdout, stderr) {
         checkErrors(error, stderr, done)
         var data = JSON.parse(stdout)
@@ -83,6 +90,18 @@ function snapshotGet(done) {
         snapshotid = data[0].Id
         done()
     })
+}
+
+function snapshotShow(done) {
+    exec('node profitbricks.js snapshot show --json ' +
+        '-i ' + snapshotid,
+        function(error, stdout, stderr) {
+            checkErrors(error, stderr, done)
+            var info = JSON.parse(stdout)
+            assert.equal(info[0].Id, snapshotid)
+            assert.equal(info[0].State, 'AVAILABLE')
+            done()
+        })
 }
 
 function snapshotCreateParams(done) {
