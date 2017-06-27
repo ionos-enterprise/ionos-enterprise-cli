@@ -11,7 +11,8 @@
                      "size": 1,
                      "name": "PB_CLI Test Volume",
                      "licenceType": "UNKNOWN",
-                     "bus": "VIRTIO"
+                     "bus": "VIRTIO",
+                     "type": "HDD"
                  }
              }]
          }

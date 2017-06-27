@@ -58,12 +58,12 @@ function processSnapshot(params) {
 
 function createSnapshot(params) {
     var data = {}
-    data.properties = {}
+    data = {}
 
     if (params.name)
-        data.properties.name = params.name
+        data.name = params.name
     if (params.description)
-        data.properties.description = params.description
+        data.description = params.description
     if (!params.datacenterid || params.datacenterid == true) {
         console.error("Data Center Id is a required field.")
         process.exit(code = 5)

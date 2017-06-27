@@ -32,7 +32,8 @@ describe('Snapshot tests', function() {
                         name: "PB_CLI Test Volume",
                         size: "1",
                         bus: "VIRTIO",
-                        licenceType: "LINUX"
+                        licenceType: "LINUX",
+                        type: "HDD"
                     }
                 }
                 pbclient.createVolume(dcid, volumeData, function(error, response, body) {
@@ -48,13 +49,15 @@ describe('Snapshot tests', function() {
     it('Create a Snapshot from parameters', function(done) {
         setTimeout(function() {
             snapshotCreateParams(done)
-        }, 20000)
+        }, 30000)
     })
 
     it('List Snapshots', function(done) {
-        setTimeout(function() {
-            snapshotGet(done)
-        }, 10000)
+        snapshotList(done)
+    })
+
+    it('Show Snapshot', function(done) {
+        snapshotShow(done)
     })
 
     it('Updates a Snapshot', function(done) {
@@ -75,7 +78,7 @@ describe('Snapshot tests', function() {
     })
 })
 
-function snapshotGet(done) {
+function snapshotList(done) {
     exec('node profitbricks.js snapshot list --json ', function(error, stdout, stderr) {
         checkErrors(error, stderr, done)
         var data = JSON.parse(stdout)
@@ -85,10 +88,24 @@ function snapshotGet(done) {
     })
 }
 
+function snapshotShow(done) {
+    exec('node profitbricks.js snapshot show --json ' +
+        '-i ' + snapshotid,
+        function(error, stdout, stderr) {
+            checkErrors(error, stderr, done)
+            var info = JSON.parse(stdout)
+            assert.equal(info[0].Id, snapshotid)
+            assert.equal(info[0].Name, 'NodeJS SDK Test')
+            assert.equal(info[0].State, 'AVAILABLE')
+            done()
+        })
+}
+
 function snapshotCreateParams(done) {
     exec('node profitbricks.js snapshot create --json' +
         ' --datacenterid ' + dcid +
-        ' --volumeid ' + volumeid,
+        ' --volumeid ' + volumeid +
+        ' --name ' + '"NodeJS SDK Test"',
         function(error, stdout, stderr) {
             checkErrors(error, stderr, done)
             var info = JSON.parse(stdout);

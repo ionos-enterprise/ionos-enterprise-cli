@@ -56,17 +56,19 @@ describe('Loadbalancer tests', function () {
         })
 
         it('Creates a Loadblancer script', function (done) {
-            loadbalancerCreateScript(done)
+            setTimeout(function() {
+                loadbalancerCreateScript(done)
+            }, 30000)
         })
 
         it('Creates a Loadblancer params', function (done) {
-            loadbalancerCreateParams(done)
+            setTimeout(function() {
+                loadbalancerCreateParams(done)
+            }, 30000)
         })
 
         it('List Loadbalancers', function (done) {
-            setTimeout(function(){
-                loadbalancerGet(done)
-            }, 40000)
+            loadbalancerGet(done)
         })
 
         it('Shows a Loadbalancer', function (done) {
