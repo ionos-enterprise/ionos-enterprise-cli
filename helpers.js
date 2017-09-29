@@ -77,7 +77,7 @@ function printInfo(error, response, body) {
                 printResults('Volume', [printVolume(info)])
                 break
             case 'image':
-                printResults('Volume', [printImage(info)])
+                printResults('Image', [printImage(info)])
                 break
             case 'snapshot':
                 printResults('Snapshot', [printSnapshot(info)])
@@ -99,6 +99,9 @@ function printInfo(error, response, body) {
                 break
             case 'collection':
                 printCollection(info)
+                break
+            case 'location':
+                printResults('Image Alias', info.properties.imageAliases)
                 break
             case 'request-status':
                 if (!isJson) {

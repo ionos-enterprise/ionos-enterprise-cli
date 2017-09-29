@@ -38,7 +38,7 @@ parseParameters()
 
 function initializeCli() {
     program
-        .version('3.1.0')
+        .version('4.0.0')
         .usage('[Options]')
         .option('setup', 'Configures credentials for ProfitBricks CLI')
         .option('datacenter, [env]', 'Data center operations')
@@ -72,6 +72,7 @@ function initializeCli() {
         .option('--volumesize [env]', 'Volume size')
         .option('--volumename [env]', 'Volume name')
         .option('--imageid [env]', 'Image id')
+        .option('--imagealias [env]', 'Image alias')
         .option('-b --bus [env]', 'Bus type (VIRTIO or IDE)')
         .option('-t --type [env]', 'The disk type.')
         .option('--imagepassword [env]', 'One-time password is set on the Image for the appropriate account. Password has to contain 8-50 characters. Only these characters are allowed: [abcdefghjkmnpqrstuvxABCDEFGHJKLMNPQRSTUVX23456789]')
