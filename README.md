@@ -29,6 +29,10 @@
     * [Firewall Rules](#firewall)
     * [IP Block](#ip-block)
     * [LAN](#lan)
+    * [User](#user)
+    * [Group](#group)
+    * [Share](#share)
+    * [Resource](#resource)
 * [Support](#support)
 
 ## Concepts
@@ -70,9 +74,9 @@ Run `profitbricks` or `profitbricks -h` or `profitbricks --help`:
 ```
   Usage: profitbricks [Options]
 
+
   Options:
 
-    -h, --help                    output usage information
     -V, --version                 output the version number
     setup                         Configures credentials for ProfitBricks CLI
     datacenter, [env]             Data center operations
@@ -88,6 +92,10 @@ Run `profitbricks` or `profitbricks -h` or `profitbricks --help`:
     lan, [env]                    LAN operations
     request, [env]                Request operations
     location, [env]               Location operations
+    group, [env]                  Group operations
+    user, [env]                   User operations
+    share, [env]                  Share operations
+    resource, [env]               Resource operations
     -i, --id [env]                Id
     -n, --name [env]              Name
     -l, --location [env]          Location
@@ -106,6 +114,7 @@ Run `profitbricks` or `profitbricks -h` or `profitbricks --help`:
     --volumesize [env]            Volume size
     --volumename [env]            Volume name
     --imageid [env]               Image id
+    --imagealias [env]            Image alias
     -b --bus [env]                Bus type (VIRTIO or IDE)
     -t --type [env]               The disk type.
     --imagepassword [env]         One-time password is set on the Image for the appropriate account. Password has to contain 8-50 characters. Only these characters are allowed: [abcdefghjkmnpqrstuvxABCDEFGHJKLMNPQRSTUVX23456789]
@@ -126,9 +135,10 @@ Run `profitbricks` or `profitbricks -h` or `profitbricks --help`:
     --cpufamily [env]             Sets the CPU type. "AMD_OPTERON" or "INTEL_XEON". Defaults to "AMD_OPTERON".
     --lan [env]                   The LAN ID the NIC will sit on. If the LAN ID does not exist it will be created.
     --public [env]                Boolean indicating if the LAN faces the public Internet or not.
+    --ipfailover [env]            IP failover group, e.g. "ip1,nicid1;ip2,nicid2;ip3,nicid3..."
     --requestid [env]             Request UUID
     --nicid [env]                 Network Interface UUID
-    --nat                         NIC Network Address Translation.
+    --nat                         NIC Network Address Translation
     --protocol [env]              The protocol for the rule: TCP, UDP, ICMP, ANY.
     --sourceMac [env]             Only traffic originating from the respective MAC address is allowed. Valid format: aa:bb:cc:dd:ee:ff. Value null allows all source MAC address.
     --sourceIp [env]              Only traffic originating from the respective IPv4 address is allowed. Value null allows all source IPs.
@@ -140,10 +150,28 @@ Run `profitbricks` or `profitbricks -h` or `profitbricks --help`:
     --portRangeEnd [env]          Defines the end range of the allowed port (from 1 to 65534) if protocol TCP or UDP is chosen. Leave portRangeStart and portRangeEnd value null to allow all ports.
     --icmpType [env]              Defines the allowed type (from 0 to 254) if the protocol ICMP is chosen. Value null allows all types.
     --icmpCode [env]              Defines the allowed code (from 0 to 254) if protocol ICMP is chosen. Value null allows all codes.
+    --groupid [env]               Group UUID
+    --resourceid [env]            Resource UUID
+    --resourcetype [env]          Resource type. "datacenter", "snapshot", "ipblock" or "image".
+    --editprivilege [env]         The group has permission to edit privileges on the resource.
+    --shareprivilege [env]        The group has permission to share the resource.
+    --createdatacenter [env]      Group will be allowed to create virtual data centers.
+    --createsnapshot [env]        Group will be allowed to create snapshots.
+    --reserveip [env]             Group will be allowed to reserve IP addresses.
+    --accessactlog [env]          Group will be allowed to access the activity log.
+    --firstname [env]             A first name for the user.
+    --lastname [env]              A last name for the user.
+    --email [env]                 An email for the user.
+    --password [env]              A password for the user.
+    --admin [env]                 Indicates if the user has administrative rights.
+    --forcesecauth [env]          Indicates if secure (two-factor) authentication should be forced for the user.
     --json                        Print results as JSON string
     --addip [env]                 Add IP
     --removeip [env]              Remove IP
+    --adduser [env]               UUID of the user to add to a group
+    --removeuser [env]            UUID of the user to remove from a group
     -f, --force                   Forces execution
+    -h, --help                    output usage information
 ```
 
 ## Configuration
@@ -249,6 +277,18 @@ Volume
 Id                                    Name  Size  Licence  Bus     State
 ------------------------------------  ----  ----  -------  ------  -----
 d7dc58a1-9505-48f5-9db4-22cff0659cf8  null  12    LINUX    VIRTIO  BUSY
+```
+
+We can also use image aliases instead of non-constant image IDs to create new volumes. Use `image aliases` command to find out available image aliases for a particular location.
+
+```
+node profitbricks volume create --datacenterid 3fc832b1-558f-48a4-bca2-af5043975393 --name "Test Alias" --imagealias ubuntu:latest --size 20 --bus VIRTIO --type SSD --sshkey [ssh_key_string]
+
+Volume
+------------------------------------------------------------------------------
+Id                                    Name        Size  Licence  Bus     State
+------------------------------------  ----------  ----  -------  ------  -----
+e7a6e51e-824f-4733-8ae2-30da817a9cbe  Test Alias  20GB  null     VIRTIO  BUSY
 ```
 
 ## Attach Volume
@@ -558,6 +598,12 @@ $ profitbricks image update -i [imageid] --name [name] ---description [descripti
 $ profitbricks image delete -i [imageid]
 ```
 
+### List Image Aliases
+
+```
+$ profitbricks image aliases -l [locationid]
+```
+
 ## NIC
 
 ### List NICs
@@ -682,13 +728,17 @@ profitbricks lan list --datacenterid [dcid]
 ### Create LAN
 
 ```
+profitbricks lan create --datacenterid [dcid] -p [path_to_json]
+
 profitbricks lan create --datacenterid [dcid] --name [name] --public [boolean]
 ```
 
 ### Update LAN
 
 ```
-profitbricks lan update --datacenterid [dcid] --name [name] --public [boolean] -i [lanid]
+profitbricks lan update --datacenterid [dcid] -p [path_to_json]
+
+profitbricks lan update --datacenterid [dcid] --name [name] --public [boolean] -i [lanid] --ipfailover [ip1,nicid1;ip2,nicid2;...]
 ```
 
 ### Get LAN
@@ -697,7 +747,155 @@ profitbricks lan update --datacenterid [dcid] --name [name] --public [boolean] -
 profitbricks lan show --datacenterid [dcid] --id [lanid]
 ```
 
+## User
 
+### List Users
+
+```
+$ profitbricks user list
+```
+
+### Create User
+
+```
+$ profitbricks user create -p [path_to_json]
+
+$ profitbricks user create --firstname [firstname] --lastname [lastname] --email [email] --password [password] --admin [boolean] --forcesecauth [boolean]
+```
+
+### Get Specific User
+
+```
+$ profitbricks user get -i [userid]
+
+$ profitbricks user show -i [userid]
+```
+
+### Update User
+
+```
+$ profitbricks user update -i [userid] --firstname [firstname] --lastname [lastname] --email [email] --admin [boolean] --forcesecauth [boolean]
+```
+
+### Delete User
+
+```
+$ profitbricks user delete -i [userid]
+```
+
+## Group
+
+### List Groups
+
+```
+$ profitbricks group list
+```
+
+### Create Group
+
+```
+$ profitbricks group create -p [path_to_json]
+
+$ profitbricks group create --name [name] --createdatacenter [boolean] --createsnapshot [boolean] --reserveip [boolean] --accessactlog [boolean]
+```
+
+### Get Specific Group
+
+```
+$ profitbricks group get -i [groupid]
+
+$ profitbricks group show -i [groupid]
+```
+
+### Update Group
+
+```
+$ profitbricks group update -i [groupid] --name [name] --createdatacenter [boolean] --createsnapshot [boolean] --reserveip [boolean] --accessactlog [boolean]
+```
+
+### Delete Group
+
+```
+$ profitbricks group delete -i [groupid]
+```
+
+### List Group Users
+
+```
+$ profitbricks group users -i [groupid]
+```
+
+### Add Group User
+
+```
+$ profitbricks group user --adduser [userid] -i [groupid]
+```
+
+### Remove Group User
+
+```
+profitbricks group user --removeuser [userid] -i [groupid]
+```
+
+## Share
+
+### List Shares
+
+```
+$ profitbricks share list --groupid [groupid]
+```
+
+### Add Share
+
+```
+$ profitbricks share add --groupid [groupid] --resourceid [resourceid] --editprivilege [boolean] --shareprivilege [boolean]
+
+$ profitbricks share create --groupid [groupid] --resourceid [resourceid] --editprivilege [boolean] --shareprivilege [boolean]
+```
+
+### Get Specific Share
+
+```
+$ profitbricks share get --groupid [groupid] -i [shareid]
+
+$ profitbricks share show --groupid [groupid] -i [shareid]
+```
+
+### Update Share
+
+```
+$ profitbricks share update --groupid [groupid] -i [shareid] --editprivilege [boolean] --shareprivilege [boolean]
+```
+
+### Remove Share
+
+```
+$ profitbricks share delete --groupid [groupid] -i [shareid]
+
+$ profitbricks share remove --groupid [groupid] -i [shareid]
+```
+
+## Resource
+
+### List All Resources
+
+```
+$ profitbricks resource list
+```
+
+### List Specific Type Resources
+
+```
+$ profitbricks resource list --resourcetype [datacenter|snapshot|image|ipblock]
+```
+
+### Get Specific Type Resource
+
+```
+$ profitbricks resource get --resourcetype [datacenter|snapshot|image|ipblock] -i [resourceid]
+
+$ profitbricks resource show --resourcetype [datacenter|snapshot|image|ipblock] -i [resourceid]
+```
 
 
 ## Support
