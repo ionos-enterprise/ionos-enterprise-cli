@@ -68,7 +68,10 @@ function printInfo(error, response, body) {
     if (body) {
         switch (info.type) {
             case 'datacenter':
-                printResults('Datacenter', [printDc(info)])
+                if (info.href.indexOf('um/resources/datacenter') > -1)
+                    printResults('Resource', [printResource(info)])
+                else
+                    printResults('Datacenter', [printDc(info)])
                 break
             case 'server':
                 printResults('Server', [printServer(info)])
@@ -77,10 +80,16 @@ function printInfo(error, response, body) {
                 printResults('Volume', [printVolume(info)])
                 break
             case 'image':
-                printResults('Image', [printImage(info)])
+                if (info.href.indexOf('um/resources/image') > -1)
+                    printResults('Resource', [printResource(info)])
+                else
+                    printResults('Image', [printImage(info)])
                 break
             case 'snapshot':
-                printResults('Snapshot', [printSnapshot(info)])
+                if (info.href.indexOf('um/resources/snapshot') > -1)
+                    printResults('Resource', [printResource(info)])
+                else
+                    printResults('Snapshot', [printSnapshot(info)])
                 break
             case 'loadbalancer':
                 printResults('Loadbalancer', [printLoadbalancer(info)])
@@ -89,7 +98,10 @@ function printInfo(error, response, body) {
                 printResults('Nic', [printNic(info)])
                 break
             case 'ipblock':
-                printResults('IP Block', [printIpblock(info)])
+                if (info.href.indexOf('um/resources/ipblock') > -1)
+                    printResults('Resource', [printResource(info)])
+                else
+                    printResults('IP Block', [printIpblock(info)])
                 break
             case 'lan':
                 printResults('LAN', [printLan(info)])
@@ -98,10 +110,22 @@ function printInfo(error, response, body) {
                 printResults('Firewall Rule', [printFW(info)])
                 break
             case 'collection':
-                printCollection(info)
+                if (info.id == 'resources')
+                    printResourceCollection(info)
+                else
+                    printCollection(info)
                 break
             case 'location':
                 printResults('Image Alias', info.properties.imageAliases)
+                break
+            case 'group':
+                printResults('Group', [printGroup(info)])
+                break
+            case 'user':
+                printResults('User', [printUser(info)])
+                break
+            case 'resource':
+                printResults('Shared resource', [printShare(info)])
                 break
             case 'request-status':
                 if (!isJson) {
@@ -246,6 +270,45 @@ function printLocation(info) {
     }
 }
 
+function printGroup(info) {
+    return {
+        Id: info.id,
+        Name: info.properties.name,
+        CreateDC: info.properties.createDataCenter,
+        CreateSnapshot: info.properties.createSnapshot,
+        ReserveIP: info.properties.reserveIp,
+        AccessActLog: info.properties.accessActivityLog
+    }
+}
+
+function printUser(info) {
+    return {
+        Id: info.id,
+        FirstName: info.properties.firstname,
+        LastName: info.properties.lastname,
+        Email: info.properties.email,
+        Admin: info.properties.administrator
+    }
+}
+
+function printShare(info) {
+    return {
+        Id: info.id,
+        EditPrivilege: info.properties.editPrivilege,
+        SharePrivilege: info.properties.sharePrivilege
+    }
+}
+
+function printResource(info) {
+    return {
+        Id: info.id,
+        Type: info.type,
+        Created: info.metadata.createdDate,
+        By: info.metadata.createdBy,
+        State: info.metadata.state
+    }
+}
+
 function printCollection(info) {
     var dc = []
     var type = ''
@@ -296,9 +359,30 @@ function printCollection(info) {
                 type = info.items[i].type
                 dc.push(printFW(info.items[i]))
                 break
+            case 'group':
+                type = info.items[i].type
+                dc.push(printGroup(info.items[i]))
+                break
+            case 'user':
+                type = info.items[i].type
+                dc.push(printUser(info.items[i]))
+                break
+            case 'resource':
+                type = 'Shared ' + info.items[i].type
+                dc.push(printShare(info.items[i]))
+                break
         }
     }
     printResults(type.capitalize() + 's', dc)
+}
+
+function printResourceCollection(info) {
+    var data = []
+
+    for (var i = 0; i < info.items.length; i++) {
+        data.push(printResource(info.items[i]))
+    }
+    printResults('Resources', data)
 }
 
 function printResults(title, value) {
