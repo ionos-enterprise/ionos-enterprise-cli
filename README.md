@@ -37,11 +37,11 @@
 
 ## Concepts
 
-The ProfitBricks CLI wraps the [ProfitBricks REST API](https://devops.profitbricks.com/api/rest/) allowing you to interact with it from a command-line interface.
+The ProfitBricks CLI wraps the [ProfitBricks Cloud API](https://devops.profitbricks.com/api/cloud/) allowing you to interact with it from a command-line interface.
 
 ## Getting Started
 
-Before you begin you will need to have [signed-up](https://www.profitbricks.com/signup/) for a ProfitBricks account. The credentials you establish during sign-up will be used to authenticate against the [ProfitBricks API](https://devops.profitbricks.com/api/rest/).
+Before you begin you will need to have [signed-up](https://www.profitbricks.com/signup/) for a ProfitBricks account. The credentials you establish during sign-up will be used to authenticate against the [ProfitBricks Cloud API](https://devops.profitbricks.com/api/cloud/).
 
 ## Installation
 
@@ -59,7 +59,7 @@ Please utilize one of the following URL's to retrieve an install script that is 
 
 [GitHub - ProfitBricks Windows Install](https://github.com/profitbricks/profitbricks-cli/tree/master/install/windows/install.bat)
 
-If you prefer, you may install `nodejs` and `npm` manually. Then run the following to to install the ProfitBricks CLI module globally:
+If you prefer, you may install `nodejs` and `npm` manually. Then run the following to install the ProfitBricks CLI module globally:
 
 ```
 npm install -g profitbricks-cli
@@ -176,7 +176,7 @@ Run `profitbricks` or `profitbricks -h` or `profitbricks --help`:
 
 ## Configuration
 
-Before using the ProfitBrick's CLI to perform any operations, we'll need to set our credentials:
+Before using the CLI to perform any operations, we'll need to set our credentials:
 
 ```
 $ profitbricks setup
@@ -198,7 +198,7 @@ These examples assume that you don't have any resources provisioned under your a
 
 ## Create Data Center
 
-We need to supply some parameters to get our first data center created. In this case, we will set the location to 'us/las' so that this data center is created under the [DevOps Data Center](https://devops.profitbricks.com/tutorials/devops-data-center-information/). Other valid locations can be determined by reviewing the [REST API Documentation](https://devops.profitbricks.com/api/rest/#locations). That documentation is an excellent resource since that is what the ProfitBricks CLI is calling to complete these operations.
+We need to supply some parameters to get our first data center created. In this case, we will set the location to 'us/las'. Other valid locations can be determined by reviewing the [Cloud API Documentation](https://devops.profitbricks.com/api/cloud/v4/#locations). That documentation is an excellent resource since that is what the ProfitBricks CLI is calling to complete these operations.
 
 ```
 $ profitbricks datacenter create --name "Demo" --description "CLI Demo Data Center" --location "us/las"
@@ -633,7 +633,7 @@ $ profitbricks nic update -i [nicid] --datacenterid [dcid] --serverid [serverid]
 $ profitbricks nic update --datacenterid [dc] --serverid [server] -i [nicid] --addip 1.1.1.1
 $ profitbricks nic update --datacenterid [dc] --serverid [server] -i [nicid] --removeip 1.1.1.1
 ```
- 
+
 
 ### Delete NIC
 
@@ -667,7 +667,7 @@ $ profitbricks nic detach --datacenterid [dcid] --loadbalancerid [lbid] -i [nici
 $profitbricks firewall list --datacenterid [dcid] --serverid [serverid] --nicid [nicid]
 ```
 
-### Get Specific Firewall Rule 
+### Get Specific Firewall Rule
 
 ```
 $profitbricks firewall get --datacenterid [dcid] --serverid [serverid] --nicid [nicid] --id [firewallid]
