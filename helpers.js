@@ -65,49 +65,56 @@ function printInfo(error, response, body) {
         }
     }
 
+    // handle request ID for JSON output, if exists
+    var requestId = null
+    if (location) {
+        splice = location.split("/")
+        requestId = splice[6]
+    }
+
     if (body) {
         switch (info.type) {
             case 'datacenter':
                 if (info.href.indexOf('um/resources/datacenter') > -1)
-                    printResults('Resource', [printResource(info)])
+                    printResults('Resource', [printResource(info)], requestId)
                 else
-                    printResults('Datacenter', [printDc(info)])
+                    printResults('Datacenter', [printDc(info)], requestId)
                 break
             case 'server':
-                printResults('Server', [printServer(info)])
+                printResults('Server', [printServer(info)], requestId)
                 break
             case 'volume':
-                printResults('Volume', [printVolume(info)])
+                printResults('Volume', [printVolume(info)], requestId)
                 break
             case 'image':
                 if (info.href.indexOf('um/resources/image') > -1)
-                    printResults('Resource', [printResource(info)])
+                    printResults('Resource', [printResource(info)], requestId)
                 else
-                    printResults('Image', [printImage(info)])
+                    printResults('Image', [printImage(info)], requestId)
                 break
             case 'snapshot':
                 if (info.href.indexOf('um/resources/snapshot') > -1)
-                    printResults('Resource', [printResource(info)])
+                    printResults('Resource', [printResource(info)], requestId)
                 else
-                    printResults('Snapshot', [printSnapshot(info)])
+                    printResults('Snapshot', [printSnapshot(info)], requestId)
                 break
             case 'loadbalancer':
-                printResults('Loadbalancer', [printLoadbalancer(info)])
+                printResults('Loadbalancer', [printLoadbalancer(info)], requestId)
                 break
             case 'nic':
-                printResults('Nic', [printNic(info)])
+                printResults('Nic', [printNic(info)], requestId)
                 break
             case 'ipblock':
                 if (info.href.indexOf('um/resources/ipblock') > -1)
-                    printResults('Resource', [printResource(info)])
+                    printResults('Resource', [printResource(info)], requestId)
                 else
-                    printResults('IP Block', [printIpblock(info)])
+                    printResults('IP Block', [printIpblock(info)], requestId)
                 break
             case 'lan':
-                printResults('LAN', [printLan(info)])
+                printResults('LAN', [printLan(info)], requestId)
                 break
             case 'firewall-rule':
-                printResults('Firewall Rule', [printFW(info)])
+                printResults('Firewall Rule', [printFW(info)], requestId)
                 break
             case 'collection':
                 if (info.id == 'resources')
@@ -116,16 +123,16 @@ function printInfo(error, response, body) {
                     printCollection(info)
                 break
             case 'location':
-                printResults('Image Alias', info.properties.imageAliases)
+                printResults('Image Alias', info.properties.imageAliases, requestId)
                 break
             case 'group':
-                printResults('Group', [printGroup(info)])
+                printResults('Group', [printGroup(info)], requestId)
                 break
             case 'user':
-                printResults('User', [printUser(info)])
+                printResults('User', [printUser(info)], requestId)
                 break
             case 'resource':
-                printResults('Shared resource', [printShare(info)])
+                printResults('Shared resource', [printShare(info)], requestId)
                 break
             case 'request-status':
                 if (!isJson) {
@@ -138,10 +145,12 @@ function printInfo(error, response, body) {
 
         }
     }
-    if (location) {
-        splice = location.split("/")
+    if (requestId) {
         if (!isJson)
-            console.log("RequestID: " + splice[6])
+            console.log("RequestID: " + requestId)
+        else
+            if (!body)
+                console.log('{"RequestID":"' + requestId + '"}')
     }
 }
 
@@ -373,7 +382,7 @@ function printCollection(info) {
                 break
         }
     }
-    printResults(type.capitalize() + 's', dc)
+    printResults(type.capitalize() + 's', dc, null)
 }
 
 function printResourceCollection(info) {
@@ -382,12 +391,15 @@ function printResourceCollection(info) {
     for (var i = 0; i < info.items.length; i++) {
         data.push(printResource(info.items[i]))
     }
-    printResults('Resources', data)
+    printResults('Resources', data, null)
 }
 
-function printResults(title, value) {
-    if (isJson)
+function printResults(title, value, requestId) {
+    if (isJson) {
+        if (requestId)
+            value[0].RequestID = requestId
         console.log(JSON.stringify(value))
+    }
     else
         console.table(title, value)
 }
