@@ -192,6 +192,13 @@ You will be notified with the following message if you have provided incorrect c
 
 After successful authentication you will no longer need to provide credentials unless you want to change them. They are stored as a BASE64 encoded string in a '.profitbricks-auth' file in your home directory.
 
+You may provide your credentials in the environment variables as well. The CLI will always check for the credentials in the environment variables before attempting to read `.profitbricks-auth` file.
+
+```
+export PROFITBRICKS_USERNAME="YourProfitBricksUsername"
+export PROFITBRICKS_PASSWORD="YourProfitBricksPassword"
+```
+
 # How To's:
 
 These examples assume that you don't have any resources provisioned under your account. The first thing we will want to do is create a data center to hold all of our resources.

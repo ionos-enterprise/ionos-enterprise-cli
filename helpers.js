@@ -28,14 +28,17 @@ function writeAuthData(authData) {
 }
 
 function getAuthData() {
+    var user = process.env.PROFITBRICKS_USERNAME
+    var pass = process.env.PROFITBRICKS_PASSWORD
+
+    if (user && pass)
+        return new Buffer(user + ':' + pass, 'ascii').toString('base64')
+
     if (fs.existsSync(authFile))
         return fs.readFileSync(authFile).toString()
 }
 
 function printInfo(error, response, body) {
-    /*console.log(body)
-      console.log(error)*/
-
     if (response.headers) {
         location = response.headers.location
     }
