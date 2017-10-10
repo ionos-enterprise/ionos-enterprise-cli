@@ -190,7 +190,7 @@ You will be notified with the following message if you have provided incorrect c
 >Invalid user name or password. Please try again!
 ```
 
-After successful authentication you will no longer need to provide credentials unless you want to change them. They are stored as a BASE64 encoded string in a '.auth' file in your home directory.
+After successful authentication you will no longer need to provide credentials unless you want to change them. They are stored as a BASE64 encoded string in a '.profitbricks-auth' file in your home directory.
 
 # How To's:
 
