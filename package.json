@@ -1,19 +1,19 @@
 {
     "name": "profitbricks-cli",
-    "version": "3.1.0",
+    "version": "4.0.0",
     "license": "Apache-2.0",
     "scripts": {
         "start": "node profitbricks.js",
         "test": "node ./test/tests.js"
     },
-    "preferGlobal": "true",
+    "preferGlobal": true,
     "bin": {
         "profitbricks": "./profitbricks"
     },
     "dependencies": {
         "commander": "^2.7.1",
         "console.table": "^0.4.0",
-        "libprofitbricks": "3.0.2",
+        "libprofitbricks": "4.0.1",
         "prompt": "^0.2.14",
         "request": "^2.53.0"
     },

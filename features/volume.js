@@ -92,6 +92,8 @@ function createVolume(params) {
                 data.properties.licenceType = params.licencetype
             if (params.imageid)
                 data.properties.image = params.imageid
+            if (params.imagealias)
+                data.properties.imageAlias = params.imagealias
             if (params.type)
                 data.properties.type = params.type
             else {

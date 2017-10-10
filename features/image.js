@@ -50,6 +50,13 @@ function processImage(params) {
                 pbclient.deleteImage(params.id, helpers.printInfo)
             }
             break
+        case 'aliases':
+            if (!params.location) {
+                console.error('Please provide Location Id -l [location]')
+                process.exit(code = 5)
+            }
+            pbclient.getLocation(params.location, helpers.printInfo)
+            break
         default:
             params.outputHelp()
             break

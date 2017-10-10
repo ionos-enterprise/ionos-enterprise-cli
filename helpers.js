@@ -28,14 +28,17 @@ function writeAuthData(authData) {
 }
 
 function getAuthData() {
+    var user = process.env.PROFITBRICKS_USERNAME
+    var pass = process.env.PROFITBRICKS_PASSWORD
+
+    if (user && pass)
+        return new Buffer(user + ':' + pass, 'ascii').toString('base64')
+
     if (fs.existsSync(authFile))
         return fs.readFileSync(authFile).toString()
 }
 
 function printInfo(error, response, body) {
-    /*console.log(body)
-      console.log(error)*/
-
     if (response.headers) {
         location = response.headers.location
     }
@@ -65,40 +68,74 @@ function printInfo(error, response, body) {
         }
     }
 
+    // handle request ID for JSON output, if exists
+    var requestId = null
+    if (location) {
+        splice = location.split("/")
+        requestId = splice[6]
+    }
+
     if (body) {
         switch (info.type) {
             case 'datacenter':
-                printResults('Datacenter', [printDc(info)])
+                if (info.href.indexOf('um/resources/datacenter') > -1)
+                    printResults('Resource', [printResource(info)], requestId)
+                else
+                    printResults('Datacenter', [printDc(info)], requestId)
                 break
             case 'server':
-                printResults('Server', [printServer(info)])
+                printResults('Server', [printServer(info)], requestId)
                 break
             case 'volume':
-                printResults('Volume', [printVolume(info)])
+                printResults('Volume', [printVolume(info)], requestId)
                 break
             case 'image':
-                printResults('Volume', [printImage(info)])
+                if (info.href.indexOf('um/resources/image') > -1)
+                    printResults('Resource', [printResource(info)], requestId)
+                else
+                    printResults('Image', [printImage(info)], requestId)
                 break
             case 'snapshot':
-                printResults('Snapshot', [printSnapshot(info)])
+                if (info.href.indexOf('um/resources/snapshot') > -1)
+                    printResults('Resource', [printResource(info)], requestId)
+                else
+                    printResults('Snapshot', [printSnapshot(info)], requestId)
                 break
             case 'loadbalancer':
-                printResults('Loadbalancer', [printLoadbalancer(info)])
+                printResults('Loadbalancer', [printLoadbalancer(info)], requestId)
                 break
             case 'nic':
-                printResults('Nic', [printNic(info)])
+                printResults('Nic', [printNic(info)], requestId)
                 break
             case 'ipblock':
-                printResults('IP Block', [printIpblock(info)])
+                if (info.href.indexOf('um/resources/ipblock') > -1)
+                    printResults('Resource', [printResource(info)], requestId)
+                else
+                    printResults('IP Block', [printIpblock(info)], requestId)
                 break
             case 'lan':
-                printResults('LAN', [printLan(info)])
+                printResults('LAN', [printLan(info)], requestId)
                 break
             case 'firewall-rule':
-                printResults('Firewall Rule', [printFW(info)])
+                printResults('Firewall Rule', [printFW(info)], requestId)
                 break
             case 'collection':
-                printCollection(info)
+                if (info.id == 'resources')
+                    printResourceCollection(info)
+                else
+                    printCollection(info)
+                break
+            case 'location':
+                printResults('Image Alias', info.properties.imageAliases, requestId)
+                break
+            case 'group':
+                printResults('Group', [printGroup(info)], requestId)
+                break
+            case 'user':
+                printResults('User', [printUser(info)], requestId)
+                break
+            case 'resource':
+                printResults('Shared resource', [printShare(info)], requestId)
                 break
             case 'request-status':
                 if (!isJson) {
@@ -111,10 +148,12 @@ function printInfo(error, response, body) {
 
         }
     }
-    if (location) {
-        splice = location.split("/")
+    if (requestId) {
         if (!isJson)
-            console.log("RequestID: " + splice[6])
+            console.log("RequestID: " + requestId)
+        else
+            if (!body)
+                console.log('{"RequestID":"' + requestId + '"}')
     }
 }
 
@@ -243,6 +282,45 @@ function printLocation(info) {
     }
 }
 
+function printGroup(info) {
+    return {
+        Id: info.id,
+        Name: info.properties.name,
+        CreateDC: info.properties.createDataCenter,
+        CreateSnapshot: info.properties.createSnapshot,
+        ReserveIP: info.properties.reserveIp,
+        AccessActLog: info.properties.accessActivityLog
+    }
+}
+
+function printUser(info) {
+    return {
+        Id: info.id,
+        FirstName: info.properties.firstname,
+        LastName: info.properties.lastname,
+        Email: info.properties.email,
+        Admin: info.properties.administrator
+    }
+}
+
+function printShare(info) {
+    return {
+        Id: info.id,
+        EditPrivilege: info.properties.editPrivilege,
+        SharePrivilege: info.properties.sharePrivilege
+    }
+}
+
+function printResource(info) {
+    return {
+        Id: info.id,
+        Type: info.type,
+        Created: info.metadata.createdDate,
+        By: info.metadata.createdBy,
+        State: info.metadata.state
+    }
+}
+
 function printCollection(info) {
     var dc = []
     var type = ''
@@ -293,14 +371,38 @@ function printCollection(info) {
                 type = info.items[i].type
                 dc.push(printFW(info.items[i]))
                 break
+            case 'group':
+                type = info.items[i].type
+                dc.push(printGroup(info.items[i]))
+                break
+            case 'user':
+                type = info.items[i].type
+                dc.push(printUser(info.items[i]))
+                break
+            case 'resource':
+                type = 'Shared ' + info.items[i].type
+                dc.push(printShare(info.items[i]))
+                break
         }
     }
-    printResults(type.capitalize() + 's', dc)
+    printResults(type.capitalize() + 's', dc, null)
 }
 
-function printResults(title, value) {
-    if (isJson)
+function printResourceCollection(info) {
+    var data = []
+
+    for (var i = 0; i < info.items.length; i++) {
+        data.push(printResource(info.items[i]))
+    }
+    printResults('Resources', data, null)
+}
+
+function printResults(title, value, requestId) {
+    if (isJson) {
+        if (requestId)
+            value[0].RequestID = requestId
         console.log(JSON.stringify(value))
+    }
     else
         console.table(title, value)
 }

@@ -58,16 +58,37 @@ function processLan(params) {
 
 function updateLan(params) {
     var data = {}
-    data.name = params.name
-    if (params.public) {
-        if (params.public == 'false') {
-            data.public = false
-        } else if (params.public == 'true') {
-            data.public = true
+    try {
+        if (params.path) {
+            data = JSON.parse(fs.readFileSync(params.path, 'utf8'))
+        } else {
+            data.name = params.name
+            if (params.public) {
+                if (params.public == 'false') {
+                    data.public = false
+                } else if (params.public == 'true') {
+                    data.public = true
+                }
+            }
+            if (params.ipfailover) {
+                data.ipFailover = []
+                var fg = params.ipfailover.split(";")
+                for (var i = 0; i < fg.length; i++) {
+                    var pair = fg[i].split(",")
+                    if (pair.length != 2) {
+                        console.error('Failover group must be formated as "ip1,nicid1;ip2,nicid2;ip3,nicid3...", e.g. "208.94.36.95,2793c08f-1548-4903-87f8-fcad40b2680a;208.94.36.99,510d24b1-f363-4dbb-8e97-f3572a884719"')
+                        process.exit(code = 5)
+                    }
+                    var lanFailover = {}
+                    lanFailover.ip = pair[0].trim()
+                    lanFailover.nicUuid = pair[1].trim()
+                    data.ipFailover.push(lanFailover)
+                }
+            }
         }
+    } finally {
+        pbclient.patchLan(params.datacenterid, params.id, data, helpers.printInfo)
     }
-
-    pbclient.patchLan(params.datacenterid, params.id, data, helpers.printInfo)
 }
 
 function createLan(params) {
