@@ -530,7 +530,13 @@ $ profitbricks snapshot list
 ### Create Snapshot
 
 ```
-$ profitbricks snapshot create --datacenterid [dcid] --volumeid [volumeid]
+$ profitbricks snapshot create --datacenterid [dcid] --volumeid [volumeid] --name [name] --description [description]
+```
+
+### Restore Snapshot
+
+```
+$ profitbricks snapshot restore -i [snapshotid] --datacenterid [dcid] --volumeid [volumeid]
 ```
 
 ### Update Snapshot
