@@ -6,6 +6,8 @@ var fs = require('fs')
 exports.toBase64 = toBase64
 exports.getAuthData = getAuthData
 exports.printInfo = printInfo
+exports.printContractResources = printContractResources
+exports.setContractResource = setContractResource
 exports.setJson = setJson
 exports.setForce = setForce
 exports.force = force
@@ -14,6 +16,7 @@ var authFile = (process.env.HOME || process.env.USERPROFILE) + '/.profitbricks-a
 
 var isJson = false
 var force = false
+var contractResource = null
 
 
 function toBase64(user, pass) {
@@ -38,11 +41,7 @@ function getAuthData() {
         return fs.readFileSync(authFile).toString()
 }
 
-function printInfo(error, response, body) {
-    if (response.headers) {
-        location = response.headers.location
-    }
-
+function getValidResponseBody(error, response, body) {
     if (error) {
         console.error(error)
         process.exit(code = 5)
@@ -59,13 +58,23 @@ function printInfo(error, response, body) {
         }
     }
 
+    var info = null
     if (body != "") {
         try {
-            var info = JSON.parse(body)
+            info = JSON.parse(body)
         } catch (err) {
-            console.log("Whatever")
-            return
+            console.error(err)
+            process.exit(code = 5)
         }
+    }
+    return info
+}
+
+function printInfo(error, response, body) {
+    var info = getValidResponseBody(error, response, body)
+
+    if (response.headers) {
+        location = response.headers.location
     }
 
     // handle request ID for JSON output, if exists
@@ -75,7 +84,7 @@ function printInfo(error, response, body) {
         requestId = splice[6]
     }
 
-    if (body) {
+    if (info) {
         switch (info.type) {
             case 'datacenter':
                 if (info.href.indexOf('um/resources/datacenter') > -1)
@@ -157,8 +166,80 @@ function printInfo(error, response, body) {
     }
 }
 
+function printContractResources(error, response, body) {
+    var info = getValidResponseBody(error, response, body)
+
+    if (info) {
+        var ct = {}
+        if (isJson) {
+            ct.ContractNumber = info.properties.contractNumber
+            ct.Owner = info.properties.owner
+            ct.Status = info.properties.status
+            ct.CoresPerServer = info.properties.resourceLimits.coresPerServer
+            ct.CoresPerContract = info.properties.resourceLimits.coresPerContract
+            ct.CoresProvisioned = info.properties.resourceLimits.coresProvisioned
+            ct.RamPerServer = info.properties.resourceLimits.ramPerServer
+            ct.RamPerContract = info.properties.resourceLimits.ramPerContract
+            ct.RamProvisioned = info.properties.resourceLimits.ramProvisioned
+            ct.HddLimitPerVolume = info.properties.resourceLimits.hddLimitPerVolume
+            ct.HddLimitPerContract = info.properties.resourceLimits.hddLimitPerContract
+            ct.HddVolumeProvisioned = info.properties.resourceLimits.hddVolumeProvisioned
+            ct.SsdLimitPerVolume = info.properties.resourceLimits.ssdLimitPerVolume
+            ct.SsdLimitPerContract = info.properties.resourceLimits.ssdLimitPerContract
+            ct.SsdVolumeProvisioned = info.properties.resourceLimits.ssdVolumeProvisioned
+            ct.ReservableIps = info.properties.resourceLimits.reservableIps
+            ct.ReservedIpsOnContract = info.properties.resourceLimits.reservedIpsOnContract
+            ct.ReservedIpsInUse = info.properties.resourceLimits.reservedIpsInUse
+            console.log(JSON.stringify([ct]))
+            return
+        }
+        if (contractResource && typeof contractResource === 'string') {
+            if (!/^(cores|ram|hdd|ssd|ips)$/.test(contractResource)) {
+                console.error("Invalid resource type. Valid types: [cores|ram|hdd|ssd|ips].")
+                process.exit(code = 5)
+            }
+            switch (contractResource) {
+                case 'cores':
+                    ct.CoresPerServer = info.properties.resourceLimits.coresPerServer
+                    ct.CoresPerContract = info.properties.resourceLimits.coresPerContract
+                    ct.CoresProvisioned = info.properties.resourceLimits.coresProvisioned
+                    break
+                case 'ram':
+                    ct.RamPerServer = info.properties.resourceLimits.ramPerServer
+                    ct.RamPerContract = info.properties.resourceLimits.ramPerContract
+                    ct.RamProvisioned = info.properties.resourceLimits.ramProvisioned
+                    break
+                case 'hdd':
+                    ct.HddLimitPerVolume = info.properties.resourceLimits.hddLimitPerVolume
+                    ct.HddLimitPerContract = info.properties.resourceLimits.hddLimitPerContract
+                    ct.HddVolumeProvisioned = info.properties.resourceLimits.hddVolumeProvisioned
+                    break
+                case 'ssd':
+                    ct.SsdLimitPerVolume = info.properties.resourceLimits.ssdLimitPerVolume
+                    ct.SsdLimitPerContract = info.properties.resourceLimits.ssdLimitPerContract
+                    ct.SsdVolumeProvisioned = info.properties.resourceLimits.ssdVolumeProvisioned
+                    break
+                case 'ips':
+                    ct.ReservableIps = info.properties.resourceLimits.reservableIps
+                    ct.ReservedIpsOnContract = info.properties.resourceLimits.reservedIpsOnContract
+                    ct.ReservedIpsInUse = info.properties.resourceLimits.reservedIpsInUse
+                    break
+            }
+        } else {
+            ct.ContractNumber = info.properties.contractNumber
+            ct.Owner = info.properties.owner
+            ct.Status = info.properties.status
+        }
+        printResults('Contract Resources', [ct], null)
+    }
+}
+
 function setJson(flag) {
     isJson = flag
+}
+
+function setContractResource(flag) {
+    contractResource = flag
 }
 
 function setForce(flag) {

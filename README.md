@@ -33,6 +33,7 @@
     * [Group](#group)
     * [Share](#share)
     * [Resource](#resource)
+    * [Contract Resources](#contract-resources)
 * [Support](#support)
 
 ## Concepts
@@ -92,6 +93,7 @@ Run `profitbricks` or `profitbricks -h` or `profitbricks --help`:
     lan, [env]                    LAN operations
     request, [env]                Request operations
     location, [env]               Location operations
+    contract, [env]               Contract resources operations
     group, [env]                  Group operations
     user, [env]                   User operations
     share, [env]                  Share operations
@@ -170,6 +172,7 @@ Run `profitbricks` or `profitbricks -h` or `profitbricks --help`:
     --removeip [env]              Remove IP
     --adduser [env]               UUID of the user to add to a group
     --removeuser [env]            UUID of the user to remove from a group
+    --ctresource [env]            Contract resources type [cores|ram|hdd|ssd|ips]
     -f, --force                   Forces execution
     -h, --help                    output usage information
 ```
@@ -908,6 +911,20 @@ $ profitbricks resource list --resourcetype [datacenter|snapshot|image|ipblock]
 $ profitbricks resource get --resourcetype [datacenter|snapshot|image|ipblock] -i [resourceid]
 
 $ profitbricks resource show --resourcetype [datacenter|snapshot|image|ipblock] -i [resourceid]
+```
+
+## Contract Resources
+
+### List Contract Info
+
+```
+$ profitbricks contract list
+```
+
+### List Contract Info By Resource
+
+```
+$ profitbricks contract list --ctresource [cores|ram|hdd|ssd|ips]
 ```
 
 

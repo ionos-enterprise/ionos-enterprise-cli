@@ -72,7 +72,7 @@ npm install -g -s profitbricks-cli
 
 cli_complete="complete -W '-h --help -V --version setup datacenter server \
 volume snapshot loadbalancer nic firewall ipblock drives image lan request \
-location group user share resource -i --id -n --name -l --location \
+location contract group user share resource -i --id -n --name -l --location \
 -d --description -p --path --datacenterid --loadbalancerid -r --ram -c --cores \
 -a --availabilityzone --licencetype --sshkey --bootVolume --bootCdrom --volumeid \
 --volumesize --volumename --imageid --imagealias -b --bus -t --type --imagepassword \
@@ -84,7 +84,7 @@ location group user share resource -i --id -n --name -l --location \
 --groupid --resourceid --resourcetype --editprivilege --shareprivilege \
 --createdatacenter --createsnapshot --reserveip --accessactlog --firstname \
 --lastname --email --password --admin --forcesecauth --json --addip --removeip \
---adduser --removeuser -f --force' \
+--adduser --removeuser --ctresource -f --force' \
 profitbricks"
 
 # Enable profitbricks-cli auto-completion to the user environment
