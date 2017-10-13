@@ -3,11 +3,11 @@ var prompt = require('prompt')
 var helpers = require('../helpers')
 var fs = require('fs')
 
-exports.process = processRequest
+exports.process = processLocation
 
-function processRequest(params) {
+function processLocation(params) {
 
-	if (params.location == "list") {
-		pbclient.listLocations(helpers.printInfo)
-	}
+    if (params.location == "list") {
+        pbclient.listLocations(helpers.printInfo)
+    }
 }
