@@ -31,10 +31,12 @@ var group = require('./features/group')
 var user = require('./features/user')
 var share = require('./features/share')
 var resource = require('./features/resource')
+var contract = require('./features/contract')
 
 global.force = false
 
 pbclient.setdepth(5)
+pbclient.setuseragent('CLI/4.1.0')
 
 initializeCli()
 
@@ -42,7 +44,7 @@ parseParameters()
 
 function initializeCli() {
     program
-        .version('4.0.0')
+        .version('4.1.0')
         .usage('[Options]')
         .option('setup', 'Configures credentials for ProfitBricks CLI')
         .option('datacenter, [env]', 'Data center operations')
@@ -58,6 +60,7 @@ function initializeCli() {
         .option('lan, [env]', 'LAN operations')
         .option('request, [env]', 'Request operations')
         .option('location, [env]', 'Location operations')
+        .option('contract, [env]', 'Contract resources operations')
         .option('group, [env]', 'Group operations')
         .option('user, [env]', 'User operations')
         .option('share, [env]', 'Share operations')
@@ -136,6 +139,7 @@ function initializeCli() {
         .option('--removeip [env]', 'Remove IP')
         .option('--adduser [env]', 'UUID of the user to add to a group')
         .option('--removeuser [env]', 'UUID of the user to remove from a group')
+        .option('--ctresource [env]', 'Contract resources type [cores|ram|hdd|ssd|ips]')
         .option('-f, --force', 'Forces execution')
         .parse(process.argv)
 }
@@ -179,6 +183,8 @@ function parseParameters() {
         helpers.setJson(program.json)
     if (program.force)
         global.force = program.force
+    if (program.ctresource)
+        helpers.setContractResource(program.ctresource)
 
     try {
         var authdata = helpers.getAuthData()
@@ -222,6 +228,8 @@ function parseParameters() {
         share.process(program)
     else if (program.resource)
         resource.process(program)
+    else if (program.contract)
+        contract.process(program)
     else if (program.location){
         location.process(program)
         }

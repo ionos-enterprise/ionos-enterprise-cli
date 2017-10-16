@@ -21,6 +21,9 @@ function processSnapshot(params) {
         case 'create':
             createSnapshot(params)
             break
+        case 'restore':
+            restoreSnapshot(params)
+            break
         case 'update':
             updateSnapshot(params)
             break
@@ -58,11 +61,10 @@ function processSnapshot(params) {
 
 function createSnapshot(params) {
     var data = {}
-    data = {}
 
-    if (params.name)
+    if (params.name && typeof params.name === 'string')
         data.name = params.name
-    if (params.description)
+    if (params.description && typeof params.description === 'string')
         data.description = params.description
     if (!params.datacenterid || params.datacenterid == true) {
         console.error("Data Center Id is a required field.")
@@ -73,6 +75,25 @@ function createSnapshot(params) {
         process.exit(code = 5)
     }
     pbclient.createSnapshot(params.datacenterid, params.volumeid, data, helpers.printInfo)
+}
+
+function restoreSnapshot(params) {
+    var data = {}
+
+    if (!params.id || params.id == true) {
+        console.error("Snapshot Id is a required field.")
+        process.exit(code = 5)
+    }
+    if (!params.datacenterid || params.datacenterid == true) {
+        console.error("Data Center Id is a required field.")
+        process.exit(code = 5)
+    }
+    if (!params.volumeid || params.volumeid == true) {
+        console.error("Volume Id is a required field.")
+        process.exit(code = 5)
+    }
+    data.snapshotId = params.id
+    pbclient.restoreSnapshot(params.datacenterid, params.volumeid, data, helpers.printInfo)
 }
 
 function updateSnapshot(params) {
