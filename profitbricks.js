@@ -36,6 +36,7 @@ var contract = require('./features/contract')
 global.force = false
 
 pbclient.setdepth(5)
+pbclient.setuseragent('CLI/4.1.0')
 
 initializeCli()
 
@@ -43,7 +44,7 @@ parseParameters()
 
 function initializeCli() {
     program
-        .version('4.0.0')
+        .version('4.1.0')
         .usage('[Options]')
         .option('setup', 'Configures credentials for ProfitBricks CLI')
         .option('datacenter, [env]', 'Data center operations')

@@ -13,7 +13,7 @@
     "dependencies": {
         "commander": "^2.7.1",
         "console.table": "^0.4.0",
-        "libprofitbricks": "4.0.1",
+        "libprofitbricks": "4.1.0",
         "prompt": "^0.2.14",
         "request": "^2.53.0"
     },
