@@ -56,7 +56,7 @@ describe('Nic tests', function() {
     it('List Nics', function(done) {
         setTimeout(function() {
             nicGet(done)
-        }, 20000)
+        }, 30000)
     })
 
     it('Shows a Nic', function(done) {
@@ -72,7 +72,7 @@ describe('Nic tests', function() {
     it('Deletes a Nic', function(done) {
         setTimeout(function() {
             nicDelete(done)
-        }, 3000)
+        }, 10000)
     })
 
     after(function(done) {
