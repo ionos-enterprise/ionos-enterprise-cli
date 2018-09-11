@@ -2,11 +2,6 @@
  * Created by jasmin.gacic on 03/11/15.
  */
 
-/**
- * Node v8.x now reserves the unused console.table namespace. Removing
- * the module allows CLI compatibility with Node v8.x.
- */
-delete console.table
 require('console.table')
 
 var program = require('commander')
@@ -36,7 +31,7 @@ var contract = require('./features/contract')
 global.force = false
 
 pbclient.setdepth(5)
-pbclient.setuseragent('CLI/4.1.0')
+pbclient.setuseragent('CLI/4.1.1')
 
 initializeCli()
 
@@ -44,7 +39,7 @@ parseParameters()
 
 function initializeCli() {
     program
-        .version('4.1.0')
+        .version('4.1.1')
         .usage('[Options]')
         .option('setup', 'Configures credentials for ProfitBricks CLI')
         .option('datacenter, [env]', 'Data center operations')

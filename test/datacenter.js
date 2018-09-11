@@ -77,7 +77,7 @@ function dataCenterCreateScript(done) {
 function dataCenterCreateParams(done) {
     var name = "1Datacenter"
     var description = "description"
-    var location = "de/fkb"
+    var location = "us/ewr"
     exec('node profitbricks.js datacenter create --json --name ' + name +
     ' --description ' + description +
     ' --location ' + location, function (error, stdout, stderr) {
@@ -90,7 +90,7 @@ function dataCenterCreateParams(done) {
             assert.equal(data[0].Location, location)
             exec('node profitbricks.js datacenter delete -i ' + data[0].Id+ ' --json --force', function (error, stdout, stderr) {
                 checkErrors(error, stderr, done)
-                assert.equal(stdout, '')
+                assert.notEqual(stdout, '')
                 done()
             })
         }
@@ -117,7 +117,7 @@ function dataCenterUpdate(done) {
 function dataCenterDelete(done) {
     exec('node profitbricks.js datacenter delete -i ' + dcid + ' --json --force', function (error, stdout, stderr) {
         checkErrors(error, stderr, done)
-        assert.equal(stdout, '')
+        assert.notEqual(stdout, '')
         setTimeout(function(){
             exec('node profitbricks.js datacenter show -i ' + dcid + ' --json', function (error, stdout, stderr) {
                 assert.equal(stdout, "")

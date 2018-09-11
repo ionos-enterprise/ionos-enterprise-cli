@@ -83,7 +83,6 @@ function snapshotList(done) {
         checkErrors(error, stderr, done)
         var data = JSON.parse(stdout)
         assert.equal(data.length > 0, true)
-        snapshotid = data[0].Id
         done()
     })
 }
@@ -96,7 +95,7 @@ function snapshotShow(done) {
             var info = JSON.parse(stdout)
             assert.equal(info[0].Id, snapshotid)
             assert.equal(info[0].Name, 'NodeJS SDK Test')
-            assert.equal(info[0].State, 'AVAILABLE')
+            assert.equal(info[0].State, 'BUSY')
             done()
         })
 }

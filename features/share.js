@@ -54,7 +54,7 @@ function processShare(params) {
                     }
                 })
             } else
-                pbclient.removeShare(params.id, helpers.printInfo)
+                pbclient.removeShare(params.groupid, params.id, helpers.printInfo)
             break
         default:
             params.outputHelp()
