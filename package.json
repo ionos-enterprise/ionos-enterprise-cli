@@ -1,6 +1,6 @@
 {
     "name": "profitbricks-cli",
-    "version": "4.1.0",
+    "version": "4.1.1",
     "license": "Apache-2.0",
     "scripts": {
         "start": "node profitbricks.js",
@@ -12,7 +12,7 @@
     },
     "dependencies": {
         "commander": "^2.7.1",
-        "console.table": "^0.4.0",
+        "console.table": "^0.10.0",
         "libprofitbricks": "4.1.0",
         "prompt": "^0.2.14",
         "request": "^2.53.0"
@@ -31,7 +31,7 @@
     ],
     "main": "profitbricks.js",
     "devDependencies": {
-        "mocha": "^2.2.1"
+        "mocha": "^5.2.0"
     },
     "repository": {
         "type": "git",

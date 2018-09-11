@@ -37,11 +37,13 @@ describe('Lan tests', function () {
     it('Get Lans', function (done) {
         setTimeout(function(){
             lanGet(done)
-        }, 5000)
+        }, 10000)
     })
 
     it('Show specific Lan', function (done) {
-        lanShow(done)
+        setTimeout(function () {
+            lanShow(done)
+        }, 5000)
     })
 
     it('Deletes a Lan', function (done) {

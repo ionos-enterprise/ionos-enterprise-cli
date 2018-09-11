@@ -162,7 +162,7 @@ function serverDelete(done) {
         ' -i ' + sid + ' --json --force',
         function(error, stdout, stderr) {
             checkErrors(error, stderr, done)
-            assert.equal(stdout, '')
+            assert.notEqual(stdout, '')
             done()
         })
 }
