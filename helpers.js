@@ -12,7 +12,7 @@ exports.setJson = setJson
 exports.setForce = setForce
 exports.force = force
 
-var authFile = (process.env.HOME || process.env.USERPROFILE) + '/.profitbricks-auth'
+var authFile = (process.env.HOME || process.env.USERPROFILE) + '/.ionosenterprise-auth'
 
 var isJson = false
 var force = false
@@ -31,8 +31,8 @@ function writeAuthData(authData) {
 }
 
 function getAuthData() {
-    var user = process.env.PROFITBRICKS_USERNAME
-    var pass = process.env.PROFITBRICKS_PASSWORD
+    var user = process.env.IONOSENTERPRISE_USERNAME
+    var pass = process.env.IONOSENTERPRISE_PASSWORD
 
     if (user && pass)
         return new Buffer(user + ':' + pass, 'ascii').toString('base64')
@@ -128,9 +128,26 @@ function printInfo(error, response, body) {
             case 'firewall-rule':
                 printResults('Firewall Rule', [printFW(info)], requestId)
                 break
+            case 'k8s':
+                printK8SCollection(info)
+                break
+            case 's3key':
+                printS3Collection(info)
+                break
+            case 'nodepool':
+                printK8SNodepoolCollection(info)
+                break
             case 'collection':
                 if (info.id == 'resources')
                     printResourceCollection(info)
+                else if (info.id == 'k8s')
+                    printK8SCollection(info)
+                else if (info.id == 's3')
+                    printS3Collection(info)
+                else if (info.id.indexOf('/s3keys') > 0)
+                    printS3Collection(info)
+                else if (info.id.indexOf('/nodepools') > 0)
+                    printK8SNodepoolCollection(info)
                 else
                     printCollection(info)
                 break
@@ -392,6 +409,63 @@ function printShare(info) {
     }
 }
 
+function printK8SNodepool(info) {
+    var item = {
+        Id: info.id
+    }
+
+    for (var key in info.properties) {
+        if (key.toLowerCase().indexOf('version') === -1) {
+            var item_key = key.charAt(0).toUpperCase() + key.slice(1);
+            item[item_key] = info.properties[key];
+        }
+    }
+
+    item.State = info.metadata.state;
+
+    item.Created = info.metadata.createdDate;
+    item.By = info.metadata.createdBy;
+
+    return item;
+}
+
+function printK8S(info) {
+    var item = {
+        Id: info.id
+    }
+
+    for (var key in info.properties) {
+        if (key.toLowerCase().indexOf('version') === -1) {
+            var item_key = key.charAt(0).toUpperCase() + key.slice(1);
+            item[item_key] = info.properties[key];
+        }
+    }
+
+    item.State = info.metadata.state;
+
+    item.Created = info.metadata.createdDate;
+    item.By = info.metadata.createdBy;
+
+    return item;
+}
+
+function printS3(info) {
+    var item = {
+        Id: info.id
+    }
+
+    for (var key in info.properties) {
+        if (key.toLowerCase().indexOf('version') === -1) {
+            var item_key = key.charAt(0).toUpperCase() + key.slice(1);
+            item[item_key] = info.properties[key];
+        }
+    }
+
+    item.Created = info.metadata.createdDate;
+
+    return item;
+}
+
 function printResource(info) {
     return {
         Id: info.id,
@@ -476,6 +550,45 @@ function printResourceCollection(info) {
         data.push(printResource(info.items[i]))
     }
     printResults('Resources', data, null)
+}
+
+function printS3Collection(info) {
+    var data = []
+
+    if (!info.items) {
+        info.items = [info]
+    }
+
+    for (var i = 0; i < info.items.length; i++) {
+        data.push(printS3(info.items[i]))
+    }
+    printResults('S3', data, null)
+}
+
+function printK8SCollection(info) {
+    var data = []
+
+    if (!info.items) {
+        info.items = [info]
+    }
+
+    for (var i = 0; i < info.items.length; i++) {
+        data.push(printK8S(info.items[i]))
+    }
+    printResults('K8S', data, null)
+}
+
+function printK8SNodepoolCollection(info) {
+    var data = []
+
+    if (!info.items) {
+        info.items = [info]
+    }
+
+    for (var i = 0; i < info.items.length; i++) {
+        data.push(printK8SNodepool(info.items[i]))
+    }
+    printResults('K8S Nodepools', data, null)
 }
 
 function printResults(title, value, requestId) {

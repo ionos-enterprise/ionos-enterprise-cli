@@ -1,6 +1,6 @@
 var assert = require("assert")
 var exec = require('child_process').exec
-var pbclient = require('libprofitbricks')
+var pbclient = require('libionosenterprise')
 
 var dcid = ''
 var sid = ''
@@ -30,7 +30,7 @@ describe('IP Block tests', function () {
 )
 
 function ipblockGet(done) {
-    exec('node profitbricks.js ipblock list --json', function (error, stdout, stderr) {
+    exec('node ionosenterprise.js ipblock list --json', function (error, stdout, stderr) {
         checkErrors(error, stderr, done)
         var data = JSON.parse(stdout)
         assert.equal(data.length > 0, true)
@@ -43,7 +43,7 @@ function ipblockCreateParams(done) {
     var location = "us/las"
     var size = 1
 
-    exec('node profitbricks.js ipblock create' +
+    exec('node ionosenterprise.js ipblock create' +
     ' --location ' + location +
     ' --size ' + size +
     ' --json', function (error, stdout, stderr) {
@@ -56,7 +56,7 @@ function ipblockCreateParams(done) {
 }
 
 function ipblockShow(done) {
-    exec('node profitbricks.js ipblock show --json ' +
+    exec('node ionosenterprise.js ipblock show --json ' +
     ' -i ' + ipblockid, function (error, stdout, stderr) {
         checkErrors(error, stderr, done)
         var data = JSON.parse(stdout)
@@ -67,11 +67,11 @@ function ipblockShow(done) {
 }
 
 function ipblockDelete(done) {
-    exec('node profitbricks.js ipblock delete --force ' +
+    exec('node ionosenterprise.js ipblock delete --force ' +
     ' -i ' + ipblockid, function (error, stdout, stderr) {
         checkErrors(error, stderr, done)
         assert.ok(stdout)
-        exec('node profitbricks.js ipblock show --json ' +
+        exec('node ionosenterprise.js ipblock show --json ' +
         ' -i ' + ipblockid, function (error, stdout, stderr) {
             assert.equal(stdout, "")
             assert.notEqual(stderr, null)

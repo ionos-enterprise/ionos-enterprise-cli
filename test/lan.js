@@ -1,6 +1,6 @@
 var assert = require("assert")
 var exec = require('child_process').exec
-var pbclient = require('libprofitbricks')
+var pbclient = require('libionosenterprise')
 var helpers = require('../helpers')
 
 var dcid = ''
@@ -60,7 +60,7 @@ describe('Lan tests', function () {
 
 function lanCreateParams(done) {
     var name = 'name'
-    exec('node profitbricks.js lan create --json' +
+    exec('node ionosenterprise.js lan create --json' +
     ' --datacenterid ' + dcid +
     ' --public ' + true +
     ' --name ' + name, function (error, stdout, stderr) {
@@ -73,7 +73,7 @@ function lanCreateParams(done) {
 }
 
 function lanGet(done) {
-    exec('node profitbricks.js lan list --json --datacenterid ' + dcid, function (error, stdout, stderr) {
+    exec('node ionosenterprise.js lan list --json --datacenterid ' + dcid, function (error, stdout, stderr) {
         checkErrors(error, stderr, done)
         var data = JSON.parse(stdout)
         assert.equal(data.length > 0, true)
@@ -82,7 +82,7 @@ function lanGet(done) {
 }
 
 function lanShow(done) {
-    exec('node profitbricks.js lan show --json ' +
+    exec('node ionosenterprise.js lan show --json ' +
     ' --datacenterid ' + dcid +
     ' -i ' + lanid, function (error, stdout, stderr) {
         checkErrors(error, stderr, done)
@@ -94,7 +94,7 @@ function lanShow(done) {
 }
 
 function lanDelete(done) {
-    exec('node profitbricks.js lan delete --force --datacenterid ' + dcid +
+    exec('node ionosenterprise.js lan delete --force --datacenterid ' + dcid +
         ' -i ' + lanid, function (error, stdout, stderr) {
             checkErrors(error, stderr, done)
             done()

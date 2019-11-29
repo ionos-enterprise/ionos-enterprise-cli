@@ -48,9 +48,9 @@ function install_nodejs() {
             ;;
         *)
             echo "Unable to identify Linux distribution."
-            echo "Please install Node.js and NPM manually and install the ProfitBricks CLI with the following command:"
+            echo "Please install Node.js and NPM manually and install the Ionos Enterprise CLI with the following command:"
             echo
-            echo "npm install -g profitbricks-cli"
+            echo "npm install -g ionosenterprise-cli"
             exit 1
             ;;
     esac
@@ -67,8 +67,8 @@ if [ "$?" -ne 0 ]; then
     install_nodejs
 fi
 
-# Install profitbricks-cli with NPM
-npm install -g -s profitbricks-cli
+# Install ionosenterprise-cli with NPM
+npm install -g -s ionosenterprise-cli
 
 cli_complete="complete -W '-h --help -V --version setup datacenter server \
 volume snapshot loadbalancer nic firewall ipblock drives image lan request \
@@ -85,10 +85,10 @@ location contract group user share resource -i --id -n --name -l --location \
 --createdatacenter --createsnapshot --reserveip --accessactlog --firstname \
 --lastname --email --password --admin --forcesecauth --json --addip --removeip \
 --adduser --removeuser --ctresource -f --force' \
-profitbricks"
+ionosenterprise"
 
-# Enable profitbricks-cli auto-completion to the user environment
-grep profitbricks $HOME/.profile
+# Enable ionosenterprise-cli auto-completion to the user environment
+grep ionosenterprise $HOME/.profile
 if [ "$?" -ne 0 ]; then
     echo $cli_complete >> $HOME/.profile
 fi

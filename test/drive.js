@@ -1,6 +1,6 @@
 var assert = require("assert")
 var exec = require('child_process').exec
-var pbclient = require('libprofitbricks')
+var pbclient = require('libionosenterprise')
 var helpers = require('../helpers')
 
 var dcid = '';
@@ -86,7 +86,7 @@ describe('Drive tests', function() {
 })
 
 function attachDrive(done) {
-    exec('node profitbricks.js drives attach --json --datacenterid ' + dcid + ' --serverid ' + sid + ' -i ' + driveid, function(error, stdout, stderr) {
+    exec('node ionosenterprise.js drives attach --json --datacenterid ' + dcid + ' --serverid ' + sid + ' -i ' + driveid, function(error, stdout, stderr) {
         checkErrors(error, stderr, done)
         var result = JSON.parse(stdout)
         newdriveid = result[0].Id
@@ -95,7 +95,7 @@ function attachDrive(done) {
 }
 
 function listDrives(done) {
-    exec('node profitbricks.js drives list --json --datacenterid ' + dcid + ' --serverid ' + sid, function(error, stdout, stderr) {
+    exec('node ionosenterprise.js drives list --json --datacenterid ' + dcid + ' --serverid ' + sid, function(error, stdout, stderr) {
         checkErrors(error, stderr, done)
         var result = JSON.parse(stdout)
         assert.equal(result[0].Id, driveid)
@@ -104,7 +104,7 @@ function listDrives(done) {
 }
 
 function showDrive(done) {
-    exec('node profitbricks.js drives show --json --datacenterid ' + dcid + ' --serverid ' + sid  + ' -i ' + driveid, function(error, stdout, stderr) {
+    exec('node ionosenterprise.js drives show --json --datacenterid ' + dcid + ' --serverid ' + sid  + ' -i ' + driveid, function(error, stdout, stderr) {
         checkErrors(error, stderr, done)
         var result = JSON.parse(stdout)
         assert.equal(result[0].Id, driveid)
@@ -113,7 +113,7 @@ function showDrive(done) {
 }
 
 function detachDrive(done) {
-    exec('node profitbricks.js drives detach --datacenterid ' + dcid + ' --serverid ' + sid + ' -i ' + newdriveid, function(error, stdout, stderr) {
+    exec('node ionosenterprise.js drives detach --datacenterid ' + dcid + ' --serverid ' + sid + ' -i ' + newdriveid, function(error, stdout, stderr) {
         checkErrors(error, stderr, done)
         done()
     })

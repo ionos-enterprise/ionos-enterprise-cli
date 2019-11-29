@@ -1,4 +1,4 @@
-var pbclient = require('libprofitbricks')
+var pbclient = require('libionosenterprise')
 var prompt = require('prompt')
 var helpers = require('../helpers')
 var fs = require('fs')

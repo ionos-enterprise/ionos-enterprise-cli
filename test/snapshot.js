@@ -1,6 +1,6 @@
 var assert = require("assert")
 var exec = require('child_process').exec
-var pbclient = require('libprofitbricks')
+var pbclient = require('libionosenterprise')
 var helpers = require('../helpers')
 
 var dcid = '';
@@ -79,7 +79,7 @@ describe('Snapshot tests', function() {
 })
 
 function snapshotList(done) {
-    exec('node profitbricks.js snapshot list --json ', function(error, stdout, stderr) {
+    exec('node ionosenterprise.js snapshot list --json ', function(error, stdout, stderr) {
         checkErrors(error, stderr, done)
         var data = JSON.parse(stdout)
         assert.equal(data.length > 0, true)
@@ -88,7 +88,7 @@ function snapshotList(done) {
 }
 
 function snapshotShow(done) {
-    exec('node profitbricks.js snapshot show --json ' +
+    exec('node ionosenterprise.js snapshot show --json ' +
         '-i ' + snapshotid,
         function(error, stdout, stderr) {
             checkErrors(error, stderr, done)
@@ -101,7 +101,7 @@ function snapshotShow(done) {
 }
 
 function snapshotCreateParams(done) {
-    exec('node profitbricks.js snapshot create --json' +
+    exec('node ionosenterprise.js snapshot create --json' +
         ' --datacenterid ' + dcid +
         ' --volumeid ' + volumeid +
         ' --name ' + '"NodeJS SDK Test"',
@@ -116,7 +116,7 @@ function snapshotCreateParams(done) {
 
 function snapshotUpdate(done) {
     var name = "Newname"
-    exec('node profitbricks.js snapshot update --json ' +
+    exec('node ionosenterprise.js snapshot update --json ' +
         '-i ' + snapshotid +
         ' --name ' + name,
         function(error, stdout, stderr) {
@@ -130,7 +130,7 @@ function snapshotUpdate(done) {
 }
 
 function snapshotDelete(done) {
-    exec('node profitbricks.js snapshot delete ' +
+    exec('node ionosenterprise.js snapshot delete ' +
         '-i ' + snapshotid +
         ' --force ',
         function(error, stdout, stderr) {

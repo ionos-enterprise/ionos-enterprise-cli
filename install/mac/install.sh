@@ -24,8 +24,8 @@ if [ $? -ne 0 ]; then
     fi
 fi
 
-# Install profitbricks-cli using NPM
-npm install -g -s profitbricks-cli
+# Install ionosenterprise-cli using NPM
+npm install -g -s ionosenterprise-cli
 
 cli_complete="complete -W '-h --help -V --version setup datacenter server \
 volume snapshot loadbalancer nic firewall ipblock drives image lan request \
@@ -42,10 +42,10 @@ location contract group user share resource -i --id -n --name -l --location \
 --createdatacenter --createsnapshot --reserveip --accessactlog --firstname \
 --lastname --email --password --admin --forcesecauth --json --addip --removeip \
 --adduser --removeuser --ctresource -f --force' \
-profitbricks"
+ionosenterprise"
 
-# Enable profitbricks-cli auto-completion to the user environment
-grep profitbricks $HOME/.profile
+# Enable ionosenterprise-cli auto-completion to the user environment
+grep ionosenterprise $HOME/.profile
 if [ $? -ne 0 ]; then
     echo $cli_complete >> $HOME/.profile
 fi

@@ -1,45 +1,45 @@
 {
-    "name": "profitbricks-cli",
-    "version": "4.1.1",
+    "name": "ionosenterprise-cli",
+    "version": "5.1.0",
     "license": "Apache-2.0",
     "scripts": {
-        "start": "node profitbricks.js",
+        "start": "node ionosenterprise.js",
         "test": "node ./test/tests.js"
     },
     "preferGlobal": true,
     "bin": {
-        "profitbricks": "./profitbricks"
+        "ionosentrprise": "./ionosenterprise"
     },
     "dependencies": {
         "commander": "^2.7.1",
         "console.table": "^0.10.0",
-        "libprofitbricks": "4.1.0",
+        "libionosenterprise": "5.1.0",
         "prompt": "^0.2.14",
         "request": "^2.53.0"
     },
-    "description": "ProfitBricks Cross Platform Command Line tool",
+    "description": "IonosEnterprise Cross Platform Command Line tool",
     "tags": [
-        "profitbricks",
+        "ionosenterprise",
         "cli"
     ],
     "keywords": [
         "node",
-        "profitbricks",
+        "ionosenterprise",
         "cli",
         "cloud hosting",
         "deployment"
     ],
-    "main": "profitbricks.js",
+    "main": "ionosenterprise.js",
     "devDependencies": {
         "mocha": "^5.2.0"
     },
     "repository": {
         "type": "git",
-        "url": "https://github.com/profitbricks/profitbricks-cli.git"
+        "url": "https://github.com/ionos-enterprise/ionos-enterprise-cli.git"
     },
     "author": "jasminSPC",
     "bugs": {
-        "url": "https://github.com/profitbricks/profitbricks-cli/issues"
+        "url": "https://github.com/ionos-enterprise/ionos-enterprise-cli/issues"
     },
-    "homepage": "https://github.com/profitbricks/profitbricks-cli"
+    "homepage": "https://github.com/ionos-enterprise/ionos-enterprise-cli"
 }

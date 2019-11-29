@@ -1,6 +1,6 @@
 var assert = require("assert")
 var exec = require('child_process').exec
-var pbclient = require('libprofitbricks')
+var pbclient = require('libionosenterprise')
 var helpers = require('../helpers')
 
 var dcid = '';
@@ -72,7 +72,7 @@ describe('Server tests', function() {
 })
 
 function serverGet(done) {
-    exec('node profitbricks.js server list --datacenterid ' + dcid + ' --json', function(error, stdout, stderr) {
+    exec('node ionosenterprise.js server list --datacenterid ' + dcid + ' --json', function(error, stdout, stderr) {
         checkErrors(error, stderr, done)
         var data = JSON.parse(stdout)
         assert.equal(data.length > 0, true)
@@ -81,9 +81,9 @@ function serverGet(done) {
 }
 
 function startStopServer(done){
-    exec('node profitbricks.js server stop --datacenterid ' + dcid + ' -i ' + sid + ' --json', function(error, stdout, stderr) {
+    exec('node ionosenterprise.js server stop --datacenterid ' + dcid + ' -i ' + sid + ' --json', function(error, stdout, stderr) {
         checkErrors(error, stderr, done)
-        exec('node profitbricks.js server start --datacenterid ' + dcid + ' -i ' + sid + ' --json', function(error, stdout, stderr) {
+        exec('node ionosenterprise.js server start --datacenterid ' + dcid + ' -i ' + sid + ' --json', function(error, stdout, stderr) {
             checkErrors(error, stderr, done)
             done()
         })
@@ -91,14 +91,14 @@ function startStopServer(done){
 }
 
 function rebootServer(done){
-    exec('node profitbricks.js server reboot --datacenterid ' + dcid + ' -i ' + sid + ' --json', function(error, stdout, stderr) {
+    exec('node ionosenterprise.js server reboot --datacenterid ' + dcid + ' -i ' + sid + ' --json', function(error, stdout, stderr) {
         checkErrors(error, stderr, done)
         done()
     })
 }
 
 function serverShow(done) {
-    exec('node profitbricks.js server show --datacenterid ' + dcid + ' -i ' + sid + ' --json', function(error, stdout, stderr) {
+    exec('node ionosenterprise.js server show --datacenterid ' + dcid + ' -i ' + sid + ' --json', function(error, stdout, stderr) {
         checkErrors(error, stderr, done)
         var data = JSON.parse(stdout)
         assert.equal(data.length > 0, true)
@@ -109,7 +109,7 @@ function serverShow(done) {
 
 function serverCreateScript(done) {
     var script = './scripts/server.json'
-    exec('node profitbricks.js server create --datacenterid ' + dcid + ' -p ' + script + ' --json', function(error, stdout, stderr) {
+    exec('node ionosenterprise.js server create --datacenterid ' + dcid + ' -p ' + script + ' --json', function(error, stdout, stderr) {
         checkErrors(error, stderr, done)
         var data = JSON.parse(stdout)
         sid = data[0].Id
@@ -121,7 +121,7 @@ function serverCreateParams(done) {
     var name = "PB_CLI_Test_Server"
     var cores = "1"
     var ram = "1024"
-    exec('node profitbricks.js server create --json ' +
+    exec('node ionosenterprise.js server create --json ' +
         ' --datacenterid  ' + dcid +
         ' --cores ' + cores +
         ' --name ' + name +
@@ -140,7 +140,7 @@ function serverCreateParams(done) {
 function serverUpdate(done) {
     var name = "PB_CLI_Test_Server_UPDATED"
     var cores = "2"
-    exec('node profitbricks.js server update --json ' +
+    exec('node ionosenterprise.js server update --json ' +
         '-i ' + sid +
         ' --datacenterid ' + dcid +
         ' --name ' + name +
@@ -157,7 +157,7 @@ function serverUpdate(done) {
 }
 
 function serverDelete(done) {
-    exec('node profitbricks.js server delete ' +
+    exec('node ionosenterprise.js server delete ' +
         '--datacenterid ' + dcid +
         ' -i ' + sid + ' --json --force',
         function(error, stdout, stderr) {

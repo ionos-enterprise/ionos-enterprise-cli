@@ -1,6 +1,6 @@
 var assert = require("assert")
 var exec = require('child_process').exec
-var pbclient = require('libprofitbricks')
+var pbclient = require('libionosenterprise')
 var helpers = require('../helpers')
 
 var dcid = '';
@@ -92,7 +92,7 @@ describe('Loadbalancer tests', function () {
 })
 
 function loadbalancerGet(done) {
-    exec('node profitbricks.js loadbalancer list --json ' +
+    exec('node ionosenterprise.js loadbalancer list --json ' +
     ' --datacenterid ' + dcid, function (error, stdout, stderr) {
         checkErrors(error, stderr, done)
         var data = JSON.parse(stdout)
@@ -105,7 +105,7 @@ function loadbalancerCreateParams(done) {
     var name = "PB_CLI_Test_Loadbalancer"
     var ip = "127.0.0.0"
     var dhcp = "true"
-    exec('node profitbricks.js loadbalancer create --json' +
+    exec('node ionosenterprise.js loadbalancer create --json' +
     ' --datacenterid ' + dcid +
     ' --name  ' + name +
     ' --ip ' + ip +
@@ -119,7 +119,7 @@ function loadbalancerCreateParams(done) {
 
 function loadbalancerCreateScript(done) {
     var script = './scripts/loadbalancer.json'
-    exec('node profitbricks.js loadbalancer create --json' +
+    exec('node ionosenterprise.js loadbalancer create --json' +
     ' --datacenterid ' + dcid +
     ' -p ' + script, function (error, stdout, stderr) {
         checkErrors(error, stderr, done)
@@ -132,7 +132,7 @@ function loadbalancerCreateScript(done) {
 
 
 function loadbalancerShow(done) {
-    exec('node profitbricks.js loadbalancer show --json' +
+    exec('node ionosenterprise.js loadbalancer show --json' +
         ' --datacenterid ' + dcid +
         ' -i ' + loadbalancerid, function (error, stdout, stderr) {
             checkErrors(error, stderr, done)
@@ -146,7 +146,7 @@ function loadbalancerShow(done) {
 
 function loadbalancerUpdate(done) {
     var name = "PB_CLI_Test_Loadbalancer_UPDATED"
-    exec('node profitbricks.js loadbalancer update --json' +
+    exec('node ionosenterprise.js loadbalancer update --json' +
     ' -i ' + loadbalancerid +
     ' --datacenterid ' + dcid +
     ' --name ' + name, function (error, stdout, stderr) {
@@ -159,7 +159,7 @@ function loadbalancerUpdate(done) {
 }
 
 function loadbalancerDelete(done) {
-    exec('node profitbricks.js loadbalancer delete' +
+    exec('node ionosenterprise.js loadbalancer delete' +
     ' --datacenterid ' + dcid +
     ' -i ' + loadbalancerid +
     ' --force ', function (error, stdout, stderr) {
