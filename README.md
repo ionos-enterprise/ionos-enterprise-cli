@@ -1,4 +1,4 @@
-# ProfitBricks CLI
+# IonosEnterprise CLI
 
 # Table of Contents
 
@@ -38,11 +38,11 @@
 
 ## Concepts
 
-The ProfitBricks CLI wraps the [ProfitBricks Cloud API](https://devops.profitbricks.com/api/cloud/) allowing you to interact with it from a command-line interface.
+The IonosEnterprise CLI wraps the [IonosEnterprise Cloud API](https://devops.ionos.com/api/cloud/v5/) allowing you to interact with it from a command-line interface.
 
 ## Getting Started
 
-Before you begin you will need to have [signed-up](https://www.profitbricks.com/signup/) for a ProfitBricks account. The credentials you establish during sign-up will be used to authenticate against the [ProfitBricks Cloud API](https://devops.profitbricks.com/api/cloud/).
+Before you begin you will need to have [signed-up](https://www.ionos.com/enterprise-cloud/signup) for a IonosEnterprise account. The credentials you establish during sign-up will be used to authenticate against the [IonosEnterprise Cloud API](https://devops.ionos.com/api/cloud/v5/).
 
 ## Installation
 
@@ -50,36 +50,36 @@ Please utilize one of the following URL's to retrieve an install script that is 
 
 ### Linux
 
-[GitHub - ProfitBricks Linux Install](https://github.com/profitbricks/profitbricks-cli/tree/master/install/linux/install.sh)
+[GitHub - IonosEnterprise Linux Install](https://github.com/ionos-enterprise/ionos-enterprise-cli/tree/master/install/linux/install.sh)
 
 ### Mac
 
-[GitHub - ProfitBricks Mac Install](https://github.com/profitbricks/profitbricks-cli/tree/master/install/mac/install.sh)
+[GitHub - IonosEnterprise Mac Install](https://github.com/ionos-enterprise/ionos-enterprise-cli/tree/master/install/mac/install.sh)
 
 ### Windows
 
-[GitHub - ProfitBricks Windows Install](https://github.com/profitbricks/profitbricks-cli/tree/master/install/windows/install.bat)
+[GitHub - IonosEnterprise Windows Install](https://github.com/ionos-enterprise/ionos-enterprise-cli/tree/master/install/windows/install.bat)
 
-If you prefer, you may install `nodejs` and `npm` manually. Then run the following to install the ProfitBricks CLI module globally:
+If you prefer, you may install `nodejs` and `npm` manually. Then run the following to install the IonosEnterprise CLI module globally:
 
 ```
-npm install -g profitbricks-cli
+npm install -g ionosenterprise-cli
 ```
 
 ## Overview
 
 A list of available operations can be accessed directly from the command line.
 
-Run `profitbricks` or `profitbricks -h` or `profitbricks --help`:
+Run `ionosenterprise` or `ionosenterprise -h` or `ionosenterprise --help`:
 
 ```
-  Usage: profitbricks [Options]
+  Usage: ionosenterprise [Options]
 
 
   Options:
 
     -V, --version                 output the version number
-    setup                         Configures credentials for ProfitBricks CLI
+    setup                         Configures credentials for IonosEnterprise CLI
     datacenter, [env]             Data center operations
     server, [env]                 Server operations
     volume, [env]                 Volume operations
@@ -182,7 +182,7 @@ Run `profitbricks` or `profitbricks -h` or `profitbricks --help`:
 Before using the CLI to perform any operations, we'll need to set our credentials:
 
 ```
-$ profitbricks setup
+$ ionosenterprise setup
 >prompt: username:username
 >prompt: password:
 ```
@@ -193,13 +193,13 @@ You will be notified with the following message if you have provided incorrect c
 >Invalid user name or password. Please try again!
 ```
 
-After successful authentication you will no longer need to provide credentials unless you want to change them. They are stored as a BASE64 encoded string in a '.profitbricks-auth' file in your home directory.
+After successful authentication you will no longer need to provide credentials unless you want to change them. They are stored as a BASE64 encoded string in a '.ionosenterprise-auth' file in your home directory.
 
-You may provide your credentials in the environment variables as well. The CLI will always check for the credentials in the environment variables before attempting to read `.profitbricks-auth` file.
+You may provide your credentials in the environment variables as well. The CLI will always check for the credentials in the environment variables before attempting to read `.ionosenterprise-auth` file.
 
 ```
-export PROFITBRICKS_USERNAME="YourProfitBricksUsername"
-export PROFITBRICKS_PASSWORD="YourProfitBricksPassword"
+export IONOSENTERPRISE_USERNAME="YourIonosEnterpriseUsername"
+export IONOSENTERPRISE_PASSWORD="YourIonosEnterprisePassword"
 ```
 
 # How To's:
@@ -208,10 +208,10 @@ These examples assume that you don't have any resources provisioned under your a
 
 ## Create Data Center
 
-We need to supply some parameters to get our first data center created. In this case, we will set the location to 'us/las'. Other valid locations can be determined by reviewing the [Cloud API Documentation](https://devops.profitbricks.com/api/cloud/v4/#locations). That documentation is an excellent resource since that is what the ProfitBricks CLI is calling to complete these operations.
+We need to supply some parameters to get our first data center created. In this case, we will set the location to 'us/las'. Other valid locations can be determined by reviewing the [Cloud API Documentation](https://devops.ionos.com/api/cloud/v5/#locations). That documentation is an excellent resource since that is what the IonosEnterprise CLI is calling to complete these operations.
 
 ```
-$ profitbricks datacenter create --name "Demo" --description "CLI Demo Data Center" --location "us/las"
+$ ionosenterprise datacenter create --name "Demo" --description "CLI Demo Data Center" --location "us/las"
 
 Datacenter
 -----------------------------------------------------
@@ -225,7 +225,7 @@ RequestID: 45dbf0ba-fc1b-4a2c-855f-a11705a996b8
 Et voilà, we've successfully provisioned a data center. Notice the "Id" that was returned. That UUID was assigned to our new data center and will be needed for other operations. The "RequestID" that was returned can be used to check on the status of any `create` or `update` operations.
 
 ```
-$ profitbricks request get -i 45dbf0ba-fc1b-4a2c-855f-a11705a996b8
+$ ionosenterprise request get -i 45dbf0ba-fc1b-4a2c-855f-a11705a996b8
 
 Status: DONE
 Message: Request has been successfully executed
@@ -236,7 +236,7 @@ Message: Request has been successfully executed
 Next we'll create a server in the data center. This time we have to pass the 'Id' for the data center in, along with some other relevant properties (processor cores, memory, boot volume or boot CD-ROM) for the new server.
 
 ```
-$ profitbricks server create --datacenterid 3fc832b1-558f-48a4-bca2-af5043975393 --cores 2 --name "Demo Server" --ram 256 --cpufamily AMD_OPTERON
+$ ionosenterprise server create --datacenterid 3fc832b1-558f-48a4-bca2-af5043975393 --cores 2 --name "Demo Server" --ram 256 --cpufamily AMD_OPTERON
 
 Server
 ------------------------------------------------------------------------------------------
@@ -250,7 +250,7 @@ Id                                    Name         AvailabilityZone  State  Core
 Whoops, we didn't assign enough memory to our instance. Lets go ahead and update the server to increase the amount of memory it has assigned. We'll need the datacenterid, the id of the server we are updating, along with the parameters that we want to change.
 
 ```
-$ profitbricks server update --datacenterid 3fc832b1-558f-48a4-bca2-af5043975393 -i 11767ba1-6290-420f-a0bf-b77679a285b2 --cores 1 --name "Demo Server" --ram 1024
+$ ionosenterprise server update --datacenterid 3fc832b1-558f-48a4-bca2-af5043975393 -i 11767ba1-6290-420f-a0bf-b77679a285b2 --cores 1 --name "Demo Server" --ram 1024
 
 Server
 -------------------------------------------------------------------------------------------
@@ -264,7 +264,7 @@ Id                                    Name         Availability Zone  State  Cor
 Lets take a look at the list of servers in our data center. There are a couple more listed in here for demonstration purposes.
 
 ```
-$ profitbricks server list --datacenterid 3fc832b1-558f-48a4-bca2-af5043975393
+$ ionosenterprise server list --datacenterid 3fc832b1-558f-48a4-bca2-af5043975393
 
 Servers
 -----------------------------------------------------------------------------------------------
@@ -280,7 +280,7 @@ Id                                    Name         Availability Zone  State     
 Now that we have a server provisioned, it needs some storage. We'll specify a size for this storage volume in GB as well as set the 'bus' and 'licencetype'. The 'bus' setting can have a serious performance impact and you'll want to use VIRTIO when possible. Using VIRTIO may require drivers to be installed depending on the OS you plan to install. The 'licencetype' impacts billing rate, as there is a surcharge for running certain OS types.
 
 ```
-$ profitbricks volume create --datacenterid 3fc832b1-558f-48a4-bca2-af5043975393 --size 12 --bus VIRTIO --licencetype LINUX --type HDD --name "Demo Srvr 1 Boot" --sshkey [ssh_key_string] --availabilityzone [availability_zone]
+$ ionosenterprise volume create --datacenterid 3fc832b1-558f-48a4-bca2-af5043975393 --size 12 --bus VIRTIO --licencetype LINUX --type HDD --name "Demo Srvr 1 Boot" --sshkey [ssh_key_string] --availabilityzone [availability_zone]
 
 Volume
 ------------------------------------------------------------------------
@@ -292,7 +292,7 @@ d7dc58a1-9505-48f5-9db4-22cff0659cf8  null  12    LINUX    VIRTIO  BUSY
 We can also use image aliases instead of non-constant image IDs to create new volumes. Use `image aliases` command to find out available image aliases for a particular location.
 
 ```
-node profitbricks volume create --datacenterid 3fc832b1-558f-48a4-bca2-af5043975393 --name "Test Alias" --imagealias ubuntu:latest --size 20 --bus VIRTIO --type SSD --sshkey [ssh_key_string]
+node ionosenterprise volume create --datacenterid 3fc832b1-558f-48a4-bca2-af5043975393 --name "Test Alias" --imagealias ubuntu:latest --size 20 --bus VIRTIO --type SSD --sshkey [ssh_key_string]
 
 Volume
 ------------------------------------------------------------------------------
@@ -306,7 +306,7 @@ e7a6e51e-824f-4733-8ae2-30da817a9cbe  Test Alias  20GB  null     VIRTIO  BUSY
 The volume we've created is not yet connected or attached to a server. To accomplish that we'll use the `dcid` and `serverid` values returned from the previous commands:
 
 ```
-$ profitbricks volume attach --datacenterid 3fc832b1-558f-48a4-bca2-af5043975393 --serverid 03334965-466b-470a-8fe5-6d6e461402a5 -i d7dc58a1-9505-48f5-9db4-22cff0659cf8
+$ ionosenterprise volume attach --datacenterid 3fc832b1-558f-48a4-bca2-af5043975393 --serverid 03334965-466b-470a-8fe5-6d6e461402a5 -i d7dc58a1-9505-48f5-9db4-22cff0659cf8
 
 Volume
 ----------------------------------------------------------------------------------
@@ -320,7 +320,7 @@ d7dc58a1-9505-48f5-9db4-22cff0659cf8  Demo Srvr 1 Boot  12    LINUX    null  BUS
 Let's take a look at all the volumes in the data center:
 
 ```
-$ profitbricks volume list --datacenterid 3fc832b1-558f-48a4-bca2-af5043975393
+$ ionosenterprise volume list --datacenterid 3fc832b1-558f-48a4-bca2-af5043975393
 
 Volumes
 ----------------------------------------------------------------------------------------
@@ -335,7 +335,7 @@ d231cd2e-89c1-4ed4-b4ad-d0a2c8b2b4a7  Demo Srvr 1 Boot  10    LINUX    VIRTIO  A
 If we have a volume we'd like to keep a copy of, perhaps as a backup, we can take a snapshot:
 
 ```
-$ profitbricks snapshot create --datacenterid 3fc832b1-558f-48a4-bca2-af5043975393 --volumeid d231cd2e-89c1-4ed4-b4ad-d0a2c8b2b4a7
+$ ionosenterprise snapshot create --datacenterid 3fc832b1-558f-48a4-bca2-af5043975393 --volumeid d231cd2e-89c1-4ed4-b4ad-d0a2c8b2b4a7
 
 Snapshot
 -------------------------------------------------------------------------------------------------------------
@@ -349,7 +349,7 @@ cf90b2e3-179b-4bff-a84c-d53ca58487dd  Demo Srvr 1 Boot-Snapshot-07/27/2015  null
 Here is a list of the snapshots in our account:
 
 ```
-$ profitbricks snapshot list
+$ ionosenterprise snapshot list
 
 Snapshots
 -----------------------------------------------------------------------------------------------------------------
@@ -363,7 +363,7 @@ cf90b2e3-179b-4bff-a84c-d53ca58487dd  Demo Srvr 1 Boot-Snapshot-07/27/2015  10  
 Now that we have a snapshot created, we can change the name to something more descriptive:
 
 ```
-$ profitbricks snapshot update -i cf90b2e3-179b-4bff-a84c-d53ca58487dd --name "Demo Srvr 1 OS just installed"
+$ ionosenterprise snapshot update -i cf90b2e3-179b-4bff-a84c-d53ca58487dd --name "Demo Srvr 1 OS just installed"
 
 Snapshot
 ------------------------------------------------------------------------------------------------------
@@ -377,7 +377,7 @@ cf90b2e3-179b-4bff-a84c-d53ca58487dd  Demo Srvr 1 OS just installed  10    2015-
 We can delete our snapshot when we are done with it:
 
 ```
-$ profitbricks snapshot delete -i cf90b2e3-179b-4bff-a84c-d53ca58487dd
+$ ionosenterprise snapshot delete -i cf90b2e3-179b-4bff-a84c-d53ca58487dd
 
 You are about to delete a snapshot. Do you want to proceed? (y/n
 prompt: yes:  y
@@ -385,7 +385,7 @@ prompt: yes:  y
 
 ## Summary
 
-Now we've had a taste of working with the ProfitBricks CLI. The reference section below will provide some additional information regarding what parameters are available for various operations.
+Now we've had a taste of working with the IonosEnterprise CLI. The reference section below will provide some additional information regarding what parameters are available for various operations.
 
 # Reference
 
@@ -394,34 +394,34 @@ Now we've had a taste of working with the ProfitBricks CLI. The reference sectio
 ### List Data Centers
 
 ```
-$ profitbricks datacenter list
+$ ionosenterprise datacenter list
 ```
 
 ### Get Specfic Data Center
 
 ```
-$ profitbricks datacenter get -i [dcid]
-$ profitbricks datacenter show -i [dcid]
+$ ionosenterprise datacenter get -i [dcid]
+$ ionosenterprise datacenter show -i [dcid]
 ```
 
 ### Create Data Center
 
 ```
-$ profitbricks datacenter create -p [path_to_json]
+$ ionosenterprise datacenter create -p [path_to_json]
 
-$ profitbricks datacenter create --name [name] --description [text] --location [location]
+$ ionosenterprise datacenter create --name [name] --description [text] --location [location]
 ```
 
 ### Update Data Center
 
 ```
-$ profitbricks datacenter update -i [dcid] --name [name] --description [text]
+$ ionosenterprise datacenter update -i [dcid] --name [name] --description [text]
 ```
 
 ### Delete Data Center
 
 ```
-$ profitbricks datacenter delete -i [dcid]
+$ ionosenterprise datacenter delete -i [dcid]
 ```
 
 ## Server
@@ -429,51 +429,51 @@ $ profitbricks datacenter delete -i [dcid]
 ### List Servers
 
 ```
-$ profitbricks server list --datacenterid [dcid]
+$ ionosenterprise server list --datacenterid [dcid]
 ```
 
 ### Get Specific Server
 
 ```
-$ profitbricks server show --datacenterid [dcid] -i [serverid]
+$ ionosenterprise server show --datacenterid [dcid] -i [serverid]
 ```
 
 ### Create Server
 
 ```
-$ profitbricks server create --datacenterid [dcid] --cores [cores] --name [name] --ram [ram] --cpufamily [cpu_type] --volumeid [preexisting_volume_id]
+$ ionosenterprise server create --datacenterid [dcid] --cores [cores] --name [name] --ram [ram] --cpufamily [cpu_type] --volumeid [preexisting_volume_id]
 
-$ profitbricks server create --datacenterid [dcid] -p [path_to_json]
+$ ionosenterprise server create --datacenterid [dcid] -p [path_to_json]
 ```
 
 ### Update Server
 
 ```
-$ profitbricks server update --datacenterid [dcid] -i [serverid] --cores [cores] --name [name] --ram [ram]
+$ ionosenterprise server update --datacenterid [dcid] -i [serverid] --cores [cores] --name [name] --ram [ram]
 ```
 
 ### Delete Server
 
 ```
-$ profitbricks server delete --datacenterid [dcid] -i [serverid]
+$ ionosenterprise server delete --datacenterid [dcid] -i [serverid]
 ```
 
 ### Start Server
 
 ```
-$ profitbricks server start --datacenterid [dcid] -i [serverid]
+$ ionosenterprise server start --datacenterid [dcid] -i [serverid]
 ```
 
 ### Stop Server
 
 ```
-$ profitbricks server stop --datacenterid [dcid] -i [serverid]
+$ ionosenterprise server stop --datacenterid [dcid] -i [serverid]
 ```
 
 ### Reboot Server
 
 ```
-$ profitbricks server reboot --datacenterid [dcid] -i [serverid]
+$ ionosenterprise server reboot --datacenterid [dcid] -i [serverid]
 ```
 
 ## Volume
@@ -481,45 +481,45 @@ $ profitbricks server reboot --datacenterid [dcid] -i [serverid]
 ### List Volumes
 
 ```
-$ profitbricks volume list --datacenterid [dcid]
+$ ionosenterprise volume list --datacenterid [dcid]
 ```
 
 ### Get Specific Volume
 
 ```
-$ profitbricks volume show --datacenterid [dcid] -i [volumeid]
+$ ionosenterprise volume show --datacenterid [dcid] -i [volumeid]
 ```
 
 ### Create Volume
 
 ```
-$ profitbricks volume create --datacenterid [dcid] -p [path_to_json]
+$ ionosenterprise volume create --datacenterid [dcid] -p [path_to_json]
 
-$ profitbricks volume create --datacenterid  [dcid] --name [name] --size [size] --bus [bus] --type [HDD/SSD] -availabilityzone [AUTO,ZONE_1,ZONE_2,ZONE_3]
+$ ionosenterprise volume create --datacenterid  [dcid] --name [name] --size [size] --bus [bus] --type [HDD/SSD] -availabilityzone [AUTO,ZONE_1,ZONE_2,ZONE_3]
 ```
 
 ### Attach Volume
 
 ```
-$ profitbricks volume attach --datacenterid [dcid] --serverid [serverid] -i [volumeid]
+$ ionosenterprise volume attach --datacenterid [dcid] --serverid [serverid] -i [volumeid]
 ```
 
 ### Detach Volume
 
 ```
-$ profitbricks volume detach --datacenterid [dcid] --serverid [serverid] -i [volumeid]
+$ ionosenterprise volume detach --datacenterid [dcid] --serverid [serverid] -i [volumeid]
 ```
 
 ### Update Volume
 
 ```
-$ profitbricks volume update -i [id] --datacenterid [dcid] --name [name]
+$ ionosenterprise volume update -i [id] --datacenterid [dcid] --name [name]
 ```
 
 ### Delete Volume
 
 ```
-$ profitbricks volume delete --datacenterid [dcid] -i [volumeid]
+$ ionosenterprise volume delete --datacenterid [dcid] -i [volumeid]
 ```
 
 ## Snapshot
@@ -527,31 +527,31 @@ $ profitbricks volume delete --datacenterid [dcid] -i [volumeid]
 ### List Snapshots
 
 ```
-$ profitbricks snapshot list
+$ ionosenterprise snapshot list
 ```
 
 ### Create Snapshot
 
 ```
-$ profitbricks snapshot create --datacenterid [dcid] --volumeid [volumeid] --name [name] --description [description]
+$ ionosenterprise snapshot create --datacenterid [dcid] --volumeid [volumeid] --name [name] --description [description]
 ```
 
 ### Restore Snapshot
 
 ```
-$ profitbricks snapshot restore -i [snapshotid] --datacenterid [dcid] --volumeid [volumeid]
+$ ionosenterprise snapshot restore -i [snapshotid] --datacenterid [dcid] --volumeid [volumeid]
 ```
 
 ### Update Snapshot
 
 ```
-$ profitbricks snapshot update -i [snapshotid] --name [name]
+$ ionosenterprise snapshot update -i [snapshotid] --name [name]
 ```
 
 ### Delete Snapshot
 
 ```
-$ profitbricks snapshot delete -i [snapshotid]
+$ ionosenterprise snapshot delete -i [snapshotid]
 ```
 
 ## Load Balancer
@@ -559,33 +559,33 @@ $ profitbricks snapshot delete -i [snapshotid]
 ### List Load Balancers
 
 ```
-$ profitbricks loadbalancer list --datacenterid [dcid]
+$ ionosenterprise loadbalancer list --datacenterid [dcid]
 ```
 
 ### Get Specific Load Balancer
 
 ```
-$ profitbricks loadbalancer show --datacenterid [dcid] -i [loadbalancerid]
+$ ionosenterprise loadbalancer show --datacenterid [dcid] -i [loadbalancerid]
 ```
 
 ### Create Load Balancer
 
 ```
-$ profitbricks loadbalancer create --datacenterid [dcid] --name  [name] --ip [ip] --dhcp [true|false]
+$ ionosenterprise loadbalancer create --datacenterid [dcid] --name  [name] --ip [ip] --dhcp [true|false]
 
-$ profitbricks loadbalancer create --datacenterid [dcid] -p [path_to_json]
+$ ionosenterprise loadbalancer create --datacenterid [dcid] -p [path_to_json]
 ```
 
 ### Update Load Balancer
 
 ```
-$ profitbricks loadbalancer update -i [loadbalancerid] --datacenterid [dcid] --name [name]
+$ ionosenterprise loadbalancer update -i [loadbalancerid] --datacenterid [dcid] --name [name]
 ```
 
 ### Delete Load Balancer
 
 ```
-$ profitbricks loadbalancer delete -i [loadbalancerid] --datacenterid [dcid]
+$ ionosenterprise loadbalancer delete -i [loadbalancerid] --datacenterid [dcid]
 ```
 
 ## Image
@@ -593,31 +593,31 @@ $ profitbricks loadbalancer delete -i [loadbalancerid] --datacenterid [dcid]
 ### List Images
 
 ```
-$ profitbricks image list
+$ ionosenterprise image list
 ```
 
 ### Get Specific Image
 
 ```
-$ profitbricks image show -i [imageid]
+$ ionosenterprise image show -i [imageid]
 ```
 
 ### Update Image
 
 ```
-$ profitbricks image update -i [imageid] --name [name] ---description [description] --licencetype [licencetype]
+$ ionosenterprise image update -i [imageid] --name [name] ---description [description] --licencetype [licencetype]
 ```
 
 ### Delete Image
 
 ```
-$ profitbricks image delete -i [imageid]
+$ ionosenterprise image delete -i [imageid]
 ```
 
 ### List Image Aliases
 
 ```
-$ profitbricks image aliases -l [locationid]
+$ ionosenterprise image aliases -l [locationid]
 ```
 
 ## NIC
@@ -625,54 +625,54 @@ $ profitbricks image aliases -l [locationid]
 ### List NICs
 
 ```
-$ profitbricks nic list --datacenterid [dcid] --serverid [serverid]
+$ ionosenterprise nic list --datacenterid [dcid] --serverid [serverid]
 ```
 
 ### Get Specific NIC
 
 ```
-$ profitbricks nic get --datacenterid [dcid] --serverid [serverid] -i [nicid]
+$ ionosenterprise nic get --datacenterid [dcid] --serverid [serverid] -i [nicid]
 ```
 
 ### Create NIC
 
 ```
-$ profitbricks nic create --datacenterid [dcid]--serverid [serverid] -p [path_to_json]
+$ ionosenterprise nic create --datacenterid [dcid]--serverid [serverid] -p [path_to_json]
 
-$ profitbricks nic create --datacenterid [dcid] --serverid [serverid] --name [name] --ip [ip] --dhcp [true|false] --lan [lan] --nat [true/false]
+$ ionosenterprise nic create --datacenterid [dcid] --serverid [serverid] --name [name] --ip [ip] --dhcp [true|false] --lan [lan] --nat [true/false]
 ```
 
 ### Update NIC
 
 ```
-$ profitbricks nic update -i [nicid] --datacenterid [dcid] --serverid [serverid] --name [name] --ip [ip] --dhcp [true|false] --lan [lan]
-$ profitbricks nic update --datacenterid [dc] --serverid [server] -i [nicid] --addip 1.1.1.1
-$ profitbricks nic update --datacenterid [dc] --serverid [server] -i [nicid] --removeip 1.1.1.1
+$ ionosenterprise nic update -i [nicid] --datacenterid [dcid] --serverid [serverid] --name [name] --ip [ip] --dhcp [true|false] --lan [lan]
+$ ionosenterprise nic update --datacenterid [dc] --serverid [server] -i [nicid] --addip 1.1.1.1
+$ ionosenterprise nic update --datacenterid [dc] --serverid [server] -i [nicid] --removeip 1.1.1.1
 ```
 
 
 ### Delete NIC
 
 ```
-$ profitbricks nic delete -i [nicid] --datacenterid [dcid] --serverid [serverid]
+$ ionosenterprise nic delete -i [nicid] --datacenterid [dcid] --serverid [serverid]
 ```
 
 ### List Load Balanced NIC
 
 ```
-$ profitbricks nic list --datacenterid [dcid] --loadbalancerid [lbid]
+$ ionosenterprise nic list --datacenterid [dcid] --loadbalancerid [lbid]
 ```
 
 ### Attach a NIC to a Load Balancer
 
 ```
-$ profitbricks nic attach --datacenterid [dcid] --loadbalancerid [lbid] -i [nicid]
+$ ionosenterprise nic attach --datacenterid [dcid] --loadbalancerid [lbid] -i [nicid]
 ```
 
 ### Detach a NIC from a Load Balancer
 
 ```
-$ profitbricks nic detach --datacenterid [dcid] --loadbalancerid [lbid] -i [nicid]
+$ ionosenterprise nic detach --datacenterid [dcid] --loadbalancerid [lbid] -i [nicid]
 ```
 
 ## Firewall Rules
@@ -680,25 +680,25 @@ $ profitbricks nic detach --datacenterid [dcid] --loadbalancerid [lbid] -i [nici
 ### List Firewall Rules
 
 ```
-$profitbricks firewall list --datacenterid [dcid] --serverid [serverid] --nicid [nicid]
+$ionosenterprise firewall list --datacenterid [dcid] --serverid [serverid] --nicid [nicid]
 ```
 
 ### Get Specific Firewall Rule
 
 ```
-$profitbricks firewall get --datacenterid [dcid] --serverid [serverid] --nicid [nicid] --id [firewallid]
+$ionosenterprise firewall get --datacenterid [dcid] --serverid [serverid] --nicid [nicid] --id [firewallid]
 ```
 
 ### Create Firewall Rules
 
 ```
-$profitbricks firewall create --datacenterid [dcid] --serverid [serverid] --nicid [nicid] --protocol [protocol]
+$ionosenterprise firewall create --datacenterid [dcid] --serverid [serverid] --nicid [nicid] --protocol [protocol]
 ```
 
 ### Update Firewall Rules
 
 ```
-$profitbricks firewall update  --datacenterid [dcid] --serverid [serverid] --nicid [nicid] --id [firewallid] --sourceMac [mac_address]
+$ionosenterprise firewall update  --datacenterid [dcid] --serverid [serverid] --nicid [nicid] --id [firewallid] --sourceMac [mac_address]
 ```
 
 ## IP Block
@@ -706,31 +706,31 @@ $profitbricks firewall update  --datacenterid [dcid] --serverid [serverid] --nic
 ### List IP Blocks
 
 ```
-$ profitbricks ipblock list
+$ ionosenterprise ipblock list
 ```
 
 ### Get Specific IP Block
 
 ```
-$ profitbricks ipblock show -i [ipblockid]
+$ ionosenterprise ipblock show -i [ipblockid]
 ```
 
 ### Reserve IP Block
 
 ```
-$ profitbricks ipblock create --location [location] --size [size] --name [name]
+$ ionosenterprise ipblock create --location [location] --size [size] --name [name]
 ```
 
 ## Release IP Block
 
 ```
-$ profitbricks ipblock delete -i [ipblockid]
+$ ionosenterprise ipblock delete -i [ipblockid]
 ```
 
 ## Location
 
 ```
-profitbricks location list
+ionosenterprise location list
 ```
 
 ## LAN
@@ -738,29 +738,29 @@ profitbricks location list
 ### List LANs
 
 ```
-profitbricks lan list --datacenterid [dcid]
+ionosenterprise lan list --datacenterid [dcid]
 ```
 
 ### Create LAN
 
 ```
-profitbricks lan create --datacenterid [dcid] -p [path_to_json]
+ionosenterprise lan create --datacenterid [dcid] -p [path_to_json]
 
-profitbricks lan create --datacenterid [dcid] --name [name] --public [boolean]
+ionosenterprise lan create --datacenterid [dcid] --name [name] --public [boolean]
 ```
 
 ### Update LAN
 
 ```
-profitbricks lan update --datacenterid [dcid] -p [path_to_json]
+ionosenterprise lan update --datacenterid [dcid] -p [path_to_json]
 
-profitbricks lan update --datacenterid [dcid] --name [name] --public [boolean] -i [lanid] --ipfailover [ip1,nicid1;ip2,nicid2;...]
+ionosenterprise lan update --datacenterid [dcid] --name [name] --public [boolean] -i [lanid] --ipfailover [ip1,nicid1;ip2,nicid2;...]
 ```
 
 ### Get LAN
 
 ```
-profitbricks lan show --datacenterid [dcid] --id [lanid]
+ionosenterprise lan show --datacenterid [dcid] --id [lanid]
 ```
 
 ## User
@@ -768,35 +768,35 @@ profitbricks lan show --datacenterid [dcid] --id [lanid]
 ### List Users
 
 ```
-$ profitbricks user list
+$ ionosenterprise user list
 ```
 
 ### Create User
 
 ```
-$ profitbricks user create -p [path_to_json]
+$ ionosenterprise user create -p [path_to_json]
 
-$ profitbricks user create --firstname [firstname] --lastname [lastname] --email [email] --password [password] --admin [boolean] --forcesecauth [boolean]
+$ ionosenterprise user create --firstname [firstname] --lastname [lastname] --email [email] --password [password] --admin [boolean] --forcesecauth [boolean]
 ```
 
 ### Get Specific User
 
 ```
-$ profitbricks user get -i [userid]
+$ ionosenterprise user get -i [userid]
 
-$ profitbricks user show -i [userid]
+$ ionosenterprise user show -i [userid]
 ```
 
 ### Update User
 
 ```
-$ profitbricks user update -i [userid] --firstname [firstname] --lastname [lastname] --email [email] --admin [boolean] --forcesecauth [boolean]
+$ ionosenterprise user update -i [userid] --firstname [firstname] --lastname [lastname] --email [email] --admin [boolean] --forcesecauth [boolean]
 ```
 
 ### Delete User
 
 ```
-$ profitbricks user delete -i [userid]
+$ ionosenterprise user delete -i [userid]
 ```
 
 ## Group
@@ -804,53 +804,53 @@ $ profitbricks user delete -i [userid]
 ### List Groups
 
 ```
-$ profitbricks group list
+$ ionosenterprise group list
 ```
 
 ### Create Group
 
 ```
-$ profitbricks group create -p [path_to_json]
+$ ionosenterprise group create -p [path_to_json]
 
-$ profitbricks group create --name [name] --createdatacenter [boolean] --createsnapshot [boolean] --reserveip [boolean] --accessactlog [boolean]
+$ ionosenterprise group create --name [name] --createdatacenter [boolean] --createsnapshot [boolean] --reserveip [boolean] --accessactlog [boolean]
 ```
 
 ### Get Specific Group
 
 ```
-$ profitbricks group get -i [groupid]
+$ ionosenterprise group get -i [groupid]
 
-$ profitbricks group show -i [groupid]
+$ ionosenterprise group show -i [groupid]
 ```
 
 ### Update Group
 
 ```
-$ profitbricks group update -i [groupid] --name [name] --createdatacenter [boolean] --createsnapshot [boolean] --reserveip [boolean] --accessactlog [boolean]
+$ ionosenterprise group update -i [groupid] --name [name] --createdatacenter [boolean] --createsnapshot [boolean] --reserveip [boolean] --accessactlog [boolean]
 ```
 
 ### Delete Group
 
 ```
-$ profitbricks group delete -i [groupid]
+$ ionosenterprise group delete -i [groupid]
 ```
 
 ### List Group Users
 
 ```
-$ profitbricks group users -i [groupid]
+$ ionosenterprise group users -i [groupid]
 ```
 
 ### Add Group User
 
 ```
-$ profitbricks group user --adduser [userid] -i [groupid]
+$ ionosenterprise group user --adduser [userid] -i [groupid]
 ```
 
 ### Remove Group User
 
 ```
-profitbricks group user --removeuser [userid] -i [groupid]
+ionosenterprise group user --removeuser [userid] -i [groupid]
 ```
 
 ## Share
@@ -858,37 +858,37 @@ profitbricks group user --removeuser [userid] -i [groupid]
 ### List Shares
 
 ```
-$ profitbricks share list --groupid [groupid]
+$ ionosenterprise share list --groupid [groupid]
 ```
 
 ### Add Share
 
 ```
-$ profitbricks share add --groupid [groupid] --resourceid [resourceid] --editprivilege [boolean] --shareprivilege [boolean]
+$ ionosenterprise share add --groupid [groupid] --resourceid [resourceid] --editprivilege [boolean] --shareprivilege [boolean]
 
-$ profitbricks share create --groupid [groupid] --resourceid [resourceid] --editprivilege [boolean] --shareprivilege [boolean]
+$ ionosenterprise share create --groupid [groupid] --resourceid [resourceid] --editprivilege [boolean] --shareprivilege [boolean]
 ```
 
 ### Get Specific Share
 
 ```
-$ profitbricks share get --groupid [groupid] -i [shareid]
+$ ionosenterprise share get --groupid [groupid] -i [shareid]
 
-$ profitbricks share show --groupid [groupid] -i [shareid]
+$ ionosenterprise share show --groupid [groupid] -i [shareid]
 ```
 
 ### Update Share
 
 ```
-$ profitbricks share update --groupid [groupid] -i [shareid] --editprivilege [boolean] --shareprivilege [boolean]
+$ ionosenterprise share update --groupid [groupid] -i [shareid] --editprivilege [boolean] --shareprivilege [boolean]
 ```
 
 ### Remove Share
 
 ```
-$ profitbricks share delete --groupid [groupid] -i [shareid]
+$ ionosenterprise share delete --groupid [groupid] -i [shareid]
 
-$ profitbricks share remove --groupid [groupid] -i [shareid]
+$ ionosenterprise share remove --groupid [groupid] -i [shareid]
 ```
 
 ## Resource
@@ -896,21 +896,21 @@ $ profitbricks share remove --groupid [groupid] -i [shareid]
 ### List All Resources
 
 ```
-$ profitbricks resource list
+$ ionosenterprise resource list
 ```
 
 ### List Specific Type Resources
 
 ```
-$ profitbricks resource list --resourcetype [datacenter|snapshot|image|ipblock]
+$ ionosenterprise resource list --resourcetype [datacenter|snapshot|image|ipblock]
 ```
 
 ### Get Specific Type Resource
 
 ```
-$ profitbricks resource get --resourcetype [datacenter|snapshot|image|ipblock] -i [resourceid]
+$ ionosenterprise resource get --resourcetype [datacenter|snapshot|image|ipblock] -i [resourceid]
 
-$ profitbricks resource show --resourcetype [datacenter|snapshot|image|ipblock] -i [resourceid]
+$ ionosenterprise resource show --resourcetype [datacenter|snapshot|image|ipblock] -i [resourceid]
 ```
 
 ## Contract Resources
@@ -918,16 +918,16 @@ $ profitbricks resource show --resourcetype [datacenter|snapshot|image|ipblock] 
 ### List Contract Info
 
 ```
-$ profitbricks contract list
+$ ionosenterprise contract list
 ```
 
 ### List Contract Info By Resource
 
 ```
-$ profitbricks contract list --ctresource [cores|ram|hdd|ssd|ips]
+$ ionosenterprise contract list --ctresource [cores|ram|hdd|ssd|ips]
 ```
 
 
 ## Support
 
-You are welcome to contact us with questions or comments at [ProfitBricks DevOps Central](https://devops.profitbricks.com/). Please report any issues via [GitHub's issue tracker](https://github.com/profitbricks/profitbricks-cli/issues).
+You are welcome to contact us with questions or comments at [IonosEnterprise DevOps Central](https://devops.ionos.com/). Please report any issues via [GitHub's issue tracker](https://github.com/ionos-enterprise/ionos-enterprise-cli/issues).

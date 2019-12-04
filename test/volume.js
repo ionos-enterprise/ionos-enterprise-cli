@@ -1,6 +1,6 @@
 var assert = require("assert")
 var exec = require('child_process').exec
-var pbclient = require('libprofitbricks')
+var pbclient = require('libionosenterprise')
 var helpers = require('../helpers')
 
 var dcid = '';
@@ -87,7 +87,7 @@ describe('Volume tests', function () {
 })
 
 function volumeGet(done) {
-    exec('node profitbricks.js volume list --datacenterid ' + dcid + ' --json', function (error, stdout, stderr) {
+    exec('node ionosenterprise.js volume list --datacenterid ' + dcid + ' --json', function (error, stdout, stderr) {
         checkErrors(error, stderr, done)
         var data = JSON.parse(stdout)
         assert.equal(data.length > 0, true)
@@ -97,7 +97,7 @@ function volumeGet(done) {
 
 function volumeCreateScript(done) {
     var script = './scripts/volume.json'
-    exec('node profitbricks.js volume create --datacenterid ' + dcid + ' -p ' + script + ' --json', function (error, stdout, stderr) {
+    exec('node ionosenterprise.js volume create --datacenterid ' + dcid + ' -p ' + script + ' --json', function (error, stdout, stderr) {
         checkErrors(error, stderr, done)
         var data = JSON.parse(stdout)
         vid = data[0].Id
@@ -106,7 +106,7 @@ function volumeCreateScript(done) {
 }
 
 function volumeShow(done) {
-    exec('node profitbricks.js volume show ' +
+    exec('node ionosenterprise.js volume show ' +
     ' --datacenterid ' + dcid +
     ' -i ' + vid +
     ' --json', function (error, stdout, stderr) {
@@ -123,7 +123,7 @@ function volumeCreateParams(done) {
     var bus = "VIRTIO"
     var licence = "LINUX"
     var type = "HDD"
-    exec('node profitbricks.js volume create --json ' +
+    exec('node ionosenterprise.js volume create --json ' +
     ' --datacenterid  ' + dcid +
     ' --size ' + size +
     ' --licencetype ' + licence +
@@ -141,7 +141,7 @@ function volumeCreateParams(done) {
 }
 
 function attachVolume(done) {
-    exec('node profitbricks.js volume attach --json ' +
+    exec('node ionosenterprise.js volume attach --json ' +
     '--datacenterid ' + dcid +
     ' --serverid ' + sid +
     ' -i ' + vid    , function (error, stdout, stderr) {
@@ -151,7 +151,7 @@ function attachVolume(done) {
 }
 
 function detachVolume(done) {
-    exec('node profitbricks.js volume detach --json ' +
+    exec('node ionosenterprise.js volume detach --json ' +
     '--datacenterid ' + dcid +
     ' --serverid ' + sid +
     ' -i ' + vid , function (error, stdout, stderr) {
@@ -162,7 +162,7 @@ function detachVolume(done) {
 
 function volumeUpdate(done) {
     var name = "PB_CLI_Test_Volume_UPDATED"
-    exec('node profitbricks.js volume update --json ' +
+    exec('node ionosenterprise.js volume update --json ' +
     '-i ' + vid +
     ' --datacenterid ' + dcid +
     ' --name ' + name, function (error, stdout, stderr) {
@@ -176,7 +176,7 @@ function volumeUpdate(done) {
 }
 
 function volumeDelete(done) {
-    exec('node profitbricks.js volume delete ' +
+    exec('node ionosenterprise.js volume delete ' +
     '--datacenterid ' + dcid +
     ' -i ' + vid +
     ' --json --force', function (error, stdout, stderr) {

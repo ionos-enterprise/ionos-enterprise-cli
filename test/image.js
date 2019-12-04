@@ -1,6 +1,6 @@
 var assert = require("assert")
 var exec = require('child_process').exec
-var pbclient = require('libprofitbricks')
+var pbclient = require('libionosenterprise')
 var helpers = require('../helpers')
 
 var imgid = ''
@@ -30,7 +30,7 @@ describe('Image tests', function(){
 })
 
 function imagesGet(done) {
-    exec('node profitbricks.js image list --json', function (error, stdout, stderr) {
+    exec('node ionosenterprise.js image list --json', function (error, stdout, stderr) {
         checkErrors(error, stderr, done)
         var data = JSON.parse(stdout)
         assert.equal(data.length > 0, true)
@@ -40,7 +40,7 @@ function imagesGet(done) {
 }
 
 function imageShow(done) {
-    exec('node profitbricks.js image show --json' +
+    exec('node ionosenterprise.js image show --json' +
     ' -i ' + imgid, function (error, stdout, stderr) {
         checkErrors(error, stderr, done)
         var data = JSON.parse(stdout)
@@ -52,7 +52,7 @@ function imageShow(done) {
 
 function imageUpdate(done) {
     var name = 'Test_image_UPD'
-    exec('node profitbricks.js image update --json' +
+    exec('node ionosenterprise.js image update --json' +
     ' --name ' + name +
     ' -i ' + imgid, function (error, stdout, stderr) {
         //checkErrors(error, stderr, done)
@@ -64,7 +64,7 @@ function imageUpdate(done) {
 }
 
 function imageDelete(done) {
-    exec('node profitbricks.js image delete --json --force' +
+    exec('node ionosenterprise.js image delete --json --force' +
     ' -i ' + imgid, function (error, stdout, stderr) {
         //checkErrors(error, stderr, done)
         assert.equal(error.code, 5)

@@ -18,5 +18,5 @@ del nodejs.msi
 GOTO :finish
 
 :finish
-"c:\Program Files\nodejs\npm" install -g profitbricks-cli
+"c:\Program Files\nodejs\npm" install -g ionosenterprise-cli
 

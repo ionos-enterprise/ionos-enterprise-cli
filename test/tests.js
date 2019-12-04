@@ -1,6 +1,6 @@
 var assert = require("assert")
 var exec = require('child_process').exec
-var pbclient = require('libprofitbricks')
+var pbclient = require('libionosenterprise')
 
 var dcid = '';
 var sid = '';

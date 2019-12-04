@@ -1,6 +1,6 @@
 var assert = require("assert")
 var exec = require('child_process').exec
-var pbclient = require('libprofitbricks')
+var pbclient = require('libionosenterprise')
 var helpers = require('../helpers')
 
 var dcid = ''
@@ -84,7 +84,7 @@ describe('Nic tests', function() {
 })
 
 function nicGet(done) {
-    exec('node profitbricks.js nic list --datacenterid ' + dcid +
+    exec('node ionosenterprise.js nic list --datacenterid ' + dcid +
         ' --serverid ' + sid +
         ' --json',
         function(error, stdout, stderr) {
@@ -100,7 +100,7 @@ function nicCreateParams(done) {
     var ips = '127.0.0.1'
     var dhcp = 'true'
     var lan = '1'
-    exec('node profitbricks.js nic create' +
+    exec('node ionosenterprise.js nic create' +
         ' --datacenterid ' + dcid +
         ' --serverid ' + sid +
         ' --name ' + name +
@@ -118,7 +118,7 @@ function nicCreateParams(done) {
 
 function nicCreateScript(done) {
     var script = './scripts/nic.json'
-    exec('node profitbricks.js nic create' +
+    exec('node ionosenterprise.js nic create' +
         ' --datacenterid ' + dcid +
         ' --serverid ' + sid +
         ' -p ' + script +
@@ -133,7 +133,7 @@ function nicCreateScript(done) {
 }
 
 function nicShow(done) {
-    exec('node profitbricks.js nic show --json' +
+    exec('node ionosenterprise.js nic show --json' +
         ' --datacenterid ' + dcid +
         ' --serverid ' + sid +
         ' -i ' + nicid,
@@ -147,7 +147,7 @@ function nicShow(done) {
 }
 
 function nicUpdate(done) {
-    exec('node profitbricks.js nic update --json ' +
+    exec('node ionosenterprise.js nic update --json ' +
         '--datacenterid ' + dcid +
         ' --serverid ' + sid +
         ' --name ' + 'newName' +
@@ -164,7 +164,7 @@ function nicUpdate(done) {
 }
 
 function nicDelete(done) {
-    exec('node profitbricks.js nic delete --force' +
+    exec('node ionosenterprise.js nic delete --force' +
         ' --datacenterid ' + dcid +
         ' --serverid ' + sid +
         ' -i ' + nicid,

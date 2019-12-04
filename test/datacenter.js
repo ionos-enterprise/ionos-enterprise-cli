@@ -1,6 +1,6 @@
 var assert = require("assert")
 var exec = require('child_process').exec
-var pbclient = require('libprofitbricks')
+var pbclient = require('libionosenterprise')
 
 var dcid = '';
 var dcid2 = '';
@@ -42,7 +42,7 @@ describe('Datacenter tests', function () {
 })
 
 function dataCenterGet(done) {
-    exec('node profitbricks.js datacenter list --json', function (error, stdout, stderr) {
+    exec('node ionosenterprise.js datacenter list --json', function (error, stdout, stderr) {
         checkErrors(error, stderr, done)
         var data = JSON.parse(stdout)
         assert.equal(data.length >= 0, true)
@@ -51,7 +51,7 @@ function dataCenterGet(done) {
 }
 
 function dataCenterShow(done) {
-    exec('node profitbricks.js datacenter show -i ' + dcid + ' --json', function (error, stdout, stderr) {
+    exec('node ionosenterprise.js datacenter show -i ' + dcid + ' --json', function (error, stdout, stderr) {
         checkErrors(error, stderr, done)
         var data = JSON.parse(stdout)
         assert.equal(data.length > 0, true)
@@ -64,7 +64,7 @@ function dataCenterShow(done) {
 
 function dataCenterCreateScript(done) {
     var script = './scripts/datacenter.json'
-    exec('node profitbricks.js datacenter create -p ' + script + ' --json', function (error, stdout, stderr) {
+    exec('node ionosenterprise.js datacenter create -p ' + script + ' --json', function (error, stdout, stderr) {
         checkErrors(error, stderr, done)
         var data = JSON.parse(stdout)
         assert.equal(data[0].Name, "PB_CLI Test Datacenter")
@@ -78,7 +78,7 @@ function dataCenterCreateParams(done) {
     var name = "1Datacenter"
     var description = "description"
     var location = "us/ewr"
-    exec('node profitbricks.js datacenter create --json --name ' + name +
+    exec('node ionosenterprise.js datacenter create --json --name ' + name +
     ' --description ' + description +
     ' --location ' + location, function (error, stdout, stderr) {
         checkErrors(error, stderr, done)
@@ -88,7 +88,7 @@ function dataCenterCreateParams(done) {
             dcid2 = data[0].Id
             assert.equal(data[0].Name, name)
             assert.equal(data[0].Location, location)
-            exec('node profitbricks.js datacenter delete -i ' + data[0].Id+ ' --json --force', function (error, stdout, stderr) {
+            exec('node ionosenterprise.js datacenter delete -i ' + data[0].Id+ ' --json --force', function (error, stdout, stderr) {
                 checkErrors(error, stderr, done)
                 assert.notEqual(stdout, '')
                 done()
@@ -100,7 +100,7 @@ function dataCenterCreateParams(done) {
 function dataCenterUpdate(done) {
     var name = "datacenter1"
     var description = "description"
-    exec('node profitbricks.js datacenter update --json ' +
+    exec('node ionosenterprise.js datacenter update --json ' +
     '--name ' + name +
     ' --description ' + description +
     ' -i ' + dcid, function (error, stdout, stderr) {
@@ -115,11 +115,11 @@ function dataCenterUpdate(done) {
 }
 
 function dataCenterDelete(done) {
-    exec('node profitbricks.js datacenter delete -i ' + dcid + ' --json --force', function (error, stdout, stderr) {
+    exec('node ionosenterprise.js datacenter delete -i ' + dcid + ' --json --force', function (error, stdout, stderr) {
         checkErrors(error, stderr, done)
         assert.notEqual(stdout, '')
         setTimeout(function(){
-            exec('node profitbricks.js datacenter show -i ' + dcid + ' --json', function (error, stdout, stderr) {
+            exec('node ionosenterprise.js datacenter show -i ' + dcid + ' --json', function (error, stdout, stderr) {
                 assert.equal(stdout, "")
                 done()
             })
